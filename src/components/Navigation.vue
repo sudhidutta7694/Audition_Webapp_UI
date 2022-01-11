@@ -35,7 +35,7 @@
             </v-list-item-icon>
             <v-list-item-title class="font-weight-light sidebar">Add Round</v-list-item-title>
           </v-list-item></router-link>
-          <router-link :to="{ name: 'Edit Round' }" class="navbar-items"><v-list-item link>
+          <router-link :to="{ name: 'EditRound' }" class="navbar-items"><v-list-item link>
             <v-list-item-icon>
               <v-icon color="#7B849F">mdi-square-edit-outline</v-icon>
             </v-list-item-icon>
