@@ -30,17 +30,16 @@
               value=" "
               style="width: 80%"
             ></v-textarea>
-            
-            <v-select
-              :items="Qtype"
-              v-model="Questype"
-              label="Question Type"
-              dense
-              outlined
-              value="MCQ"
-              color="#BEFFC1"
-              style="width: 30%"
-            ></v-select>
+            <v-row>
+            <v-col cols="12" sm="6">
+              <v-btn color="#a692ff" class="mr-2 white--text" @click="uploadImage">
+                ADD IMAGE
+              </v-btn>
+              <v-btn color="#BEFFC1" class="mr-2 grey--text" @click="uploadAudio">
+                ADD AUDIO
+              </v-btn>
+            </v-col>  
+            </v-row>
             <v-row>
             <v-col cols="6" sm="6">
             <v-file-input
@@ -48,7 +47,7 @@
               outlined
               dense
               style="width: 40%"
-              v-if="Questype === 'AUDIO'"
+              v-if="Media === 'AUDIO'"
             ></v-file-input>
             <v-file-input
               label="Pick your image"
@@ -56,22 +55,20 @@
               dense
               style="width: 40%"
               prepend-icon="mdi-camera"
-              v-if="Questype === 'IMAGE'"
+              v-if="Media === 'IMAGE'"
             ></v-file-input>
-            <v-file-input
-              label="Pick your doc file"
-              outlined
-              dense
-              style="width: 40%"
-              v-if="Questype === 'DOC'"
-            ></v-file-input>
-            </v-col>
-            <v-col cols="6" sm="6">
-            <v-btn v-if="Questype === 'DOC' || Questype === 'IMAGE' || Questype === 'AUDIO' " color="blue-grey" class="ma-2 white--text" :disabled="file === ''" @click="uploadForm">
-                Save
-            </v-btn>
             </v-col>
             </v-row>
+            <v-select
+              :items="Qtype"
+              v-model="Questype"
+              label="Question Type"
+              dense
+              outlined
+              value=""
+              color="#BEFFC1"
+              style="width: 30%"
+            ></v-select>
             <div class="mcq-options mx-5 pa-5" v-if="Questype === 'MCQ'">
               <v-container>
                 <v-row>
@@ -214,8 +211,10 @@
 </style>
 
 <script>
+
 export default {
   data: () => ({
+    Media: "",
     Questype: "",
     Ques: "  ",
     choice1: "",
@@ -228,18 +227,8 @@ export default {
     loading: false,
     loading1: false,
     Rtime: ["10", "15", "20", "25"],
-    Qtype: ["MCQ", "AUDIO", "IMAGE", "DOC"],
+    Qtype: ["MCQ", "ATTACH FILE", "TEXTAREA"],
   }),
-  watch: {
-    loader() {
-      const l = this.loader;
-      this[l] = !this[l];
-
-      setTimeout(() => (this[l] = false), 3000);
-
-      this.loader = null;
-    },
-  },
   methods: {
     saveOptions() {
       this.options.push({
@@ -265,30 +254,26 @@ export default {
         this.choice4 = "";
       }
     },
-    // addRound() {
-    //   this.loading1 = !this.loading1;
-    //   var round = { time: this.time, questions: this.questions };
-    //   common.addround(round).then(res => {
-    //     console.log(res.data);
-    //     this.loading1 = false;
-    //     this.snackbar = true;
-    //     this.questions = [];
-    //     localStorage.removeItem("questions");
-    //   });
-    // },
-    // deleteques(index) {
-    //   this.questions.splice(index, 1);
-    // },
-    // async uploadForm() {
-    //   this.loading = true;
-    //   const formdata = new FormData();
-    //   formdata.append("file", this.file, this.file.name);
-    //   await common.upload(formdata).then(res => {
-    //     console.log(res.data);
-    //     this.quesLink = res.data.link;
-    //     this.loading = false;
-    //   });
-    // }
+    async uploadImage() {
+      this.Media = "IMAGE"
+      // const formdata = new FormData();
+      // formdata.append("file", this.file, this.file.name);
+      // await common.upload(formdata).then(res => {
+      //   console.log(res.data);
+      //   this.quesLink = res.data.link;
+      //   this.loading = false;
+      // });
+    },
+    async uploadAudio() {
+      this.Media = "AUDIO"
+      // const formdata = new FormData();
+      // formdata.append("file", this.file, this.file.name);
+      // await common.upload(formdata).then(res => {
+      //   console.log(res.data);
+      //   this.quesLink = res.data.link;
+      //   this.loading = false;
+      // });
+    }
   },
 };
 </script>
