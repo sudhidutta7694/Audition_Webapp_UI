@@ -2,7 +2,7 @@
   <div class="background">
     <NavigationDrawer/>
     <div class="main">
-     <AddForm/>   
+     <tabs/>  
     </div>
   </div>
 </template>
@@ -27,12 +27,12 @@
 
 <script>
 import NavigationDrawer from '../components/Navigation.vue'
-import AddForm from '../components/Add-Form.vue'
+import tabs from '../components/tabs.vue'
 export default {
     name: 'Dashboard',
     components:{
        NavigationDrawer,
-       AddForm
+       tabs
 
     },
   }
