@@ -12,15 +12,6 @@
       <v-container fluid>
         <v-row align="center">
           <v-col class="d-flex flex-column mx-10" cols="12" sm="12">
-            <v-select
-              :items="Rtime"
-              label="Round Time"
-              dense
-              outlined
-              value="10"
-              color="#BEFFC1"
-              style="width: 30%"
-            ></v-select>
             <v-textarea
               outlined
               color="#BEFFC1"
@@ -30,49 +21,68 @@
               value=" "
               style="width: 80%"
             ></v-textarea>
-            
+            <v-row>
+              <v-col cols="12" sm="6">
+                <v-btn
+                  color="#a692ff"
+                  class="mr-2 white--text"
+                  @click="uploadImage"
+                >
+                  ADD IMAGE
+                </v-btn>
+                <v-btn
+                  color="#BEFFC1"
+                  class="mr-2 grey--text"
+                  @click="uploadAudio"
+                >
+                  ADD AUDIO
+                </v-btn>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="6" sm="6">
+                <v-file-input
+                  label="Pick your audio file"
+                  outlined
+                  dense
+                  style="width: 40%"
+                  v-if="Media === 'AUDIO'"
+                ></v-file-input>
+                <v-file-input
+                  label="Pick your image"
+                  outlined
+                  dense
+                  v-model="selectedFile"
+                  style="width: 40%"
+                  prepend-icon="mdi-camera"
+                  v-if="Media === 'IMAGE'"
+                ></v-file-input>
+              </v-col>
+              <v-col>
+                <v-btn
+                  v-if="Media === 'IMAGE' || Media === 'AUDIO'"
+                  @click="uploadMedia"
+                >
+                  SAVE
+                </v-btn>
+              </v-col>
+            </v-row>
             <v-select
               :items="Qtype"
               v-model="Questype"
               label="Question Type"
               dense
               outlined
-              value="MCQ"
+              value=""
               color="#BEFFC1"
               style="width: 30%"
             ></v-select>
-            <v-row>
-            <v-col cols="6" sm="6">
-            <v-file-input
-              label="Pick your audio file"
-              outlined
-              dense
-              style="width: 40%"
-              v-if="Questype === 'AUDIO'"
-            ></v-file-input>
-            <v-file-input
-              label="Pick your image"
-              outlined
-              dense
-              style="width: 40%"
-              prepend-icon="mdi-camera"
-              v-if="Questype === 'IMAGE'"
-            ></v-file-input>
-            <v-file-input
-              label="Pick your doc file"
-              outlined
-              dense
-              style="width: 40%"
-              v-if="Questype === 'DOC'"
-            ></v-file-input>
-            </v-col>
-            <v-col cols="6" sm="6">
-            <v-btn v-if="Questype === 'DOC' || Questype === 'IMAGE' || Questype === 'AUDIO' " color="blue-grey" class="ma-2 white--text" :disabled="file === ''" @click="uploadForm">
-                Save
-            </v-btn>
-            </v-col>
-            </v-row>
-            <div class="mcq-options mx-5 pa-5" v-if="Questype === 'MCQ'">
+            <div
+              class="mcq-options mx-5 pa-5"
+              v-if="
+                Questype === 'SINGLE CHOICE' || Questype === 'MULTIPLE CHOICE'
+              "
+            >
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6">
@@ -114,6 +124,7 @@
                     :disabled="loading"
                     color="#BEFFC1"
                     @click="saveOptions"
+                    v-if="showBtn"
                   >
                     Save
                     <template v-slot:loader>
@@ -125,7 +136,7 @@
                 </div>
               </v-container>
             </div>
-            
+
             <v-btn
               class="mx-2"
               fab
@@ -140,28 +151,32 @@
         </v-row>
       </v-container>
     </v-card>
-    <br/>
+    <br />
     <v-container v-for="(question, index) in Questions" :key="index">
-    <v-card class="overview" max-width="95%" outlined color="#1A1D1F">
-      hiii
-    </v-card>
+      <v-card class="overview" max-width="50%" outlined color="#1A1D1F">
+        <DispQues :question="question" />
+      </v-card>
     </v-container>
     <div class="d-flex float-right mr-12 pa-2">
-      <v-btn
-        class="ma-2"
-        :loading="loading"
-        :disabled="loading"
-        color="#4288CA"
-        @click="loader = 'loading1'"
+      <router-link :to="{ name: 'Root' }">
+        <v-btn
+          class="ma-2"
+          :loading="loading"
+          :disabled="loading"
+          color="#4288CA"
+          @click="loader = 'loading1'"
+          style="text-decoration: none"
+        >
+          Save Round
+          <template v-slot:loader>
+            <span class="custom-loader">
+              <v-icon light>mdi-cached</v-icon>
+            </span>
+          </template>
+        </v-btn></router-link
       >
-        Save Round
-        <template v-slot:loader>
-          <span class="custom-loader">
-            <v-icon light>mdi-cached</v-icon>
-          </span>
-        </template>
-      </v-btn>
     </div>
+    <router-view />
   </div>
 </template>
 <style scoped>
@@ -214,8 +229,15 @@
 </style>
 
 <script>
+import DispQues from "./Display-Ques.vue";
 export default {
+  components: {
+    DispQues,
+  },
   data: () => ({
+    Media: "",
+    showBtn: true,
+    selectedFile: "",
     Questype: "",
     Ques: "  ",
     choice1: "",
@@ -224,22 +246,13 @@ export default {
     choice4: "",
     options: [],
     Questions: [],
+    MediaFiles: [],
     loader: null,
     loading: false,
     loading1: false,
     Rtime: ["10", "15", "20", "25"],
-    Qtype: ["MCQ", "AUDIO", "IMAGE", "DOC"],
+    Qtype: ["SINGLE CHOICE", "MULTIPLE CHOICE", "ATTACH FILE", "TEXTAREA"],
   }),
-  watch: {
-    loader() {
-      const l = this.loader;
-      this[l] = !this[l];
-
-      setTimeout(() => (this[l] = false), 3000);
-
-      this.loader = null;
-    },
-  },
   methods: {
     saveOptions() {
       this.options.push({
@@ -248,47 +261,40 @@ export default {
         choice3: this.choice3,
         choice4: this.choice4,
       });
+      console.log(this.options);
+      this.showBtn = false;
     },
     addQues() {
       if (this.Ques !== "") {
         this.Questions.push({
           Ques: this.Ques,
-          QuesType: this.QuesType,
+          Files: this.MediaFiles,
           options: this.options,
         });
-        this.Ques = "";
+        console.log(this.Questions);
+        this.Ques = [];
         this.Questype = "";
-        this.options = "";
+        this.options = [];
         this.choice1 = "";
         this.choice2 = "";
         this.choice3 = "";
         this.choice4 = "";
+        this.showBtn = true;
       }
     },
-    // addRound() {
-    //   this.loading1 = !this.loading1;
-    //   var round = { time: this.time, questions: this.questions };
-    //   common.addround(round).then(res => {
-    //     console.log(res.data);
-    //     this.loading1 = false;
-    //     this.snackbar = true;
-    //     this.questions = [];
-    //     localStorage.removeItem("questions");
-    //   });
-    // },
-    // deleteques(index) {
-    //   this.questions.splice(index, 1);
-    // },
-    // async uploadForm() {
-    //   this.loading = true;
-    //   const formdata = new FormData();
-    //   formdata.append("file", this.file, this.file.name);
-    //   await common.upload(formdata).then(res => {
-    //     console.log(res.data);
-    //     this.quesLink = res.data.link;
-    //     this.loading = false;
-    //   });
-    // }
+    uploadImage() {
+      this.Media = "IMAGE";
+    },
+    uploadAudio() {
+      this.Media = "AUDIO";
+    },
+    uploadMedia() {
+      console.log(this.selectedFile.name);
+      this.MediaFiles.push({
+        file: this.selectedFile.name,
+      });
+      this.Media = "";
+    },
   },
 };
 </script>

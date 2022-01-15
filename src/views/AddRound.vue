@@ -20,7 +20,7 @@
   width: 100%;
   margin: 30px;
   overflow: hidden;
-  margin-left: 70px;
+  margin-left: 210px;
 }
 
 </style>

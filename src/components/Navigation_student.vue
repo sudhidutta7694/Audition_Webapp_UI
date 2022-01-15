@@ -3,12 +3,12 @@
    <v-navigation-drawer
         permanent
         expand-on-hover color="#1A1D1F" class="drawer"
-        height="100%" width="180px"
-      >
+        height="100%" width="180px">
         <v-list>
           <v-list-item class="px-2">
             <v-list-item-avatar>
               <v-img src="../assets/glug.png"></v-img>
+              
             </v-list-item-avatar>
             <!-- <v-list-item-title class="header">GLUG AUDITION PORTAL</v-list-item-title> -->
           </v-list-item>

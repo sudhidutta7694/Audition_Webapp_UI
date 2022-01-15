@@ -8,11 +8,20 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "common.js": "^1.1.1",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
+<<<<<<< HEAD
     "vue-cli": "^2.9.6",
     "vue-router": "^3.2.0",
     "vuetify": "^2.4.0"
+=======
+    "vue-image-upload-resize": "^2.3.0",
+    "vue-numeric-input": "^2.0.0",
+    "vue-router": "^3.5.3",
+    "vuetify": "^2.4.0",
+    "vuetify-audio": "^0.3.3"
+>>>>>>> 4d527b031660de8de3ae302ea50dfdc40b4a14ca
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

@@ -2,7 +2,10 @@
   <div class="background">
     <NavigationDrawer/>
     <div class="main">
-    <Round/>
+     <v-btn color="#BEFFC1" class="mt-2 black--text" @click="uploadAudio" style="max-width:10%">
+                PUSH ROUND
+    </v-btn>
+    <Sparkline/>
     <Table/>
     </div>
   </div>
@@ -21,21 +24,21 @@
   width: 100%;
   margin: 30px;
   overflow: hidden;
-  margin-left: 70px;
+  margin-left: 210px;
 }
 
 </style>
 
 <script>
 import NavigationDrawer from '../components/Navigation.vue'
-import Round from '../components/Round.vue'
+import Sparkline from '../components/sparkline.vue'
 import Table from '../components/Table.vue'
 export default {
-    name: 'Dashboard',
+    name: 'Root',
     components:{
        NavigationDrawer,
-       Round,
-       Table
+       Table,
+       Sparkline
     },
   }
 </script>
