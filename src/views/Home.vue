@@ -7,16 +7,88 @@
       <h3 class="menu_btn rules">RULES</h3>
       <h3 class="menu_btn ctc">CONTACT US</h3>
       <h1 class="aud_head">AUDITION PORTAL</h1>
-      <div class="auth"></div>
+      <div class="auth">
+        <div class="btns">
+          <div class="btn signIn">Sign-In</div>
+          <div class="btn signUp">Sign-Up</div>
+        </div>
+        <div class="d-flex justify-center form">
+          <v-form  v-if="login">
+            <v-text-field class="mx-auto txt-in" label="USERNAME" filled ></v-text-field>
+            <v-text-field class="mx-auto txt-in" label="PASSWORD" filled></v-text-field>
+            <div class="d-flex flex-column justify-center align-self-center background signinbtn">
+              <v-btn >Sign-In</v-btn>
+            </div>
+            
+          </v-form>
+          <v-form class="form" v-else>
+
+          </v-form>
+        </div>
+        <div class="mt-4 d-flex opt">
+          <v-divider class="mt-3 mx-4"></v-divider>
+          <h3>OR</h3>
+          <v-divider class="mt-3 mx-4"></v-divider>
+        </div>
+        <div class="d-flex mb-5 mx-10 alt">
+          <v-btn class="ic google" icon><img class="ic" src="../assets/google.svg"></v-btn>
+          <v-btn class="ic github" icon><img class="ic" src="../assets/github.svg"></v-btn>
+        </div>
+      </div>
   </v-app>
 </template>
 
 <script>
   export default {
+    data() {
+      return{
+        login : true,
+      }
+    }
   }
 </script>
 
 <style>
+
+.btns{
+  height: 10%;
+}
+
+.alt{
+  min-width: 60%;
+}
+
+.google{
+  float: left;
+}
+
+.github{
+  float: right;
+}
+
+.btn{
+  width: 50%;
+  vertical-align: middle;
+}
+
+.txt-in{
+  width: 89%;
+  height: 105px;
+}
+
+.ic{
+  width: 139px !important;
+  height: 139px !important;
+}
+
+.v-btn{
+  align-self: center;
+}
+
+.v-form{
+  width: 100%;
+}
+
 .heading{
   position: absolute;
   width: 776px;
@@ -115,5 +187,15 @@
   border: 1px solid #8486AC;
   box-sizing: border-box;
   border-radius: 44px;
+}
+
+.btns{
+  height: 93px;
+  display: flex;
+}
+
+.btn{
+  width: 50%;
+  text-align: center;
 }
 </style>
