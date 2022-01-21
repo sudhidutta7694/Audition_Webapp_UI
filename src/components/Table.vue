@@ -9,126 +9,315 @@
       </v-list-item-content>
       </v-list-item>
     </div>
-    <v-data-table
-      style="background-color: #1A1D1F; width:95%;"
-      :headers="headers"
-      :items="desserts"
-      :options.sync="options"
-      :server-items-length="totalDesserts"
-      :loading="loading"
-      class="elevation-1 ma-5 mt-0 px-5"
-      :disable-pagination="true"
-    ></v-data-table>
+  <v-data-table
+    :headers="headers"
+    :items="desserts"
+    sort-by="calories"
+    class="elevation-8 pa-5"
+    :page.sync="page"
+    :items-per-page="itemsPerPage"
+    hide-default-footer
+    @page-count="pageCount = $event"
+    style="width:95%; background-color:#1A1D1F"
+  >
+    <template v-slot:top>
+      <div
+      >
+        
+        <v-dialog
+          v-model="dialog"
+          max-width="500px"
+        >
+        <v-card>
+           <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="editedItem.name"
+                      label="Dessert name"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="editedItem.calories"
+                      label="Calories"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="editedItem.fat"
+                      label="Fat (g)"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="editedItem.carbs"
+                      label="Carbs (g)"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="editedItem.protein"
+                      label="Protein (g)"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="close"
+              >
+                Cancel
+              </v-btn>
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="save"
+              >
+                Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogDelete" max-width="500px">
+          <v-card>
+            <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+              <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </div>
+    </template>
+    <template v-slot:[`item.actions`]="{ item }">
+      
+      <v-icon
+        small
+        class="mr-2"
+        @click="editItem(item)"
+      >
+        mdi-pencil
+      </v-icon>
+      <v-icon
+        small
+        @click="deleteItem(item)"
+      >
+        mdi-delete
+      </v-icon>
+    </template>
+  </v-data-table>
+  <v-pagination
+        v-model="page"
+        :length="pageCount"
+        color="#B5E4CA"
+        class="ma-5"
+      ></v-pagination>
   </div>
 </template>
 
 <script>
   export default {
-    data () {
-      return {
-        totalDesserts: 0,
-        desserts: [],
-        loading: true,
-        options: {},
-        headers: [
-          {
-            text: 'Name',
-            align: 'start',
-            sortable: false,
-            value: 'name',
-          },
-          { text: 'Phone No.', value: 'calories' },
-          { text: 'Email', value: 'fat' },
-          { text: 'Roll No.', value: 'carbs' },
-          { text: 'Status', value: 'protein' },
-        ],
-      }
-    },
-    watch: {
-      options: {
-        handler () {
-          this.getDataFromApi()
+    data: () => ({
+      dialog: false,
+      dialogDelete: false,
+      page: 1,
+        pageCount: 0,
+        itemsPerPage: 10,
+      headers: [
+        {
+          text: 'Dessert (100g serving)',
+          align: 'start',
+          sortable: false,
+          value: 'name',
         },
-        deep: true,
+        { text: 'Calories', value: 'calories' },
+        { text: 'Fat (g)', value: 'fat' },
+        { text: 'Carbs (g)', value: 'carbs' },
+        { text: 'Protein (g)', value: 'protein' },
+        { text: 'Actions', value: 'actions', sortable: false },
+      ],
+      desserts: [],
+      editedIndex: -1,
+      editedItem: {
+        name: '',
+        calories: 0,
+        fat: 0,
+        carbs: 0,
+        protein: 0,
+      },
+      defaultItem: {
+        name: '',
+        calories: 0,
+        fat: 0,
+        carbs: 0,
+        protein: 0,
+      },
+    }),
+
+    computed: {
+      formTitle () {
+        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
       },
     },
+
+    watch: {
+      dialog (val) {
+        val || this.close()
+      },
+      dialogDelete (val) {
+        val || this.closeDelete()
+      },
+    },
+
+    created () {
+      this.initialize()
+    },
+
     methods: {
-      getDataFromApi () {
-        this.loading = true
-        this.fakeApiCall().then(data => {
-          this.desserts = data.items
-          this.totalDesserts = data.total
-          this.loading = false
-        })
-      },
-      /**
-       * In a real application this would be a call to fetch() or axios.get()
-       */
-      fakeApiCall () {
-        return new Promise((resolve) => {
-          const { sortBy, sortDesc, page, itemsPerPage } = this.options
-
-          let items = this.getDesserts()
-          const total = items.length
-
-          if (sortBy.length === 1 && sortDesc.length === 1) {
-            items = items.sort((a, b) => {
-              const sortA = a[sortBy[0]]
-              const sortB = b[sortBy[0]]
-
-              if (sortDesc[0]) {
-                if (sortA < sortB) return 1
-                if (sortA > sortB) return -1
-                return 0
-              } else {
-                if (sortA < sortB) return -1
-                if (sortA > sortB) return 1
-                return 0
-              }
-            })
-          }
-
-          if (itemsPerPage > 0) {
-            items = items.slice((page - 1) * itemsPerPage, page * itemsPerPage)
-          }
-
-          setTimeout(() => {
-            resolve({
-              items,
-              total,
-            })
-          }, 1000)
-        })
-      },
-      getDesserts () {
-        return [
+      initialize () {
+        this.desserts = [
           {
-            name: 'Lorem',
-            phone: 1234567,
-            email: 'lorem@gmail.com',
-            rollno: 21E8048,
-            status: 'selected',
+            name: 'Frozen Yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
           },
           {
-            name: 'Lorem',
-            phone: 1234567,
-            email: 'lorem@gmail.com',
-            rollno: 21E8048,
-            status: 'selected',
-          },{
-            name: 'Lorem',
-            phone: 1234567,
-            email: 'lorem@gmail.com',
-            rollno: 21E8048,
-            status: 'selected',
-          },{
-            name: 'Lorem',
-            phone: 1234567,
-            email: 'lorem@gmail.com',
-            rollno: 21E8048,
-            status: 'selected',
+            name: 'Ice cream sandwich',
+            calories: 237,
+            fat: 9.0,
+            carbs: 37,
+            protein: 4.3,
+          },
+          {
+            name: 'Eclair',
+            calories: 262,
+            fat: 16.0,
+            carbs: 23,
+            protein: 6.0,
+          },
+          {
+            name: 'Cupcake',
+            calories: 305,
+            fat: 3.7,
+            carbs: 67,
+            protein: 4.3,
+          },
+          {
+            name: 'Gingerbread',
+            calories: 356,
+            fat: 16.0,
+            carbs: 49,
+            protein: 3.9,
+          },
+          {
+            name: 'Jelly bean',
+            calories: 375,
+            fat: 0.0,
+            carbs: 94,
+            protein: 0.0,
+          },
+          {
+            name: 'Lollipop',
+            calories: 392,
+            fat: 0.2,
+            carbs: 98,
+            protein: 0,
+          },
+          {
+            name: 'Honeycomb',
+            calories: 408,
+            fat: 3.2,
+            carbs: 87,
+            protein: 6.5,
+          },
+          {
+            name: 'Donut',
+            calories: 452,
+            fat: 25.0,
+            carbs: 51,
+            protein: 4.9,
+          },
+          {
+            name: 'KitKat',
+            calories: 518,
+            fat: 26.0,
+            carbs: 65,
+            protein: 7,
           },
         ]
+      },
+
+      editItem (item) {
+        this.editedIndex = this.desserts.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialog = true
+      },
+
+      deleteItem (item) {
+        this.editedIndex = this.desserts.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialogDelete = true
+      },
+
+      deleteItemConfirm () {
+        this.desserts.splice(this.editedIndex, 1)
+        this.closeDelete()
+      },
+
+      close () {
+        this.dialog = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
+
+      closeDelete () {
+        this.dialogDelete = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
+
+      save () {
+        if (this.editedIndex > -1) {
+          Object.assign(this.desserts[this.editedIndex], this.editedItem)
+        } else {
+          this.desserts.push(this.editedItem)
+        }
+        this.close()
       },
     },
   }
@@ -163,8 +352,5 @@
     align-items: center;
     background-color: #1A1D1F;
     border-radius: 10px;
-}
-.table{
-  background-color: red;
 }
 </style>

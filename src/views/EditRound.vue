@@ -2,7 +2,7 @@
   <div class="background">
     <NavigationDrawer/>
     <div class="main">
-     <tabs/>  
+    <EditTable/>
     </div>
   </div>
 </template>
@@ -20,19 +20,20 @@
   width: 100%;
   margin: 30px;
   overflow: hidden;
-  margin-left: 70px;
+  margin-left: 210px;
 }
 
 </style>
 
 <script>
 import NavigationDrawer from '../components/Navigation.vue'
-import tabs from '../components/tabs.vue'
+import EditTable from '../components/editTable.vue'
 export default {
     name: 'Dashboard',
     components:{
        NavigationDrawer,
-       tabs
+       EditTable
+
 
     },
   }

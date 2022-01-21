@@ -1,44 +1,27 @@
 <template>
-  <div>
-    <v-card class="overview" max-width="95%" outlined color="#1A1D1F">
-      <v-list-item three-line>
-        <v-list-item-content style="height: 50px">
-          <div class="text-overline mb-4">
-            <div class="pointer"></div>
-            ROUND : 1
-          </div>
-        </v-list-item-content>
-      </v-list-item>
+  <v-card class="overview ml-10" max-width="100%" outlined color="#111315">
+      <Header/>
       <v-container fluid>
         <v-row align="center">
           <v-col class="d-flex flex-column mx-10" cols="12" sm="12">
-            <v-textarea
+              ROUND TIME:
+              <input type="number" style="width:20%" value="10">
+              QUESTION:
+              <input
               outlined
               color="#BEFFC1"
               name="input-7-4"
-              label="Question"
               v-model="Ques"
               value=" "
-              style="width: 80%"
-            ></v-textarea>
-            <v-row>
-              <v-col cols="12" sm="6">
-                <v-btn
-                  color="#a692ff"
-                  class="mr-2 white--text"
-                  @click="uploadImage"
-                >
-                  ADD IMAGE
-                </v-btn>
-                <v-btn
-                  color="#BEFFC1"
-                  class="mr-2 grey--text"
-                  @click="uploadAudio"
-                >
-                  ADD AUDIO
-                </v-btn>
-              </v-col>
-            </v-row>
+              style="width: 80%;"
+            />
+            <div class="media">
+              UPLOAD FILES:
+              <div class="uploadBox">
+              <UploadImg/> 
+              <UploadImg/> 
+              </div>
+            </div>
             <v-row>
               <v-col cols="6" sm="6">
                 <v-file-input
@@ -67,15 +50,16 @@
                 </v-btn>
               </v-col>
             </v-row>
+            QUSETION TYPE:
             <v-select
               :items="Qtype"
               v-model="Questype"
-              label="Question Type"
               dense
               outlined
               value=""
-              color="#BEFFC1"
-              style="width: 30%"
+              color="#7B849F"
+              class="mb-10 dropdown"
+              style="width: 30%; border:0.2px solid #7B849F; height:40px"
             ></v-select>
             <div
               class="mcq-options mx-5 pa-5"
@@ -151,88 +135,18 @@
         </v-row>
       </v-container>
     </v-card>
-    <br />
-    <v-container v-for="(question, index) in Questions" :key="index">
-      <v-card class="overview" max-width="50%" outlined color="#1A1D1F">
-        <DispQues :question="question" />
-      </v-card>
-    </v-container>
-    <div class="d-flex float-right mr-12 pa-2">
-      <router-link :to="{ name: 'Root' }">
-        <v-btn
-          class="ma-2"
-          :loading="loading"
-          :disabled="loading"
-          color="#4288CA"
-          @click="loader = 'loading1'"
-          style="text-decoration: none"
-        >
-          Save Round
-          <template v-slot:loader>
-            <span class="custom-loader">
-              <v-icon light>mdi-cached</v-icon>
-            </span>
-          </template>
-        </v-btn></router-link
-      >
-    </div>
-    <router-view />
-  </div>
 </template>
-<style scoped>
-.pointer {
-  background-color: #beffc1;
-}
-.mcq-options {
-  border: 0.02rem solid rgba(245, 245, 245, 0.521);
-  border-radius: 4px;
-  width: 60%;
-  margin-bottom: 25px;
-  padding-bottom: 0px;
-}
-.custom-loader {
-  animation: loader 1s infinite;
-  display: flex;
-}
-@-moz-keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-@-webkit-keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-@-o-keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-@keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-</style>
 
 <script>
-import DispQues from "./Display-Ques.vue";
+import UploadImg from '../components/UploadImg.vue'
+import Header from '../components/Header.vue'
+
 export default {
   components: {
-    DispQues,
+  
+    UploadImg,
+    Header,
+
   },
   data: () => ({
     Media: "",
@@ -296,5 +210,72 @@ export default {
       this.Media = "";
     },
   },
-};
+}
 </script>
+
+<style scoped>
+@-moz-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+input{
+  border: 0.2px solid #7B849F;
+  margin-bottom: 30px;
+  margin-top: 30px;
+  border-radius: 2px;
+  color: white;
+  padding: 5px;
+  padding-left: 10px;
+}
+
+.mcq-options {
+  border: 0.02rem solid rgba(245, 245, 245, 0.521);
+  border-radius: 4px;
+  width: 60%;
+  margin-bottom: 25px;
+  padding-bottom: 0px;
+}
+.custom-loader {
+  animation: loader 1s infinite;
+  display: flex;
+}
+.media{
+  display: flex;
+  flex-direction: column;
+}
+.uploadBox{
+  display: flex;
+}
+.dropdown{
+  margin-top: 10px;
+}
+</style>
+

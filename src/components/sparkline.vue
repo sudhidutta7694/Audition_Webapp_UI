@@ -1,26 +1,4 @@
-<!--<template>
-<div>
-<v-card
-    class="overview"
-    max-width="95%"
-    height="400px"
-    outlined color="#1A1D1F" 
-  >
-    <v-list-item>
-      <v-list-item-content style="height:50px">
-        <div class="text-overline">
-          <div class="pointer"></div> OVERVIEW
-        </div>
-      </v-list-item-content>
-    </v-list-item>
-    <v-container fluid>
-      <v-row dense>
-    
-      </v-row>
-    </v-container>
-  </v-card>
-  </div>
-</template>-->
+
 <template>
 <div class="sp">
        <v-sparkline
@@ -84,6 +62,14 @@
 
 <style scoped>
 .sp{
-    width: 90%;
+    width: 95%;
+}
+.card{
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #1A1D1F;
+    border-radius: 10px;
 }
 </style>

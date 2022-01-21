@@ -10,7 +10,7 @@
             <v-list-item-avatar>
               <v-img src="../assets/glug.png"></v-img>
             </v-list-item-avatar>
-            <!-- <v-list-item-title class="header">GLUG AUDITION PORTAL</v-list-item-title> -->
+            <v-list-item-title class="header">AUDITION</v-list-item-title>
           </v-list-item>
         </v-list>
         <v-list
@@ -21,25 +21,25 @@
             <v-list-item-icon>
               <v-icon color="#7B849F">mdi-account</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="font-weight-light sidebar">Dashboard</v-list-item-title>
+            <v-list-item-title class="font-weight-bold sidebar">Dashboard</v-list-item-title>
           </v-list-item></router-link>
           <router-link :to="{ name: 'Root' }" class="navbar-items"><v-list-item link >
             <v-list-item-icon >
               <v-icon color="#7B849F" >mdi-tools</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="font-weight-light sidebar" >Root</v-list-item-title>
+            <v-list-item-title class="font-weight-bold sidebar" >Root</v-list-item-title>
           </v-list-item></router-link>
           <router-link :to="{ name: 'AddRound' }" class="navbar-items"><v-list-item link>
             <v-list-item-icon>
               <v-icon color="#7B849F">mdi-database-plus</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="font-weight-light sidebar">Add Round</v-list-item-title>
+            <v-list-item-title class="font-weight-bold sidebar">Add Round</v-list-item-title>
           </v-list-item></router-link>
           <router-link :to="{ name: 'EditRound' }" class="navbar-items"><v-list-item link>
             <v-list-item-icon>
               <v-icon color="#7B849F">mdi-square-edit-outline</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="font-weight-light sidebar">Edit Round</v-list-item-title>
+            <v-list-item-title class="font-weight-bold sidebar">Edit Round</v-list-item-title>
           </v-list-item></router-link>
         </v-list>
         <router-view />
@@ -73,14 +73,14 @@ export default {
   border-radius: 0px 10px 10px 0px;
 }
 .header{
-  color: #06AB48;
+  color: white;
   font-family: 'Rubik', sans-serif;
-  font-family: 300;
+  font-weight: bolder;
 }
 
 .sidebar{
   color: #7B849F;
-  font-weight: 100;
+  font-weight: bold;
 }
 .navbar-items{
   text-decoration: none;
