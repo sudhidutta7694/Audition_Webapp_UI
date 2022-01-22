@@ -25,6 +25,7 @@
 </template>
 
 <script>
+// import common from "@/services/common.js";
   export default {
     name: 'image-input',
     data: ()=> ({
@@ -41,7 +42,7 @@
       launchFilePicker(){
         this.$refs.file.click();
       },
-      onFileChange(fieldName, file) {
+      async onFileChange(fieldName, file) {
         const { maxSize } = this
         let imageFile = file[0]
         if (file.length>0) {
@@ -61,6 +62,10 @@
             formData.append(fieldName, imageFile)
             // Emit the FormData and image URL to the parent component
             this.$emit('input', { formData, imageURL })
+            // await common.upload(formData).then(res => {
+            //                 console.log(res.data);
+            //                 this.quesLink = res.data.link;
+            // });
           }
         }
       }

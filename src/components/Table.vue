@@ -119,7 +119,8 @@
       </div>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      
+      <v-row>
+      <v-col>
       <v-icon
         small
         class="mr-2"
@@ -133,7 +134,13 @@
       >
         mdi-delete
       </v-icon>
+      </v-col>
+      <v-col>
+      <v-icon @click="$router.push('/st_details')">mdi-open-in-new</v-icon>
+      </v-col>
+      </v-row>
     </template>
+      
   </v-data-table>
   <v-pagination
         v-model="page"
@@ -154,15 +161,14 @@
         itemsPerPage: 10,
       headers: [
         {
-          text: 'Dessert (100g serving)',
+          text: 'Name',
           align: 'start',
           sortable: false,
           value: 'name',
         },
-        { text: 'Calories', value: 'calories' },
-        { text: 'Fat (g)', value: 'fat' },
-        { text: 'Carbs (g)', value: 'carbs' },
-        { text: 'Protein (g)', value: 'protein' },
+        { text: 'Phone No', value: 'ph.no' },
+        { text: 'Email', value: 'email' },
+        { text: 'Status', value: 'status' },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
       desserts: [],
@@ -319,6 +325,19 @@
         }
         this.close()
       },
+      // popup() {
+      // var payload = a;
+      // payload["lastUser"] = this.adminUser;
+      // console.log(this.adminUser);
+      // common.updateEntry(payload);
+      // let routeData = this.$router.resolve({
+      //   name: "UserControl",
+      //   query: { id: a._id },
+      // });
+
+      // window.open(routeData.href, "_blank");
+      // router.push('/log');
+      // },
     },
   }
 </script>

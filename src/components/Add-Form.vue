@@ -5,14 +5,13 @@
         <v-row align="center">
           <v-col class="d-flex flex-column mx-10" cols="12" sm="12">
               ROUND TIME:
-              <input type="number" style="width:20%" value="10">
+              <input type="number" style="width:20%" v-model="Rtime">
               QUESTION:
               <input
               outlined
               color="#BEFFC1"
               name="input-7-4"
               v-model="Ques"
-              value=" "
               style="width: 80%;"
             />
             <div class="media">
@@ -22,31 +21,15 @@
               <UploadImg/> 
               </div>
             </div>
-            <v-row>
-              <v-col cols="6" sm="6">
-                <v-file-input
-                  label="Pick your audio file"
-                  outlined
-                  dense
-                  style="width: 40%"
-                  v-if="Media === 'AUDIO'"
-                ></v-file-input>
-                <v-file-input
-                  label="Pick your image"
-                  outlined
-                  dense
-                  v-model="selectedFile"
-                  style="width: 40%"
-                  prepend-icon="mdi-camera"
-                  v-if="Media === 'IMAGE'"
-                ></v-file-input>
-              </v-col>
+            <v-row class="ma-3">
               <v-col>
                 <v-btn
-                  v-if="Media === 'IMAGE' || Media === 'AUDIO'"
+                  color="#BEFFC1"
+                  v-if="showMediabtn"
+                  class="black--text"
                   @click="uploadMedia"
                 >
-                  SAVE
+                  SAVE MEDIA
                 </v-btn>
               </v-col>
             </v-row>
@@ -108,7 +91,7 @@
                     :disabled="loading"
                     color="#BEFFC1"
                     @click="saveOptions"
-                    v-if="showBtn"
+                    v-if="showMediaBtn"
                   >
                     Save
                     <template v-slot:loader>
@@ -140,31 +123,34 @@
 <script>
 import UploadImg from '../components/UploadImg.vue'
 import Header from '../components/Header.vue'
+// import VueJwtDecode from "vue-jwt-decode";
 
 export default {
   components: {
-  
     UploadImg,
     Header,
 
   },
   data: () => ({
-    Media: "",
-    showBtn: true,
-    selectedFile: "",
+    Rtime:"",
+    Ques: "",
     Questype: "",
-    Ques: "  ",
+    ImageLink:"",
+    AudioLink:"",
+    MediaFiles: [],
+    showBtn: true,
+    showMediaBtn:false,
+    selectedFile: "",
     choice1: "",
     choice2: "",
     choice3: "",
     choice4: "",
     options: [],
     Questions: [],
-    MediaFiles: [],
+    
     loader: null,
     loading: false,
     loading1: false,
-    Rtime: ["10", "15", "20", "25"],
     Qtype: ["SINGLE CHOICE", "MULTIPLE CHOICE", "ATTACH FILE", "TEXTAREA"],
   }),
   methods: {
@@ -182,6 +168,7 @@ export default {
       if (this.Ques !== "") {
         this.Questions.push({
           Ques: this.Ques,
+          Questype: this.Questype,
           Files: this.MediaFiles,
           options: this.options,
         });
@@ -210,6 +197,35 @@ export default {
       this.Media = "";
     },
   },
+  mounted() {
+    console.log("App mounted!");
+    if (localStorage.getItem("Questions"))
+      this.Questions = JSON.parse(localStorage.getItem("Questions"));
+    else localStorage.removeItem("Questions");
+  },
+  // beforeCreate() {
+  //   if (localStorage.getItem("token") === null) {
+  //     this.$router.push("/");
+  //   } else if (
+  //     VueJwtDecode.decode(localStorage.getItem("token").substring(6)).role ===
+  //     "s"
+  //   ) {
+  //     this.$router.push("/");
+  //   }
+  // },
+  watch: {
+    Questions: {
+      handler() {
+        localStorage.setItem("Questions", JSON.stringify(this.Questions));
+      },
+      deep: true
+    },
+    file: {
+      handler() {
+        console.log(this.file);
+      }
+    }
+  }
 }
 </script>
 
