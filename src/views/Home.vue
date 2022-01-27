@@ -1,201 +1,149 @@
 <template>
-  <v-app>
-      <v-img class="glug_img" src="../assets/glug.png" max-height=94 max-width=94 aspect-ratio="1"></v-img>
-      <h1 class="heading">GNU/LINUX USERS' GROUP NIT DURGAPUR</h1>
+  <div class="bgp">
+    <v-app-bar 
+      extended 
+      extension-height="30"
+      absolute
+      scroll-target="#scrolling-techniques-6"
+      class="pa-2 d-flex align-center"
+      color="transparent"
+      elevation="0"
+      :width="{ '60px': mobileView }">
+      <v-app-bar-nav-icon class="nav_icon" :class="{'mx-1': !mobileView}" @click="drawer=!drawer" >
+        <v-img src="../assets/glug.png" aspect-ratio="1"></v-img>
+      </v-app-bar-nav-icon>
+      <v-toolbar-title v-if="!mobileView" class="d-flex flex-column title ml-n2">
+        <p class="mb-0 title_text">GNU/LINUX USERS' GROUP</p>
+        <p class="mb-0 title_text">NIT DURGAPUR</p>
+      </v-toolbar-title>
 
-      <h3 class="menu_btn faq">FAQ</h3>
-      <h3 class="menu_btn rules">RULES</h3>
-      <h3 class="menu_btn ctc">CONTACT US</h3>
-      <h1 class="aud_head">AUDITION PORTAL</h1>
-      <div class="auth">
-        <div class="btns">
-          <div class="btn signIn">Sign-In</div>
-          <div class="btn signUp">Sign-Up</div>
-        </div>
-        <div class="d-flex justify-center form">
-          <v-form  v-if="login">
-            <v-text-field class="mx-auto txt-in" label="USERNAME" filled ></v-text-field>
-            <v-text-field class="mx-auto txt-in" label="PASSWORD" filled></v-text-field>
-            <div class="d-flex flex-column justify-center align-self-center background signinbtn">
-              <v-btn >Sign-In</v-btn>
-            </div>
-            
-          </v-form>
-          <v-form class="form" v-else>
+      <div v-if="!mobileView" style="width:55vw;"></div>
 
-          </v-form>
-        </div>
-        <div class="mt-4 d-flex opt">
-          <v-divider class="mt-3 mx-4"></v-divider>
-          <h3>OR</h3>
-          <v-divider class="mt-3 mx-4"></v-divider>
-        </div>
-        <div class="d-flex mb-5 mx-10 alt">
-          <v-btn class="ic google" icon><img class="ic" src="../assets/google.svg"></v-btn>
-          <v-btn class="ic github" icon><img class="ic" src="../assets/github.svg"></v-btn>
-        </div>
-      </div>
-  </v-app>
+      <router-link v-if="!mobileView" to="faq" class="nav_item">
+        <v-list-item link>
+          <v-list-item-title>FAQ</v-list-item-title>
+        </v-list-item>
+      </router-link>
+      <router-link v-if="!mobileView" to="rules" class="nav_item">
+        <v-list-item link>
+          <v-list-item-title>RULES</v-list-item-title>
+        </v-list-item>
+      </router-link>
+      <router-link v-if="!mobileView" to="contacts" class="nav_item">
+        <v-list-item link>
+          <v-list-item-title>CONTACT US</v-list-item-title>
+        </v-list-item>
+      </router-link>
+    </v-app-bar>
+
+    <v-navigation-drawer
+      v-if="mobileView"
+      v-model="drawer"
+      width="100vw"
+      bottom
+      temporary
+      absolute
+      height="150px">
+      <router-link to="faq" class="nav_item">
+        <v-list-item link>
+          <v-list-item-title>FAQ</v-list-item-title>
+        </v-list-item>
+      </router-link>
+      <router-link to="rules" class="nav_item">
+        <v-list-item link>
+          <v-list-item-title>RULES</v-list-item-title>
+        </v-list-item>
+      </router-link>
+      <router-link to="contacts" class="nav_item">
+        <v-list-item link>
+          <v-list-item-title>CONTACT US</v-list-item-title>
+        </v-list-item>
+      </router-link>
+    </v-navigation-drawer>
+
+
+    <div class="d-flex bd" :class="{'flex-column mb-4': mobileView}">
+      <div class="d-flex flex-column justify-center heading" :class="{'ml-10': !mobileView, 'align-center mx-auto': mobileView}"><p>AUDITION</p><p>PORTAL</p></div>
+      <div class="d-flex align-center justify-center"><Login /></div>
+    </div>
+  </div>
 </template>
 
 <script>
-  export default {
-    data() {
-      return{
-        login : true,
-      }
+import Login from '../components/login.vue'
+
+export default{
+  components: {
+    Login,
+  },
+  data(){
+    return{
+      collapse: true,
+      drawer: false,
     }
-  }
+  },
+  computed: {
+    mobileView(){
+      var s = this.$vuetify.breakpoint.name;
+      if (s == 'xs' || s == 'sm'){
+        return true;
+      }else {
+        return false;
+      }
+    },
+  },
+}
 </script>
 
 <style>
-
-.btns{
-  height: 10%;
-}
-
-.alt{
-  min-width: 60%;
-}
-
-.google{
-  float: left;
-}
-
-.github{
-  float: right;
-}
-
-.btn{
-  width: 50%;
-  vertical-align: middle;
-}
-
-.txt-in{
-  width: 89%;
-  height: 105px;
-}
-
-.ic{
-  width: 139px !important;
-  height: 139px !important;
-}
-
-.v-btn{
-  align-self: center;
-}
-
-.v-form{
-  width: 100%;
-}
-
-.heading{
-  position: absolute;
-  width: 776px;
-  height: 97px;
-  left: 140px;
-  top: 29px;
+.title_text{
   font-family: Rubik;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 35px;
-  line-height: 41px;
-  display: flex;
-  align-items: center;
   letter-spacing: 0.4em;
-
-  color: #2BA353;
 }
-
-.glug_img{
-  position: absolute;
-  width: 94px;
-  height: 94px;
-  left: 17px;
-  top: 40px;
+.nav_item{
+  text-decoration: none;
 }
-
-.menu_btn{
-  font-family: Inter;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 25px;
-  line-height: 20px;
-  /* or 67% */
-
-  display: flex;
-  align-items: center;
-  text-align: center;
-  letter-spacing: 0.1em;
-
-  color: #FFFFFF;
-}
-
-.faq{
-  position: absolute;
-  width: 186px;
-  height: 28px;
-  left: 1164px;
-  top: 43px;
-}
-
-.rules{
-  position: absolute;
-  width: 165px;
-  height: 37px;
-  left: 1390px;
-  top: 42px;
-}
-
-.ctc{
-  position: absolute;
-  width: 223px;
-  height: 41px;
-  left: 1621px;
-  top: 40px;
-}
-
-.aud_head{
-  position: absolute;
-  width: 888px;
-  height: 151px;
-  left: 101px;
-  top: 465px;
-
+.heading{
+  height: 100%;
+  width: 55%;
   font-family: Inter;
   font-style: normal;
   font-weight: normal;
   font-size: 60px;
-  line-height: 90px;
-  /* or 150% */
-
-  display: flex;
-  align-items: center;
   letter-spacing: 0.4em;
-
-  color: #FFFFFF;
 }
-
-.auth{
-  position: absolute;
-  width: 740px;
-  height: 740px;
-  left: 1071px;
-  top: 169px;
-
-  background: #1A1D1F;
-  border: 1px solid #8486AC;
-  box-sizing: border-box;
-  border-radius: 44px;
+.bd{
+  width: 100%;
+  height: 90%;
+  margin-top: 100px;
 }
-
-.btns{
-  height: 93px;
-  display: flex;
+.bgp{
+  width: 100vw;
+  height: 90vh;
 }
-
-.btn{
-  width: 50%;
-  text-align: center;
+.nav_icon{
+  width: 60px;
+  height: 60px;
+}
+@media screen and (max-width:960px) {
+  .heading{
+    height: auto;
+    width: 100%;
+    font-size: 30px;
+    margin-left: 40px;
+    margin-bottom: 40px;
+  }
+  .bgp{
+    height: 100vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+  .title_text{
+    font-size: 13px;
+  }
+  .nav_icon{
+    width:40px ;
+    height:40px ;
+  }
 }
 </style>
