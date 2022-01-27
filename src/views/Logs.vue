@@ -31,13 +31,13 @@
         >
           <v-row class="pt-1">
             <v-col cols="3">
-              <strong>5pm</strong>
+              <strong>Sat Jan 15 2022 11:12:52</strong>
             </v-col>
             <v-col>
-              <strong>New Icon</strong>
+              <strong>Mouli Ghosh</strong>
             </v-col>
             <v-col>
-              <strong>New Icon</strong>
+              <strong>Published Result</strong>
             </v-col>
           </v-row>
         </v-timeline-item>
@@ -48,13 +48,13 @@
         >
           <v-row class="pt-1">
             <v-col cols="3">
-              <strong>3-4pm</strong>
+              <strong>Sat Jan 15 2022 11:12:52</strong>
             </v-col>
             <v-col>
-              <strong>Design Stand Up</strong>
+              <strong>Mouli Ghosh</strong>
             </v-col>
             <v-col>
-              <strong>Design Stand Up</strong>
+              <strong>Published Result</strong>
             </v-col>
           </v-row>
         </v-timeline-item>
@@ -65,10 +65,13 @@
         >
           <v-row class="pt-1">
             <v-col cols="3">
-              <strong>12pm</strong>
+              <strong>Sat Jan 15 2022 11:12:52</strong>
             </v-col>
             <v-col>
-              <strong>Lunch break</strong>
+              <strong>Mouli Ghosh</strong>
+            </v-col>
+            <v-col>
+              <strong>Published Result</strong>
             </v-col>
           </v-row>
         </v-timeline-item>
@@ -79,13 +82,13 @@
         >
           <v-row class="pt-1">
             <v-col cols="3">
-              <strong>9-11am</strong>
+              <strong>Sat Jan 15 2022 11:12:52</strong>
             </v-col>
             <v-col>
-              <strong>Finish Home Screen</strong>
+              <strong>Mouli Ghosh</strong>
             </v-col>
             <v-col>
-              <strong>Finish Home Screen</strong>
+              <strong>Published Result</strong>
             </v-col>
           </v-row>
         </v-timeline-item>

@@ -4,7 +4,7 @@
     <div class="main">
     <Round/>
     <Stats/> 
-    <Table/>
+    <Table :headers="dashHeaders" :dashboard="true"/>
     </div>
   </div>
 </template>
@@ -40,5 +40,19 @@ export default {
        Round,
        Table
     },
+    data: () => ({
+      dashHeaders: [
+        {
+          text: 'Name',
+          align: 'start',
+          sortable: false,
+          value: 'name',
+        },
+        { text: 'Phone No', value: 'ph.no' },
+        { text: 'Email', value: 'email' },
+        { text: 'Status', value: 'status' },
+        { text: 'Actions', value: 'actions', sortable: false },
+      ],
+    }),
   }
 </script>

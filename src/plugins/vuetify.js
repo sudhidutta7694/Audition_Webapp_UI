@@ -6,6 +6,6 @@ Vue.use(Vuetify);
 export default new Vuetify({
     theme: {dark : true},
     icons: {
-        iconfont: 'fa4',
+        iconfont: 'mdi',
     },
 });

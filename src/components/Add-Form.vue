@@ -5,7 +5,7 @@
         <v-row align="center">
           <v-col class="d-flex flex-column mx-10" cols="12" sm="12">
               ROUND TIME:
-              <input type="number" style="width:20%" v-model="Rtime">
+              <input type="number" style="width:20%" v-bind="Rtime">
               QUESTION:
               <input
               outlined
@@ -87,18 +87,11 @@
                 <div class="d-flex float-right mr-12 pa-2">
                   <v-btn
                     class="ma-2 black--text"
-                    :loading="loading"
-                    :disabled="loading"
                     color="#BEFFC1"
                     @click="saveOptions"
-                    v-if="showMediaBtn"
+                    v-if="showBtn"
                   >
                     Save
-                    <template v-slot:loader>
-                      <span class="custom-loader">
-                        <v-icon light>mdi-cached</v-icon>
-                      </span>
-                    </template>
                   </v-btn>
                 </div>
               </v-container>
@@ -117,6 +110,34 @@
           </v-col>
         </v-row>
       </v-container>
+     <v-snackbar v-model="snackbar">THE ROUND HAS BEEN SAVED SUCCESSFULLY
+       <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+     </v-snackbar>
+     <div class="d-flex float-right mr-12 pa-2">
+                     <v-btn
+      class="ma-2"
+      :loading="loading1"
+      :disabled="loading1"
+      color="info"
+      @click="saveRound"
+    >
+      Save Round
+      <template v-slot:loader>
+        <span class="custom-loader">
+          <v-icon light>mdi-cached</v-icon>
+        </span>
+      </template>
+    </v-btn>
+</div>
     </v-card>
 </template>
 
@@ -138,30 +159,33 @@ export default {
     ImageLink:"",
     AudioLink:"",
     MediaFiles: [],
+    Questions:[],
     showBtn: true,
     showMediaBtn:false,
-    selectedFile: "",
     choice1: "",
     choice2: "",
     choice3: "",
     choice4: "",
-    options: [],
-    Questions: [],
-    
+    options:[],
     loader: null,
     loading: false,
     loading1: false,
+    snackbar:false,
     Qtype: ["SINGLE CHOICE", "MULTIPLE CHOICE", "ATTACH FILE", "TEXTAREA"],
   }),
   methods: {
     saveOptions() {
       this.options.push({
-        choice1: this.choice1,
-        choice2: this.choice2,
-        choice3: this.choice3,
-        choice4: this.choice4,
-      });
+        choice1:this.choice1,
+        choice2:this.choice2,
+        choice3:this.choice3,
+        choice4:this.choice4
+      })
       console.log(this.options);
+      this.choice1 = "",
+      this.choice2 = "",
+      this.choice3 = "",
+      this.choice4 = ""
       this.showBtn = false;
     },
     addQues() {
@@ -169,17 +193,12 @@ export default {
         this.Questions.push({
           Ques: this.Ques,
           Questype: this.Questype,
-          Files: this.MediaFiles,
           options: this.options,
         });
         console.log(this.Questions);
         this.Ques = [];
         this.Questype = "";
         this.options = [];
-        this.choice1 = "";
-        this.choice2 = "";
-        this.choice3 = "";
-        this.choice4 = "";
         this.showBtn = true;
       }
     },
@@ -196,6 +215,10 @@ export default {
       });
       this.Media = "";
     },
+    saveRound() {
+      this.snackbar = true;
+      localStorage.removeItem("Questions");  
+    }
   },
   mounted() {
     console.log("App mounted!");
@@ -230,38 +253,42 @@ export default {
 </script>
 
 <style scoped>
-@-moz-keyframes loader {
-  from {
-    transform: rotate(0);
+.custom-loader {
+    animation: loader 1s infinite;
+    display: flex;
   }
-  to {
-    transform: rotate(360deg);
+  @-moz-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
-}
-@-webkit-keyframes loader {
-  from {
-    transform: rotate(0);
+  @-webkit-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
-  to {
-    transform: rotate(360deg);
+  @-o-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
-}
-@-o-keyframes loader {
-  from {
-    transform: rotate(0);
+  @keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
-  to {
-    transform: rotate(360deg);
-  }
-}
-@keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 input{
   border: 0.2px solid #7B849F;
   margin-bottom: 30px;
@@ -278,10 +305,6 @@ input{
   width: 60%;
   margin-bottom: 25px;
   padding-bottom: 0px;
-}
-.custom-loader {
-  animation: loader 1s infinite;
-  display: flex;
 }
 .media{
   display: flex;
