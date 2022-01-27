@@ -9,6 +9,8 @@ import Root from '../views/Root.vue'
 import AddRound from '../views/AddRound.vue'
 import EditRound from '../views/EditRound.vue'
 import Quiz from '../views/Quiz.vue'
+import Logs from '../views/Logs.vue'
+import St_details from '../views/St_details.vue'
 
 Vue.use(VueRouter)
 
@@ -57,6 +59,16 @@ const routes = [
     path: '/quiz',
     name: 'Quiz',
     component: Quiz,
+  },
+  {
+    path: '/logs',
+    name: 'Logs',
+    component:Logs,
+  },
+  {
+    path: '/st_details',
+    name: 'St_details',
+    component:St_details,
   }
   
 ]

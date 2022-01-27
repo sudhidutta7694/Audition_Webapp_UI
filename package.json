@@ -12,6 +12,7 @@
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vue-image-upload-resize": "^2.3.0",
+    "vue-jwt-decode": "^0.1.0",
     "vue-numeric-input": "^2.0.0",
     "vue-router": "^3.5.3",
     "vuetify": "^2.4.0",

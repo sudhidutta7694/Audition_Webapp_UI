@@ -41,6 +41,12 @@
             </v-list-item-icon>
             <v-list-item-title class="font-weight-bold sidebar">Edit Round</v-list-item-title>
           </v-list-item></router-link>
+          <router-link :to="{ name: 'Logs' }" class="navbar-items"><v-list-item link>
+            <v-list-item-icon>
+              <v-icon color="#7B849F">mdi-chart-timeline-variant</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="font-weight-bold sidebar">Go To Logs</v-list-item-title>
+          </v-list-item></router-link>
         </v-list>
         <router-view />
           <template v-slot:append>

@@ -1,158 +1,207 @@
 <template>
   <v-card class="edit pa-5">
-   <v-list-item>
-      <v-list-item-content style="height:50px">
+    <v-list-item>
+      <v-list-item-content style="height: 50px">
         <div class="text-overline mb-4">
-          <div class="pointer"></div> EDIT ROUNDS
+          <div class="pointer"></div>
+          EDIT ROUNDS
         </div>
       </v-list-item-content>
     </v-list-item>
-   <v-tabs
+    <v-dialog v-model="dialog" max-width="800px">
+      <v-card class="pa-5" style="border: 2px solid grey; border-radius: 20px">
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                  v-model="editedItem.Ques"
+                  label="Question"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-select
+                  :items="Qtype"
+                  v-model="editedItem.QuesType"
+                  dense
+                  outlined
+                  label="QuesType"
+                  color="#7B849F"
+                  class="mb-10 dropdown"
+                ></v-select>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-file-input chips multiple label="Image Input"></v-file-input>
+              </v-col>
+              <v-col>
+                <v-file-input chips multiple label="Audio Input"></v-file-input>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-container
+                v-if="
+                  editedItem.QuesType == 'SINGLE CHOICE' ||
+                  editedItem.QuesType == 'MULTIPLE CHOICE'
+                "
+              >
+                <v-row>
+                  <v-col cols="12" sm="6">
+                    <v-text-field
+                      v-model="choice1"
+                      label="Choice 1"
+                      solo
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col cols="12" sm="6">
+                    <v-text-field
+                      v-model="choice2"
+                      solo
+                      label="Choice 2"
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col cols="12" sm="6">
+                    <v-text-field
+                      v-model="choice3"
+                      solo
+                      label="Choice 3"
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col cols="12" sm="6">
+                    <v-text-field
+                      v-model="choice4"
+                      label="Choice 4"
+                      solo
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <div class="d-flex float-right mr-12 pa-2">
+                  <v-btn
+                    class="ma-2 black--text"
+                    color="#BEFFC1"
+                    @click="saveOptions"
+                    v-if="showBtn"
+                  >
+                    Save Options
+                  </v-btn>
+                </div>
+              </v-container>
+            </v-row>
+          </v-container>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
+          <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogDelete" max-width="500px">
+      <v-card>
+        <v-card-title class="text-h5"
+          >Are you sure you want to delete this item?</v-card-title
+        >
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+          <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+            >OK</v-btn
+          >
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-tabs
       v-model="tab"
       background-color="transparent"
       color="basil"
       grow
       class="mt-10"
     >
-      <v-tab
-        v-for="item in items"
-        :key="item"
-      >
+      <v-tab v-for="item in items" :key="item">
         {{ item }}
       </v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="tab">
-      <v-tab-item
-        v-for="item in items"
-        :key="item"
-      >
-        <v-card
-          color="basil"
-          flat
-        >
-         <v-stepper
-    v-model="e6"
-    vertical
-    style="background-color:transparent"
-  >
-    <v-stepper-step
-      :complete="e6 > 1"
-      step="1"
-      color="#a692ff"
-    >
-      QUESTION 1
-      <small>Single Choice</small>
-    </v-stepper-step>
+      <v-tab-item v-for="item in items" :key="item">
+        <v-card color="basil" flat>
+          <v-stepper
+            v-model="e6"
+            vertical
+            style="background-color: transparent"
+            v-for="(question, n) in Questions"
+            :key="n"
+          >
+            <v-stepper-step
+              :complete="e6 > n + 1"
+              :step="n + 1"
+              color="#a692ff"
+            >
+              {{ question.Ques }}
+              <v-icon class="ma-2" @click="editItem(question)">
+                mdi-pencil
+              </v-icon>
+              <small>{{ question.QuesType }}</small>
+            </v-stepper-step>
+            <v-stepper-items>
+              <v-stepper-content :step="n + 1">
+                <v-img
+                  height="300"
+                  width="300"
+                  class="ma-5"
+                  src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+                ></v-img>
+                <v-textarea
+                  class="mt-10"
+                  v-if="question.QuesType == 'TEXTAREA'"
+                  outlined
+                  name="input-7-4"
+                  label="ANSWER"
+                  value=" "
+                  style="width: 600px"
+                ></v-textarea>
+                <v-file-input
+                  v-if="question.QuesType == 'ATTACH FILE'"
+                  class="mt-10"
+                  style="width: 600px"
+                  label="ATTACH YOUR FILE"
+                  outlined
+                  dense
+                ></v-file-input>
 
-    <v-stepper-content step="1">
-      <v-card
-        color="grey lighten-1"
-        class="mb-12"
-        height="200px"
-      ></v-card>
-     <v-btn
-      class="ma-2"
-      outlined
-      color="primary"
-      @click="e6 = 2"
-    >
-      NEXT  </v-btn>
-      <v-btn
-      class="ma-2"
-      outlined
-      color="red"
-    >
-      DELETE    </v-btn>
-    </v-stepper-content>
-
-    <v-stepper-step
-      :complete="e6 > 2"
-      step="2"
-      color="#a692ff"
-    >
-      QUSETION 2
-      <small>Multiple Choice</small>
-    </v-stepper-step>
-
-    <v-stepper-content step="2">
-      <v-card
-        color="grey lighten-1"
-        class="mb-12"
-        height="200px"
-      ></v-card>
-        <v-btn
-      class="ma-2"
-      outlined
-      color="primary"
-      @click="e6 = 3"
-    >
-      NEXT    </v-btn>
-      <v-btn
-      class="ma-2"
-      outlined
-      color="red"
-    >
-      DELETE    </v-btn>
-    </v-stepper-content>
-
-    <v-stepper-step
-      :complete="e6 > 3"
-      step="3"
-      color="#a692ff"
-    >
-      QUESTION 3
-      <small>File Upload</small>
-    </v-stepper-step>
-
-    <v-stepper-content step="3">
-      <v-card
-        color="grey lighten-1"
-        class="mb-12"
-        height="200px"
-      ></v-card>
-     <v-btn
-      class="ma-2"
-      outlined
-      color="primary"
-      @click="e6 = 4"
-    >
-      NEXT  </v-btn>
-      <v-btn
-      class="ma-2"
-      outlined
-      color="red"
-    >
-      DELETE    </v-btn>
-    </v-stepper-content>
-
-    <v-stepper-step step="4"
-    color="#a692ff">
-      QUSETION 4
-      <small>Type Answer</small>
-    </v-stepper-step>
-    <v-stepper-content step="4">
-      <v-card
-        color="grey lighten-1"
-        class="mb-12"
-        height="200px"
-      ></v-card>
-      <v-btn
-      class="ma-2"
-      outlined
-      color="primary"
-      @click="e6 = 1"
-    >
-      NEXT  </v-btn>
-      <v-btn
-
-      class="ma-2"
-      outlined
-      color="red"
-    >
-      DELETE    </v-btn>
-    </v-stepper-content>
-  </v-stepper>
+                <v-container
+                  class="px-0"
+                  fluid
+                  v-if="
+                    question.QuesType == 'SINGLE CHOICE' ||
+                    question.QuesType == 'MULTIPLE CHOICE'
+                  "
+                >
+                  <v-radio-group>
+                    <v-radio
+                      v-for="n in question.options[0]"
+                      :key="n"
+                      :label="n"
+                      :value="n"
+                      style="color: red"
+                    ></v-radio>
+                  </v-radio-group>
+                </v-container>
+                <v-btn class="ma-2" outlined color="primary" @click="next(n)">
+                  NEXT
+                </v-btn>
+                <v-btn class="ma-2" outlined color="red" @click="deleteItem(question)">
+                  DELETE
+                </v-btn>
+              </v-stepper-content>
+            </v-stepper-items>
+          </v-stepper>
         </v-card>
       </v-tab-item>
     </v-tabs-items>
@@ -160,23 +209,92 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        e6: 1,
-        tab: null,
-        items: [
-          'ROUND 1', 'ROUND 2', 'ROUND 3', 'ROUND 4' ,'ROUND 5',
-        ],
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+export default {
+  data() {
+    return {
+      e6: 1,
+      tab: null,
+      dialog: false,
+      dialogDelete: false,
+      editedIndex: -1,
+      showBtn: true,
+      editedItem: {
+        Ques: "",
+        QuesType: "",
+      },
+      Qtype: ["MULTIPLE CHOICE", "SINGLE CHOICE", "ATTACH FILE", "TEXTAREA"],
+      items: ["ROUND 1", "ROUND 2", "ROUND 3", "ROUND 4", "ROUND 5"],
+      Questions: [],
+    };
+  },
+  watch: {
+    dialog(val) {
+      val || this.close();
+    },
+    dialogDelete(val) {
+      val || this.closeDelete();
+    },
+  },
+  methods: {
+    next(n) {
+      var l = this.Questions.length;
+      if (n + 1 == l) {
+        this.e6 = 1;
+      } else {
+        this.e6 = n + 2;
       }
     },
-  }
+
+    editItem(item) {
+      this.editedIndex = this.Questions.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+
+    deleteItem(item) {
+      this.editedIndex = this.Questions.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
+
+    deleteItemConfirm() {
+      this.Questions.splice(this.editedIndex, 1);
+      this.closeDelete();
+    },
+
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.Questions[this.editedIndex], this.editedItem);
+      } else {
+        this.Questions.push(this.editedItem);
+      }
+      this.close();
+    },
+  },
+  mounted() {
+    console.log("App mounted!");
+    if (localStorage.getItem("Questions"))
+      this.Questions = JSON.parse(localStorage.getItem("Questions"));
+  },
+};
 </script>
 <style scoped>
-.edit{
-    border-radius: 10px;
+.edit {
+  border-radius: 10px;
 }
 </style>
-
-

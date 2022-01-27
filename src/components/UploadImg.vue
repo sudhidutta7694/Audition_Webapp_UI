@@ -7,7 +7,7 @@
           dark
           right
           x-large
-        >
+        > 
           mdi-image-plus
         </v-icon>
             </div>

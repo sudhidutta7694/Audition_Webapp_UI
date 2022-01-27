@@ -3,38 +3,12 @@
     <NavigationDrawer/>
     <div class="main">
     <div class="container">
-          <QuesTimeline/>
+          <QuesTimeline v-bind:Questions="Questions"/>
       <div class="inputQues">
-         <AddForm/>
+          <AddForm v-bind:Questions="Questions"/>
       </div>
   
     </div>
-    <br />
-    <v-container v-for="(question, index) in Questions" :key="index">
-      <v-card class="overview" max-width="50%" outlined color="#1A1D1F">
-        <DispQues :question="question" />
-      </v-card>
-    </v-container>
-    <!-- <div class="d-flex float-right mr-12 pa-2">
-      <router-link :to="{ name: 'Root' }">
-        <v-btn
-          class="ma-2"
-          :loading="loading"
-          :disabled="loading"
-          color="#4288CA"
-          @click="loader = 'loading1'"
-          style="text-decoration: none"
-        >
-          Save Round
-          <template v-slot:loader>
-            <span class="custom-loader">
-              <v-icon light>mdi-cached</v-icon>
-            </span>
-          </template>
-        </v-btn></router-link
-      >
-    </div>
-    <router-view /> -->
   </div>  
     </div>
 </template>
@@ -72,16 +46,27 @@
 </style>
 
 <script>
-import DispQues from "../components/Display-Ques.vue";
 import QuesTimeline from '../components/QuestionTimeline.vue'
 import NavigationDrawer from '../components/Navigation.vue'
 import AddForm from '../components/Add-Form.vue'
 export default {
+  data: () => ({
+      Questions:[]
+    }),
+
   components: {
     NavigationDrawer,
     AddForm,
-    DispQues,
     QuesTimeline
+  },
+  watch: {
+    Questions: {
+      handler() {
+        if (localStorage.getItem("Questions"))
+      this.Questions = JSON.parse(localStorage.getItem("Questions"));
+      },
+      deep: true
+    },
   },
 }
 </script>

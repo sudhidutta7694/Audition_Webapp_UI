@@ -5,14 +5,13 @@
         <v-row align="center">
           <v-col class="d-flex flex-column mx-10" cols="12" sm="12">
               ROUND TIME:
-              <input type="number" style="width:20%" value="10">
+              <input type="number" style="width:20%" v-bind="Rtime">
               QUESTION:
               <input
               outlined
               color="#BEFFC1"
               name="input-7-4"
               v-model="Ques"
-              value=" "
               style="width: 80%;"
             />
             <div class="media">
@@ -22,31 +21,15 @@
               <UploadImg/> 
               </div>
             </div>
-            <v-row>
-              <v-col cols="6" sm="6">
-                <v-file-input
-                  label="Pick your audio file"
-                  outlined
-                  dense
-                  style="width: 40%"
-                  v-if="Media === 'AUDIO'"
-                ></v-file-input>
-                <v-file-input
-                  label="Pick your image"
-                  outlined
-                  dense
-                  v-model="selectedFile"
-                  style="width: 40%"
-                  prepend-icon="mdi-camera"
-                  v-if="Media === 'IMAGE'"
-                ></v-file-input>
-              </v-col>
+            <v-row class="ma-3">
               <v-col>
                 <v-btn
-                  v-if="Media === 'IMAGE' || Media === 'AUDIO'"
+                  color="#BEFFC1"
+                  v-if="showMediabtn"
+                  class="black--text"
                   @click="uploadMedia"
                 >
-                  SAVE
+                  SAVE MEDIA
                 </v-btn>
               </v-col>
             </v-row>
@@ -104,18 +87,11 @@
                 <div class="d-flex float-right mr-12 pa-2">
                   <v-btn
                     class="ma-2 black--text"
-                    :loading="loading"
-                    :disabled="loading"
                     color="#BEFFC1"
                     @click="saveOptions"
                     v-if="showBtn"
                   >
                     Save
-                    <template v-slot:loader>
-                      <span class="custom-loader">
-                        <v-icon light>mdi-cached</v-icon>
-                      </span>
-                    </template>
                   </v-btn>
                 </div>
               </v-container>
@@ -134,65 +110,95 @@
           </v-col>
         </v-row>
       </v-container>
+     <v-snackbar v-model="snackbar">THE ROUND HAS BEEN SAVED SUCCESSFULLY
+       <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+     </v-snackbar>
+     <div class="d-flex float-right mr-12 pa-2">
+                     <v-btn
+      class="ma-2"
+      :loading="loading1"
+      :disabled="loading1"
+      color="info"
+      @click="saveRound"
+    >
+      Save Round
+      <template v-slot:loader>
+        <span class="custom-loader">
+          <v-icon light>mdi-cached</v-icon>
+        </span>
+      </template>
+    </v-btn>
+</div>
     </v-card>
 </template>
 
 <script>
 import UploadImg from '../components/UploadImg.vue'
 import Header from '../components/Header.vue'
+// import VueJwtDecode from "vue-jwt-decode";
 
 export default {
   components: {
-  
     UploadImg,
     Header,
 
   },
   data: () => ({
-    Media: "",
-    showBtn: true,
-    selectedFile: "",
+    Rtime:"",
+    Ques: "",
     Questype: "",
-    Ques: "  ",
+    ImageLink:"",
+    AudioLink:"",
+    MediaFiles: [],
+    Questions:[],
+    showBtn: true,
+    showMediaBtn:false,
     choice1: "",
     choice2: "",
     choice3: "",
     choice4: "",
-    options: [],
-    Questions: [],
-    MediaFiles: [],
+    options:[],
     loader: null,
     loading: false,
     loading1: false,
-    Rtime: ["10", "15", "20", "25"],
+    snackbar:false,
     Qtype: ["SINGLE CHOICE", "MULTIPLE CHOICE", "ATTACH FILE", "TEXTAREA"],
   }),
   methods: {
     saveOptions() {
       this.options.push({
-        choice1: this.choice1,
-        choice2: this.choice2,
-        choice3: this.choice3,
-        choice4: this.choice4,
-      });
+        choice1:this.choice1,
+        choice2:this.choice2,
+        choice3:this.choice3,
+        choice4:this.choice4
+      })
       console.log(this.options);
+      this.choice1 = "",
+      this.choice2 = "",
+      this.choice3 = "",
+      this.choice4 = ""
       this.showBtn = false;
     },
     addQues() {
       if (this.Ques !== "") {
         this.Questions.push({
           Ques: this.Ques,
-          Files: this.MediaFiles,
+          Questype: this.Questype,
           options: this.options,
         });
         console.log(this.Questions);
         this.Ques = [];
         this.Questype = "";
         this.options = [];
-        this.choice1 = "";
-        this.choice2 = "";
-        this.choice3 = "";
-        this.choice4 = "";
         this.showBtn = true;
       }
     },
@@ -209,43 +215,80 @@ export default {
       });
       this.Media = "";
     },
+    saveRound() {
+      this.snackbar = true;
+      localStorage.removeItem("Questions");  
+    }
   },
+  mounted() {
+    console.log("App mounted!");
+    if (localStorage.getItem("Questions"))
+      this.Questions = JSON.parse(localStorage.getItem("Questions"));
+    else localStorage.removeItem("Questions");
+  },
+  // beforeCreate() {
+  //   if (localStorage.getItem("token") === null) {
+  //     this.$router.push("/");
+  //   } else if (
+  //     VueJwtDecode.decode(localStorage.getItem("token").substring(6)).role ===
+  //     "s"
+  //   ) {
+  //     this.$router.push("/");
+  //   }
+  // },
+  watch: {
+    Questions: {
+      handler() {
+        localStorage.setItem("Questions", JSON.stringify(this.Questions));
+      },
+      deep: true
+    },
+    file: {
+      handler() {
+        console.log(this.file);
+      }
+    }
+  }
 }
 </script>
 
 <style scoped>
-@-moz-keyframes loader {
-  from {
-    transform: rotate(0);
+.custom-loader {
+    animation: loader 1s infinite;
+    display: flex;
   }
-  to {
-    transform: rotate(360deg);
+  @-moz-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
-}
-@-webkit-keyframes loader {
-  from {
-    transform: rotate(0);
+  @-webkit-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
-  to {
-    transform: rotate(360deg);
+  @-o-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
-}
-@-o-keyframes loader {
-  from {
-    transform: rotate(0);
+  @keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
-  to {
-    transform: rotate(360deg);
-  }
-}
-@keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 input{
   border: 0.2px solid #7B849F;
   margin-bottom: 30px;
@@ -262,10 +305,6 @@ input{
   width: 60%;
   margin-bottom: 25px;
   padding-bottom: 0px;
-}
-.custom-loader {
-  animation: loader 1s infinite;
-  display: flex;
 }
 .media{
   display: flex;

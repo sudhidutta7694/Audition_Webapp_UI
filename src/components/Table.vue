@@ -21,7 +21,7 @@
     style="width:95%; background-color:#1A1D1F"
   >
     <template v-slot:top>
-      <div
+      <div v-if="dashboard"
       >
         
         <v-dialog
@@ -39,7 +39,7 @@
                   >
                     <v-text-field
                       v-model="editedItem.name"
-                      label="Dessert name"
+                      label="Name"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -48,8 +48,8 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.calories"
-                      label="Calories"
+                      v-model="editedItem.phoneNo"
+                      label="Ph. No."
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -58,28 +58,8 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.fat"
-                      label="Fat (g)"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.carbs"
-                      label="Carbs (g)"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="Protein (g)"
+                      v-model="editedItem.email"
+                      label="Email"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -117,9 +97,62 @@
           </v-card>
         </v-dialog>
       </div>
+      <div v-if="!dashboard"
+      >
+        
+        <v-dialog
+          v-model="dialog"
+          max-width="500px"
+          
+        >
+        <v-card>
+           <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                    <v-select
+              :items="Role"
+              v-model="editedItem.role"
+              label="Role"
+              dense
+              outlined
+              class="mb-10 dropdown"
+              style="width: 100%; border:0.2px solid #7B849F; height:40px"
+            ></v-select>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="close"
+              >
+                Cancel
+              </v-btn>
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="save"
+              >
+                Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        
+      </div>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      
+      <v-row>
+      <v-col>
       <v-icon
         small
         class="mr-2"
@@ -129,11 +162,17 @@
       </v-icon>
       <v-icon
         small
-        @click="deleteItem(item)"
+        @click="deleteItem(item)" v-if="dashboard"
       >
         mdi-delete
       </v-icon>
+      </v-col>
+      <v-col>
+      <v-icon v-if="dashboard" @click="$router.push('/st_details')">mdi-open-in-new</v-icon>
+      </v-col>
+      </v-row>
     </template>
+      
   </v-data-table>
   <v-pagination
         v-model="page"
@@ -146,41 +185,28 @@
 
 <script>
   export default {
+    props: ["headers","dashboard"],
     data: () => ({
       dialog: false,
       dialogDelete: false,
       page: 1,
         pageCount: 0,
         itemsPerPage: 10,
-      headers: [
-        {
-          text: 'Dessert (100g serving)',
-          align: 'start',
-          sortable: false,
-          value: 'name',
-        },
-        { text: 'Calories', value: 'calories' },
-        { text: 'Fat (g)', value: 'fat' },
-        { text: 'Carbs (g)', value: 'carbs' },
-        { text: 'Protein (g)', value: 'protein' },
-        { text: 'Actions', value: 'actions', sortable: false },
-      ],
       desserts: [],
       editedIndex: -1,
       editedItem: {
         name: '',
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0,
+        phoneNo: '',
+        email: '',
       },
       defaultItem: {
         name: '',
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0,
+        phoneNo: '',
+        email: '',
+        status: '',
+        role:''
       },
+      Role: ["su","m","s"],
     }),
 
     computed: {
@@ -319,6 +345,19 @@
         }
         this.close()
       },
+      // popup() {
+      // var payload = a;
+      // payload["lastUser"] = this.adminUser;
+      // console.log(this.adminUser);
+      // common.updateEntry(payload);
+      // let routeData = this.$router.resolve({
+      //   name: "UserControl",
+      //   query: { id: a._id },
+      // });
+
+      // window.open(routeData.href, "_blank");
+      // router.push('/log');
+      // },
     },
   }
 </script>
