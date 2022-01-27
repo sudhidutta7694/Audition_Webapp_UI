@@ -43,7 +43,7 @@
       bottom
       temporary
       absolute
-      height="150px">
+      height="200px">
       <router-link to="faq" class="nav_item">
         <v-list-item link>
           <v-list-item-title>FAQ</v-list-item-title>
