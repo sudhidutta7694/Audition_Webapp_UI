@@ -1,7 +1,7 @@
 <template>
     <div class="bg">
         <Navigation/>
-        <div class="d-flex flex-column justify-center mx-auto">
+        <div class="main">
             <Round class="text-center text-lg-h4"/>
             <v-btn class="mx-auto mt-3">Attempt Quiz</v-btn>
             <TableStudent/>
@@ -24,6 +24,16 @@ export default{
 </script>
 
 <style>
+.main{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  margin: 30px;
+  overflow: hidden;
+  margin-left: 210px;
+}
+
 .bg{
     background-color:  #111315;
     display: flex;
