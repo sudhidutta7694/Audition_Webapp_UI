@@ -18,7 +18,7 @@
               UPLOAD FILES:
               <div class="uploadBox">
               <UploadImg/> 
-              <UploadImg/> 
+              <UploadAudio/> 
               </div>
             </div>
             <v-row class="ma-3">
@@ -143,15 +143,18 @@
 
 <script>
 import UploadImg from '../components/UploadImg.vue'
+import UploadAudio from '../components/UploadAudio.vue'
 import Header from '../components/Header.vue'
 // import VueJwtDecode from "vue-jwt-decode";
 
 export default {
   components: {
     UploadImg,
+    UploadAudio,
     Header,
 
   },
+  props: ["Questions"],
   data: () => ({
     Rtime:"",
     Ques: "",
@@ -159,7 +162,7 @@ export default {
     ImageLink:"",
     AudioLink:"",
     MediaFiles: [],
-    Questions:[],
+    // Questions:[],
     showBtn: true,
     showMediaBtn:false,
     choice1: "",
@@ -182,10 +185,6 @@ export default {
         choice4:this.choice4
       })
       console.log(this.options);
-      this.choice1 = "",
-      this.choice2 = "",
-      this.choice3 = "",
-      this.choice4 = ""
       this.showBtn = false;
     },
     addQues() {
@@ -199,6 +198,10 @@ export default {
         this.Ques = [];
         this.Questype = "";
         this.options = [];
+        this.choice1 = "",
+        this.choice2 = "",
+        this.choice3 = "",
+        this.choice4 = ""
         this.showBtn = true;
       }
     },
@@ -217,15 +220,15 @@ export default {
     },
     saveRound() {
       this.snackbar = true;
-      localStorage.removeItem("Questions");  
+      this.Questions.splice(0,this.Questions.length)  
     }
   },
-  mounted() {
-    console.log("App mounted!");
-    if (localStorage.getItem("Questions"))
-      this.Questions = JSON.parse(localStorage.getItem("Questions"));
-    else localStorage.removeItem("Questions");
-  },
+  // mounted() {
+  //   console.log("App mounted!");
+  //   if (localStorage.getItem("Questions"))
+  //     this.Questions = JSON.parse(localStorage.getItem("Questions"));
+  //   else localStorage.removeItem("Questions");
+  // },
   // beforeCreate() {
   //   if (localStorage.getItem("token") === null) {
   //     this.$router.push("/");

@@ -15,7 +15,6 @@
     "vue-jwt-decode": "^0.1.0",
     "vue-numeric-input": "^2.0.0",
     "vue-router": "^3.5.3",
-    "vuetify": "^2.4.0",
     "vuetify-audio": "^0.3.3"
   },
   "devDependencies": {
@@ -31,6 +30,7 @@
     "sass-loader": "^10.0.0",
     "vue-cli-plugin-vuetify": "~2.4.5",
     "vue-template-compiler": "^2.6.11",
+    "vuetify": "^2.6.3",
     "vuetify-loader": "^1.7.0"
   },
   "eslintConfig": {

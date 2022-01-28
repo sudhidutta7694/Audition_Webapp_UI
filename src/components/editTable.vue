@@ -224,7 +224,40 @@ export default {
       },
       Qtype: ["MULTIPLE CHOICE", "SINGLE CHOICE", "ATTACH FILE", "TEXTAREA"],
       items: ["ROUND 1", "ROUND 2", "ROUND 3", "ROUND 4", "ROUND 5"],
-      Questions: [],
+      Questions: [
+        {
+          Ques: "abc",
+          QuesType: "SINGLE CHOICE",
+          options:[
+            {
+              choice1:"xyz",
+              choice2:"xyz",
+              choice3:"xyz",
+              choice4:"xyz",
+            }
+          ]
+        },
+        {
+          Ques: "abc",
+          QuesType: "TEXTAREA",
+        },
+        {
+          Ques: "abc",
+          QuesType: "MULTIPLE CHOICE",
+          options:[
+            {
+              choice1:"xyz",
+              choice2:"xyz",
+              choice3:"xyz",
+              choice4:"xyz",
+            }
+          ]
+        },
+        {
+          Ques: "abc",
+          QuesType: "ATTACH FILE",
+        }
+      ],
     };
   },
   watch: {
@@ -286,11 +319,11 @@ export default {
       this.close();
     },
   },
-  mounted() {
-    console.log("App mounted!");
-    if (localStorage.getItem("Questions"))
-      this.Questions = JSON.parse(localStorage.getItem("Questions"));
-  },
+  // mounted() {
+  //   console.log("App mounted!");
+  //   if (localStorage.getItem("Questions"))
+  //     this.Questions = JSON.parse(localStorage.getItem("Questions"));
+  // },
 };
 </script>
 <style scoped>

@@ -1,6 +1,6 @@
 <template>
  <v-card class="timeline overview pa-5 " style="width:50%" outlined color="#1A1D1F">
-  <div v-if="Questions.length == 0" class="emptyTimeline">NO QUESTIONS ADDED FOR ROUND 1</div>
+  <div v-if="Questions.length == 0" class="emptyTimeline">ADD QUESTIONS FOR ROUND 1</div>
   <v-timeline v-else>
     <v-timeline-item 
       v-for="(question, index) in Questions" :key="index"
@@ -35,6 +35,7 @@
                  height="250"
                  src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
             ></v-img>
+            <vuetify-audio :file="file" class="ma-5 elevation-0" :ended="audioFinish" downloadable></vuetify-audio>
             <v-card-text>
                    <v-textarea class="mt-10" v-if="question.Questype == 'TEXTAREA'"
                      outlined
@@ -111,10 +112,15 @@
 <script>
 export default {
   props: ["Questions"],
+  components: {
+     VuetifyAudio: () => import('vuetify-audio'),
+  },
   data: () => ({
     options:[],
     dialog: false,
     dialogDelete: false,
+    file: 'http://www.hochmuth.com/mp3/Boccherini_Concerto_478-1.mp3',
+
   }),
   methods: {
       deleteItem () {
