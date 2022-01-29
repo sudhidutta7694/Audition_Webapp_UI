@@ -60,7 +60,7 @@ export default {
             member: false,
             su: false,
             username: "",
-            audition: [],
+            audition: {},
             student: null,
             profile: null,
             phone: null,
@@ -71,9 +71,23 @@ export default {
     beforeCreate() {
         common.getStudent().then((res) => {
             this.student = res.data;
+            console.log("===========")
+            console.log(this.student)
+            console.log(this.student)
+            console.log(this.student)
+            console.log(this.student)
+            console.log(this.student)
+            console.log(this.student)
+            console.log(this.student)
+            console.log(this.student)
+            console.log(this.student)
+            console.log(this.student)
+            console.log(this.student)
+            console.log(this.student)
+            console.log("===========")
         });
         common.getAuditionStatus().then((res) => {
-            this.audition = res.data;
+            this.audition = (res.data);
         });
         common.getProfile().then((res) => {
             this.profile = res.data;

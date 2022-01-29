@@ -82,7 +82,7 @@
           </v-list-item>
           <Timer
             :class="{ 'mr-4': vertical }"
-            :date="Math.trunc((timeNow + time) / 1000)"
+            :date="time"
             :mobileView="!vertical"
           />
         </div>
@@ -97,13 +97,13 @@
           <v-tab class="utab" v-for="(question, i) in questions" :key="i">Q. {{ i + 1 }}</v-tab>
 
           <v-tab-item v-for="(question, i) in questions" :key="i">
-            <Textques :question="question" :mobileView="!vertical" v-if="question.type === 'text'" />
-            <Mcqs :question="question" :mobileView="!vertical" v-if="question.type === 'mcq'" />
-            <Mcqm :question="question" :mobileView="!vertical" v-if="question.type === 'mcqm'" />
+            <Textques :question="question" :mobileView="!vertical" v-if="question.quesType === 'Subjective'" />
+            <Mcqs :question="question" :mobileView="!vertical" v-if="question.quesType === 'Mcq'" />
+            <Mcqm :question="question" :mobileView="!vertical" v-if="question.quesType === 'Mcqm'" />
             <FileUpload
               :question="question"
               :mobileView="!vertical"
-              v-if="question.type === 'file'"
+              v-if="question.quesType === 'file'"
             />
           </v-tab-item>
         </v-tabs>
@@ -211,7 +211,7 @@ export default {
     FileUpload,
   },
   data: () => ({
-    questions: null,
+    questions: [],
     tab: null,
     timeNow: Date.now(),
     time: 3600000,
@@ -241,13 +241,14 @@ export default {
     } else {
       console.log("lol");
       common.getstudentRound().then(res => {
-        console.log(res.data);
+        console.log(res.data.time)
         let t = res.data.time - 2000 - new Date().getTime();
         if (t > 0) {
           this.time = Math.round(t / 1000);
-          this.questions = res.data.question_set_models;
-          this.round = res.data.roundNo;
-          this.currentab = this.questions[0]._id;
+          this.questions = res.data.data[0].question_set_models;
+          console.log(this.questions)
+          this.round = res.data.data[0].roundNo;
+          this.currentab = this.questions[0].id;
           setTimeout(this.autosubmit, this.time * 1000);
         } else {
           this.$router.push("/");
