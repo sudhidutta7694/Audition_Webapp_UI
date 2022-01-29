@@ -29,6 +29,7 @@
           v-model="passwd"
           class="mx-auto txt-in"
           label="PASSWORD"
+          type="password"
           outlined
           filled
         ></v-text-field>
@@ -64,6 +65,7 @@
           v-model="passwd"
           class="mx-auto txt-in"
           label="PASSWORD"
+          type="password"
           outlined
           filled
         ></v-text-field>
@@ -120,18 +122,36 @@ export default {
     SignIn() {
       this.loading = !this.loading;
       var user = {
-        email: this.email,
-        password: this.password,
+        email: this.emailId,
+        password: this.passwd,
       };
       common.login(user).then((res) => {
         if (res.data.success == true) {
           localStorage.setItem("token", res.data.token);
           this.loading = false;
-          this.$router.push("/event");
+          this.$router.push("/dash");
         } else {
           this.loading = false;
           this.error = true;
           this.errorMessage = res.data.message;
+        }
+      });
+    },
+    SignUp() {
+      this.loading = true;
+      const user = {
+        username: this.name,
+        email: this.emailId,
+        password: this.passwd,
+        isAdmin: false,
+      };
+      common.signup(user).then((res) => {
+        this.loading = false;
+        if (res.data.success == true) {
+          this.$router.push("/dash");
+        } else {
+          this.emailSnack = true;
+          this.emailId = this.passwd = this.name = "";
         }
       });
     },

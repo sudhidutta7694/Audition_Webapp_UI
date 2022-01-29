@@ -4,13 +4,14 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import SignUp from '../views/SignUp.vue'
 import DashBoard from '../views/Dashboard.vue'
-import Dashboard_Student from '../views/Dashboard_student.vue'
+import landing from '../views/Landing.vue'
 import Root from '../views/Root.vue'
 import AddRound from '../views/AddRound.vue'
 import EditRound from '../views/EditRound.vue'
 import Quiz from '../views/Quiz.vue'
 import Logs from '../views/Logs.vue'
 import St_details from '../views/St_details.vue'
+import Profile from '../views/Profile.vue'
 
 Vue.use(VueRouter)
 
@@ -51,9 +52,9 @@ const routes = [
     component: EditRound
   },
   {
-    path: '/dashboard_student',
-    name: 'DashboardStudent',
-    component: Dashboard_Student
+    path: '/dash',
+    name: 'Landing',
+    component: landing
   },
   {
     path: '/quiz',
@@ -69,6 +70,11 @@ const routes = [
     path: '/st_details',
     name: 'St_details',
     component:St_details,
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile,
   }
   
 ]
