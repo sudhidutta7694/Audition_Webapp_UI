@@ -111,7 +111,7 @@ export default {
     if (token != null) {
       token = "Bearer " + token;
       localStorage.setItem("token", token);
-      this.$router.push("/dashboard");
+      this.$router.push("/dash");
     }
   },
 };

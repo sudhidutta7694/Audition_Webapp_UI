@@ -3,11 +3,11 @@
     <v-container :class="{ 'd-flex flex-column justify-center': mobileView }">
         <div class="d-flex mb-2" style="background-color: rgba(0,0,0,0); width: 95%;" v-bind:class="{ 'flex-column justify-center mx-auto': mobileView, 'ml-4': !mobileView }">
             <v-card-text class="mb-6 pa-0" id="text" :class="{ 'justify-center text-center mx-auto': mobileView, 'd-flex align-center justify-start text-left': !mobileView }">
-                {{question.text}}
+                {{question.quesText}}
             </v-card-text>
             <div class="mx-auto d-flex flex-column" :class="{ 'flex-column justify-center': mobileView }" style="min-width: 20%;">
-              <v-img class="ma-4 img" v-if="question.img" :src='question.img' :class="{ 'mx-auto': mobileView, 'mt-0': !mobileView }"></v-img>
-              <vuetify-audio class="ma-4" v-if="question.aud" :file="question.aud" color="success" :ended="audioFinish" downloadable :class="{ 'mx-auto': mobileView }"></vuetify-audio>
+              <v-img class="ma-4 img" v-if="question.ImageLink" :src='question.ImageLink' :class="{ 'mx-auto': mobileView, 'mt-0': !mobileView }"></v-img>
+              <vuetify-audio class="ma-4" v-if="question.AudioLink" :file="question.AudioLink" color="success" :ended="audioFinish" downloadable :class="{ 'mx-auto': mobileView }"></vuetify-audio>
             </div>      
         </div>
         <div class="input_field">
