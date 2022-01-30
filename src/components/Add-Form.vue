@@ -17,8 +17,8 @@
             <div class="media">
               UPLOAD FILES:
               <div class="uploadBox">
-              <UploadImg/> 
-              <UploadAudio/> 
+              <UploadImg :ImgLink="ImgLink"/> 
+              <UploadAudio :AudioLink="AudioLink"/> 
               </div>
             </div>
             <v-row class="ma-3">
@@ -146,6 +146,7 @@ import UploadImg from '../components/UploadImg.vue'
 import UploadAudio from '../components/UploadAudio.vue'
 import Header from '../components/Header.vue'
 // import VueJwtDecode from "vue-jwt-decode";
+import common from "@/services/common.js";
 
 export default {
   components: {
@@ -159,7 +160,7 @@ export default {
     Rtime:"",
     Ques: "",
     Questype: "",
-    ImageLink:"",
+    ImgLink:"",
     AudioLink:"",
     MediaFiles: [],
     // Questions:[],
@@ -219,16 +220,14 @@ export default {
       this.Media = "";
     },
     saveRound() {
-      this.snackbar = true;
-      this.Questions.splice(0,this.Questions.length)  
+      var round = { time: this.Rtime, questions: this.Questions };
+      common.addround(round).then(res => {
+        console.log(res.data);
+        this.snackbar = true;
+        this.Questions.splice(0,this.Questions.length)  
+      });
     }
   },
-  // mounted() {
-  //   console.log("App mounted!");
-  //   if (localStorage.getItem("Questions"))
-  //     this.Questions = JSON.parse(localStorage.getItem("Questions"));
-  //   else localStorage.removeItem("Questions");
-  // },
   // beforeCreate() {
   //   if (localStorage.getItem("token") === null) {
   //     this.$router.push("/");

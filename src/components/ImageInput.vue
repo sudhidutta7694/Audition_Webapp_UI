@@ -25,7 +25,7 @@
 </template>
 
 <script>
-// import common from "@/services/common.js";
+import common from "@/services/common.js";
   export default {
     name: 'image-input',
     data: ()=> ({
@@ -34,10 +34,11 @@
       uploadFieldName: 'file',
       maxSize: 1024
     }),
-    props: {
+    props: [
     // Use "value" to enable using v-model
-      value: Object,
-    },
+      {value: Object},
+      "ImgLink"
+    ],
     methods: {
       launchFilePicker(){
         this.$refs.file.click();
@@ -62,10 +63,10 @@
             formData.append(fieldName, imageFile)
             // Emit the FormData and image URL to the parent component
             this.$emit('input', { formData, imageURL })
-            // await common.upload(formData).then(res => {
-            //                 console.log(res.data);
-            //                 this.quesLink = res.data.link;
-            // });
+            await common.upload(formData).then(res => {
+                            console.log(res.data);
+                            this.ImgLink = res.data.link;
+            });
           }
         }
       }

@@ -1,5 +1,5 @@
 <template>
-      <image-input v-model="avatar">
+      <image-input v-model="avatar" :ImgLink="ImgLink">
         <div slot="activator">
           <div v-ripple v-if="!avatar" class="upload pa-3">
             <div class="inner">
@@ -31,6 +31,7 @@ export default {
       saved: false
     }
   },
+  props:["ImgLink"],
   components: {
     ImageInput: ImageInput
   },
