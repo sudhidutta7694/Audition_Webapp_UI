@@ -1,12 +1,21 @@
 <template>
     <div class="round">
-      Current Round : 1
+      Current Round : {{round}}
       </div>
 </template>
 
 <script>
+import common from "@/services/common.js";
 export default{
-   name:'Round'
+   name:'Round',
+   round:"",
+   created() {
+     common.getAuditionStatus().then((res) => {
+      console.log(res);
+      this.round = res.data.round;
+    });
+   }
+   
 }
 </script>
 

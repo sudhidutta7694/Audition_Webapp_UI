@@ -1,18 +1,9 @@
 <template>
   <div class="table-container">
-    <div class="table-header">
-      <v-list-item three-line>
-        <v-list-item-content style="height: 50px">
-          <div class="text-overline mb-4">
-            <div class="pointer"></div>
-            PARTICIPANTS
-          </div>
-        </v-list-item-content>
-      </v-list-item>
-    </div>
+    <tableHeader/>
     <v-data-table
       :headers="headers"
-      :items="desserts"
+      :items="students"
       sort-by="calories"
       class="elevation-8 pa-5"
       :page.sync="page"
@@ -143,15 +134,19 @@
 <script>
 import common from "@/services/common.js";
 import VueJwtDecode from "vue-jwt-decode";
+// import Header from './Header.vue';
+import tableHeader from './Table_header.vue';
 export default {
+  components: {tableHeader },
   props: ["headers", "dashboard"],
   data: () => ({
+    round:"",
     dialog: false,
     dialogDelete: false,
     page: 1,
     pageCount: 0,
     itemsPerPage: 10,
-    desserts: [],
+    students: [],
     editedIndex: -1,
     editedItem: {
       name: "",
@@ -173,29 +168,23 @@ export default {
     ).UserName;
 
     console.log(this.adminUser);
-    // common.getAuditionStatus().then((res) => {
-    //   console.log(res);
-    //   this.round = res.data.round;
-    //   this.tab = this.round - 1;
-    // });
+
     common.getUsers().then((res) => {
       if (res.status === 200) {
         console.log(res.data);
-        // this.items = res.data.doc;
-        // this.items = this.items.filter((item) => item.role === "s");
-        // this.completed = this.items.filter(
-        //   (item) => item.status === "selected" || item.status === "rejected"
+        this.students = res.data.doc;
+        this.students = this.students.filter((stu) => stu.role === "s");
+        // this.completed = this.students.filter(
+        //   (stu) => stu.status === "selected" || item.status === "rejected"
         // );
       } else if (res.status === 401) {
-        // alert("UNAUTHORISED ACCESS");
-        // localStorage.clear("token");
-        // this.$router.push("/");
+        alert("UNAUTHORISED ACCESS");
+        localStorage.clear("token");
+        this.$router.push("/");
       } else {
-        // alert("No data");
+        alert("No data");
       }
     });
-
-    // this.$vuetify.theme.dark = true;
   },
   computed: {
     formTitle() {
@@ -212,85 +201,7 @@ export default {
     },
   },
 
-  // created() {
-  //   this.initialize();
-  // },
-
   methods: {
-    initialize() {
-      this.desserts = [
-        {
-          name: "Frozen Yogurt",
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-        },
-        {
-          name: "Ice cream sandwich",
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-        },
-        {
-          name: "Eclair",
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-        },
-        {
-          name: "Cupcake",
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-        },
-        {
-          name: "Gingerbread",
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-        },
-        {
-          name: "Jelly bean",
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-        },
-        {
-          name: "Lollipop",
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-        },
-        {
-          name: "Honeycomb",
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-        },
-        {
-          name: "Donut",
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-        },
-        {
-          name: "KitKat",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-        },
-      ];
-    },
 
     editItem(item) {
       this.editedIndex = this.desserts.indexOf(item);
