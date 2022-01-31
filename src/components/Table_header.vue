@@ -4,9 +4,10 @@
       <v-list-item-content style="height: 50px">
         <div class="text-overline mb-4">
           <div class="pointer"></div>
-          PARTICIPANTS
-          <template>
-            <v-tabs v-model="tab" align-with-title>
+          <div v-if="dashboard">PARTICIPANTS</div>
+          
+          <template v-if="!dashboard" >
+            <v-tabs v-model="tab" align-with-title background-color="transparent">
               <v-tabs-slider color="yellow"></v-tabs-slider>
 
               <v-tab v-for="item in Role" :key="item">
@@ -23,8 +24,9 @@
 <script>
 
 export default({
+    props:["dashboard"],
   data: () => ({
-    Role: ["su", "m", "s"],
+    Role: ["STUDENT", "MEMBER", "SUPERUSER"],
   }),
 })
 </script>

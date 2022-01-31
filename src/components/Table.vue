@@ -1,6 +1,6 @@
 <template>
   <div class="table-container">
-    <tableHeader/>
+    <tableHeader :dashboard="dashboard"/>
     <v-data-table
       :headers="headers"
       :items="students"
@@ -207,19 +207,19 @@ export default {
   methods: {
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.students.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.students.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
+      this.students.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
@@ -243,7 +243,7 @@ export default {
       if (this.editedIndex > -1) {
         Object.assign(this.desserts[this.editedIndex], this.editedItem);
       } else {
-        this.desserts.push(this.editedItem);
+        this.students.push(this.editedItem);
       }
       this.close();
     },

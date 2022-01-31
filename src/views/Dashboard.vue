@@ -1,6 +1,6 @@
 <template>
   <div class="background">
-    <NavigationDrawer/>
+    <NavigationDrawer :role="role"/>
     <div class="main">
     <Round/>
     <Stats/> 
@@ -32,6 +32,8 @@ import NavigationDrawer from '../components/Navigation.vue'
 import Stats from '../components/Stats-Section.vue'
 import Round from '../components/Round.vue'
 import Table from '../components/Table.vue'
+import VueJwtDecode from "vue-jwt-decode";
+// import common from "../services/common.js";
 export default {
     name: 'Dashboard',
     components:{
@@ -53,6 +55,12 @@ export default {
         { text: 'Status', value: 'status' },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
+      role:""
     }),
+    created() {
+
+            var tok = VueJwtDecode.decode(localStorage.getItem("token").substring(6));
+            this.role = tok.role;
+    },
   }
 </script>
