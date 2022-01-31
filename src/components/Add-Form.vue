@@ -5,7 +5,7 @@
         <v-row align="center">
           <v-col class="d-flex flex-column mx-10" cols="12" sm="12">
               ROUND TIME:
-              <input type="number" style="width:20%" v-bind="Rtime">
+              <input type="number" style="width:20%" v-model="Rtime">
               QUESTION:
               <input
               outlined
@@ -221,8 +221,12 @@ export default {
     },
     saveRound() {
       var round = { time: this.Rtime, questions: this.Questions };
+      console.log(round)
       common.addround(round).then(res => {
+        console.log("==========")
         console.log(res.data);
+        console.log("==========")
+        localStorage.removeItem("Questions");
         this.snackbar = true;
         this.Questions.splice(0,this.Questions.length)  
       });
