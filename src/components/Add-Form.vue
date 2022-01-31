@@ -5,7 +5,7 @@
         <v-row align="center">
           <v-col class="d-flex flex-column mx-10" cols="12" sm="12">
               ROUND TIME:
-              <input type="number" style="width:20%" v-bind="Rtime">
+              <input type="number" style="width:20%" v-model="Rtime">
               QUESTION:
               <input
               outlined
@@ -21,18 +21,6 @@
               <UploadAudio :AudioLink="AudioLink"/> 
               </div>
             </div>
-            <v-row class="ma-3">
-              <v-col>
-                <v-btn
-                  color="#BEFFC1"
-                  v-if="showMediabtn"
-                  class="black--text"
-                  @click="uploadMedia"
-                >
-                  SAVE MEDIA
-                </v-btn>
-              </v-col>
-            </v-row>
             QUSETION TYPE:
             <v-select
               :items="Qtype"
@@ -195,6 +183,8 @@ export default {
           quesType: this.Questype,
           options: this.options,
         });
+        console.log(this.ImgLink);
+        console.log("==");
         console.log(this.Questions);
         this.Ques = [];
         this.Questype = "";
@@ -206,26 +196,14 @@ export default {
         this.showBtn = true;
       }
     },
-    uploadImage() {
-      this.Media = "IMAGE";
-    },
-    uploadAudio() {
-      this.Media = "AUDIO";
-    },
-    uploadMedia() {
-      console.log(this.selectedFile.name);
-      this.MediaFiles.push({
-        file: this.selectedFile.name,
-      });
-      this.Media = "";
-    },
     saveRound() {
       var round = { time: this.Rtime, questions: this.Questions };
       common.addround(round).then(res => {
         console.log(res.data);
         this.snackbar = true;
+        localStorage.removeItem("Questions");
         this.Questions.splice(0,this.Questions.length)  
-      });
+      });  
     }
   },
   // beforeCreate() {
