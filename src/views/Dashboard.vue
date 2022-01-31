@@ -46,7 +46,7 @@ export default {
           text: 'Name',
           align: 'start',
           sortable: false,
-          value: 'name',
+          value: 'username',
         },
         { text: 'Phone No', value: 'ph.no' },
         { text: 'Email', value: 'email' },
