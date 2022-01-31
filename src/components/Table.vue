@@ -2,394 +2,382 @@
   <div class="table-container">
     <div class="table-header">
       <v-list-item three-line>
-      <v-list-item-content style="height:50px">
-        <div class="text-overline mb-4">
-          <div class="pointer"></div> PARTICIPANTS
-        </div>
-      </v-list-item-content>
+        <v-list-item-content style="height: 50px">
+          <div class="text-overline mb-4">
+            <div class="pointer"></div>
+            PARTICIPANTS
+          </div>
+        </v-list-item-content>
       </v-list-item>
     </div>
-  <v-data-table
-    :headers="headers"
-    :items="desserts"
-    sort-by="calories"
-    class="elevation-8 pa-5"
-    :page.sync="page"
-    :items-per-page="itemsPerPage"
-    hide-default-footer
-    @page-count="pageCount = $event"
-    style="width:95%; background-color:#1A1D1F"
-  >
-    <template v-slot:top>
-      <div v-if="dashboard"
-      >
-        
-        <v-dialog
-          v-model="dialog"
-          max-width="500px"
-        >
-        <v-card>
-           <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.name"
-                      label="Name"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.phoneNo"
-                      label="Ph. No."
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.email"
-                      label="Email"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
+    <v-data-table
+      :headers="headers"
+      :items="desserts"
+      sort-by="calories"
+      class="elevation-8 pa-5"
+      :page.sync="page"
+      :items-per-page="itemsPerPage"
+      hide-default-footer
+      @page-count="pageCount = $event"
+      style="width: 95%; background-color: #1a1d1f"
+    >
+      <template v-slot:top>
+        <div v-if="dashboard">
+          <v-dialog v-model="dialog" max-width="500px">
+            <v-card>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.name"
+                        label="Name"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.phoneNo"
+                        label="Ph. No."
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.email"
+                        label="Email"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
 
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="close"
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="close">
+                  Cancel
+                </v-btn>
+                <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-dialog v-model="dialogDelete" max-width="500px">
+            <v-card>
+              <v-card-title class="text-h5"
+                >Are you sure you want to delete this item?</v-card-title
               >
-                Cancel
-              </v-btn>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="save"
-              >
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </div>
-      <div v-if="!dashboard"
-      >
-        
-        <v-dialog
-          v-model="dialog"
-          max-width="500px"
-          
-        >
-        <v-card>
-           <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-select
-              :items="Role"
-              v-model="editedItem.role"
-              label="Role"
-              dense
-              outlined
-              class="mb-10 dropdown"
-              style="width: 100%; border:0.2px solid #7B849F; height:40px"
-            ></v-select>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="closeDelete"
+                  >Cancel</v-btn
+                >
+                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                  >OK</v-btn
+                >
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </div>
+        <div v-if="!dashboard">
+          <v-dialog v-model="dialog" max-width="500px">
+            <v-card>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-select
+                        :items="Role"
+                        v-model="editedItem.role"
+                        label="Role"
+                        dense
+                        outlined
+                        class="mb-10 dropdown"
+                        style="
+                          width: 100%;
+                          border: 0.2px solid #7b849f;
+                          height: 40px;
+                        "
+                      ></v-select>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
 
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="close"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="save"
-              >
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        
-      </div>
-    </template>
-    <template v-slot:[`item.actions`]="{ item }">
-      <v-row>
-      <v-col>
-      <v-icon
-        small
-        class="mr-2"
-        @click="editItem(item)"
-      >
-        mdi-pencil
-      </v-icon>
-      <v-icon
-        small
-        @click="deleteItem(item)" v-if="dashboard"
-      >
-        mdi-delete
-      </v-icon>
-      </v-col>
-      <v-col>
-      <v-icon v-if="dashboard" @click="$router.push('/st_details')">mdi-open-in-new</v-icon>
-      </v-col>
-      </v-row>
-    </template>
-      
-  </v-data-table>
-  <v-pagination
-        v-model="page"
-        :length="pageCount"
-        color="#B5E4CA"
-        class="ma-5"
-      ></v-pagination>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="close">
+                  Cancel
+                </v-btn>
+                <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </div>
+      </template>
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-row>
+          <v-col>
+            <v-icon small class="mr-2" @click="editItem(item)">
+              mdi-pencil
+            </v-icon>
+            <v-icon small @click="deleteItem(item)" v-if="dashboard">
+              mdi-delete
+            </v-icon>
+          </v-col>
+          <v-col>
+            <v-icon v-if="dashboard" @click="$router.push('/st_details')"
+              >mdi-open-in-new</v-icon
+            >
+          </v-col>
+        </v-row>
+      </template>
+    </v-data-table>
+    <v-pagination
+      v-model="page"
+      :length="pageCount"
+      color="#B5E4CA"
+      class="ma-5"
+    ></v-pagination>
   </div>
 </template>
 
 <script>
-  export default {
-    props: ["headers","dashboard"],
-    data: () => ({
-      dialog: false,
-      dialogDelete: false,
-      page: 1,
-        pageCount: 0,
-        itemsPerPage: 10,
-      desserts: [],
-      editedIndex: -1,
-      editedItem: {
-        name: '',
-        phoneNo: '',
-        email: '',
-      },
-      defaultItem: {
-        name: '',
-        phoneNo: '',
-        email: '',
-        status: '',
-        role:''
-      },
-      Role: ["su","m","s"],
-    }),
+import common from "@/services/common.js";
+import VueJwtDecode from "vue-jwt-decode";
+export default {
+  props: ["headers", "dashboard"],
+  data: () => ({
+    dialog: false,
+    dialogDelete: false,
+    page: 1,
+    pageCount: 0,
+    itemsPerPage: 10,
+    desserts: [],
+    editedIndex: -1,
+    editedItem: {
+      name: "",
+      phoneNo: "",
+      email: "",
+    },
+    defaultItem: {
+      name: "",
+      phoneNo: "",
+      email: "",
+      status: "",
+      role: "",
+    },
+    Role: ["su", "m", "s"],
+  }),
+  created() {
+    this.adminUser = VueJwtDecode.decode(
+      localStorage.getItem("token").substring(6)
+    ).UserName;
 
-    computed: {
-      formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-      },
+    console.log(this.adminUser);
+    // common.getAuditionStatus().then((res) => {
+    //   console.log(res);
+    //   this.round = res.data.round;
+    //   this.tab = this.round - 1;
+    // });
+    common.getUsers().then((res) => {
+      if (res.status === 200) {
+        console.log(res.data);
+        // this.items = res.data.doc;
+        // this.items = this.items.filter((item) => item.role === "s");
+        // this.completed = this.items.filter(
+        //   (item) => item.status === "selected" || item.status === "rejected"
+        // );
+      } else if (res.status === 401) {
+        // alert("UNAUTHORISED ACCESS");
+        // localStorage.clear("token");
+        // this.$router.push("/");
+      } else {
+        // alert("No data");
+      }
+    });
+
+    // this.$vuetify.theme.dark = true;
+  },
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+    },
+  },
+
+  watch: {
+    dialog(val) {
+      val || this.close();
+    },
+    dialogDelete(val) {
+      val || this.closeDelete();
+    },
+  },
+
+  // created() {
+  //   this.initialize();
+  // },
+
+  methods: {
+    initialize() {
+      this.desserts = [
+        {
+          name: "Frozen Yogurt",
+          calories: 159,
+          fat: 6.0,
+          carbs: 24,
+          protein: 4.0,
+        },
+        {
+          name: "Ice cream sandwich",
+          calories: 237,
+          fat: 9.0,
+          carbs: 37,
+          protein: 4.3,
+        },
+        {
+          name: "Eclair",
+          calories: 262,
+          fat: 16.0,
+          carbs: 23,
+          protein: 6.0,
+        },
+        {
+          name: "Cupcake",
+          calories: 305,
+          fat: 3.7,
+          carbs: 67,
+          protein: 4.3,
+        },
+        {
+          name: "Gingerbread",
+          calories: 356,
+          fat: 16.0,
+          carbs: 49,
+          protein: 3.9,
+        },
+        {
+          name: "Jelly bean",
+          calories: 375,
+          fat: 0.0,
+          carbs: 94,
+          protein: 0.0,
+        },
+        {
+          name: "Lollipop",
+          calories: 392,
+          fat: 0.2,
+          carbs: 98,
+          protein: 0,
+        },
+        {
+          name: "Honeycomb",
+          calories: 408,
+          fat: 3.2,
+          carbs: 87,
+          protein: 6.5,
+        },
+        {
+          name: "Donut",
+          calories: 452,
+          fat: 25.0,
+          carbs: 51,
+          protein: 4.9,
+        },
+        {
+          name: "KitKat",
+          calories: 518,
+          fat: 26.0,
+          carbs: 65,
+          protein: 7,
+        },
+      ];
     },
 
-    watch: {
-      dialog (val) {
-        val || this.close()
-      },
-      dialogDelete (val) {
-        val || this.closeDelete()
-      },
+    editItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
     },
 
-    created () {
-      this.initialize()
+    deleteItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
     },
 
-    methods: {
-      initialize () {
-        this.desserts = [
-          {
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-          },
-          {
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-          },
-          {
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-          },
-          {
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-          },
-          {
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9,
-          },
-          {
-            name: 'Jelly bean',
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-            protein: 0.0,
-          },
-          {
-            name: 'Lollipop',
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-            protein: 0,
-          },
-          {
-            name: 'Honeycomb',
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-            protein: 6.5,
-          },
-          {
-            name: 'Donut',
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-            protein: 4.9,
-          },
-          {
-            name: 'KitKat',
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-            protein: 7,
-          },
-        ]
-      },
-
-      editItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
-
-      deleteItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialogDelete = true
-      },
-
-      deleteItemConfirm () {
-        this.desserts.splice(this.editedIndex, 1)
-        this.closeDelete()
-      },
-
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      closeDelete () {
-        this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
-        } else {
-          this.desserts.push(this.editedItem)
-        }
-        this.close()
-      },
-      // popup() {
-      // var payload = a;
-      // payload["lastUser"] = this.adminUser;
-      // console.log(this.adminUser);
-      // common.updateEntry(payload);
-      // let routeData = this.$router.resolve({
-      //   name: "UserControl",
-      //   query: { id: a._id },
-      // });
-
-      // window.open(routeData.href, "_blank");
-      // router.push('/log');
-      // },
+    deleteItemConfirm() {
+      this.desserts.splice(this.editedIndex, 1);
+      this.closeDelete();
     },
-  }
+
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+      } else {
+        this.desserts.push(this.editedItem);
+      }
+      this.close();
+    },
+    // popup() {
+    // var payload = a;
+    // payload["lastUser"] = this.adminUser;
+    // console.log(this.adminUser);
+    // common.updateEntry(payload);
+    // let routeData = this.$router.resolve({
+    //   name: "UserControl",
+    //   query: { id: a._id },
+    // });
+
+    // window.open(routeData.href, "_blank");
+    // router.push('/log');
+    // },
+  },
+};
 </script>
 
 <style scoped>
-.table-header{
+.table-header {
   /* border: 2px solid red; */
   background-color: #111315;
   border-radius: 10px;
   margin: 30px;
   width: 95%;
 }
-.text-overline{
+.text-overline {
   display: flex;
   align-items: center;
 }
-.pointer{
+.pointer {
   background-color: #a692ff;
   width: 10px;
   height: 15px;
   border-radius: 10px;
   margin-right: 8px;
 }
-.table-container{
-    /* border: 2px solid red; */
-    margin-top: 50px;
-    width: 82.5vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #1A1D1F;
-    border-radius: 10px;
+.table-container {
+  /* border: 2px solid red; */
+  margin-top: 50px;
+  width: 82.5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #1a1d1f;
+  border-radius: 10px;
 }
 </style>

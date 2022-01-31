@@ -46,7 +46,7 @@ export default {
     })
   },
   addround(round) {
-    return Api().post('addround', round, {
+    return Api().post('addRound', round, {
       headers: { Authorization: localStorage.getItem("token") },
     })
 

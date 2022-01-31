@@ -198,8 +198,12 @@ export default {
     },
     saveRound() {
       var round = { time: this.Rtime, questions: this.Questions };
+      console.log(round)
       common.addround(round).then(res => {
+        console.log("==========")
         console.log(res.data);
+        console.log("==========")
+        localStorage.removeItem("Questions");
         this.snackbar = true;
         localStorage.removeItem("Questions");
         this.Questions.splice(0,this.Questions.length)  
