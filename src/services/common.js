@@ -96,7 +96,7 @@ export default {
     })
   },
   updateAnswer(payload) {
-    return Api().put('student/answer', payload, {
+    return Api().put('/student/answer', payload, {
       headers: { Authorization: localStorage.getItem("token") }
 
     })
