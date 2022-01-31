@@ -23,7 +23,7 @@
 export default {
   name: 'Timer',
   mounted() {
-    this.startTimer();
+    this.timerInterval = setInterval(() => (this.timePassed += 1), 1000);
   },
   props: ["time", "mobileView"],
   data() {
@@ -34,10 +34,10 @@ export default {
     }
   },
   computed: {
-    seconds() {
+    seconds: function() {
       return Math.trunc(this.timeLeft % 60);
     },
-    minutes() {
+    minutes: function() {
       return Math.trunc(this.timeLeft / 60);
     },
     // hours() {
@@ -46,7 +46,7 @@ export default {
     // days() {
     //   return Math.trunc((this.date - this.now) / 60 / 60 / 24);
     // },
-    timeLeft() {
+    timeLeft: function() {
       return this.time - this.timePassed;
     }
   },
@@ -63,7 +63,7 @@ export default {
       clearInterval(this.timerInterval);
     },
     startTimer() {
-      this.timerInterval = setInterval(() => (this.timePasses += 1), 1000);
+      this.timerInterval = setInterval(() => (this.timePassed += 1), 1000);
     },
   }
 }

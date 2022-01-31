@@ -80,7 +80,7 @@
               </div>
             </v-list-item-content>
           </v-list-item>
-          <Timer :class="{ 'mr-4': vertical }" :date="time" :mobileView="!vertical" />
+          <Timer :class="{ 'mr-4': vertical }" :time="time" :mobileView="!vertical" />
         </div>
         <v-tabs
           v-model="tab"
@@ -217,7 +217,7 @@ export default {
     questions: [],
     tab: null,
     timeNow: Date.now(),
-    time: 3600000,
+    time: null,
     drawer: false,
     uuid: VueJwtDecode.decode(localStorage.getItem("token").substring(6)).uuid,
   }),
@@ -244,13 +244,11 @@ export default {
     if (localStorage.getItem("token") === null) {
       this.$router.push("/");
     } else {
-      console.log("lol");
+      //console.log("lol");
       common.getstudentRound().then(res => {
-        console.log(res.data.time)
+        /* console.log(res.data.time)
+        console.log(new Date(res.data.time).toLocaleTimeString('en-US')) */
         let t = res.data.time - 2000 - new Date().getTime();
-        console.log("============")
-        console.log(t);
-        console.log("============")
         if (t > 0) {
           this.time = Math.round(t / 1000);
           this.questions = res.data.data[0].question_set_models;

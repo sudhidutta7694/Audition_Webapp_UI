@@ -40,11 +40,11 @@
           dense
           counter
           chips
-          accept="image/png, image/jpeg, image/bmp, image/jpg, audio/mp3, audio/wav, .txt, .zip, .cpp, .js, .css, .html, .c"
           color="success"
           prepend-icon="mdi-file"
           label="Pick an File"
           outlined
+          @change="upload"
         />
       </div>
       <v-btn
@@ -77,8 +77,11 @@ export default {
   data: () => ({
     test: [],
     answer: "",
-    file: null,
-    fileLink: null,
+    file: "",
+    fileLink: "",
+    errorDialog:Boolean,
+    errorText:"",
+    maxSize:1024,
   }),
   components: {
     VuetifyAudio: () => import('vuetify-audio'),
@@ -143,10 +146,33 @@ export default {
         console.log(current_answer)
       });
     },
+    async onFileChange(event) {
+      console.log("Lol")
+      let fieldName = event.target.name
+      let file = event.target.files
+      console.log(fieldName)
+      console.log(file)
+        // const { maxSize } = this
+        let imageFile = file[0]
+        if (file.length>0) {
+          // let size = imageFile.size / maxSize / maxSize
+          let formData = new FormData()
+            // let imageURL = URL.createObjectURL(imageFile)
+            formData.append(fieldName, imageFile)
+            // Emit the FormData and image URL to the parent component
+            // this.$emit('input', { formData, imageURL })
+            await common.upload(formData).then(res => {
+                console.log(res.data);
+                this.fileLink = res.data.link;
+            });
+        }
+    },
     upload() {
-      common.upload(this.file).then((res) => {
-        console.log(res.data)
-        this.fileLink = res.data
+      let formData = new FormData()
+      formData.append("file", this.file, this.file.name);
+      common.upload(formData).then((res) => {
+        console.log(res.data.link)
+        this.fileLink = res.data.link
 
       })
     }
