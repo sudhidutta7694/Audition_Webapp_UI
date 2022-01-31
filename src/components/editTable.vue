@@ -209,6 +209,7 @@
 </template>
 
 <script>
+import common from "@/services/common.js";
 export default {
   data() {
     return {
@@ -260,6 +261,12 @@ export default {
       ],
     };
   },
+  beforeCreate() {
+    common.getRounds().then(res => {
+      console.log(res);
+      this.rounds = res.data;
+    });
+  },
   watch: {
     dialog(val) {
       val || this.close();
@@ -277,7 +284,13 @@ export default {
         this.e6 = n + 2;
       }
     },
-
+    datapopulate(round) {
+      this.time = round.time;
+      this.questions = round.questions;
+      if (this.panel != undefined) {
+        this.questions = null;
+      }
+    },
     editItem(item) {
       this.editedIndex = this.Questions.indexOf(item);
       this.editedItem = Object.assign({}, item);
