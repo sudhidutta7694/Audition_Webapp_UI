@@ -191,8 +191,8 @@ export default {
     addQues() {
       if (this.Ques !== "") {
         this.Questions.push({
-          Ques: this.Ques,
-          Questype: this.Questype,
+          quesText: this.Ques,
+          quesType: this.Questype,
           options: this.options,
         });
         console.log(this.Questions);
@@ -250,7 +250,13 @@ export default {
         console.log(this.file);
       }
     }
-  }
+  },
+  mounted() {
+    console.log("App mounted!");
+    if (localStorage.getItem("Questions"))
+      this.Questions = JSON.parse(localStorage.getItem("Questions"));
+    else localStorage.removeItem("Questions");
+  },
 }
 </script>
 
