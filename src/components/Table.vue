@@ -258,7 +258,7 @@ export default {
     common.updateEntry(payload);
     let routeData = this.$router.resolve({
       name: "St_details",
-      query: { id: a._id },
+      query: { uuid: a.uuid },
     });
 
     window.open(routeData.href, "_blank");
