@@ -80,11 +80,7 @@
               </div>
             </v-list-item-content>
           </v-list-item>
-          <Timer
-            :class="{ 'mr-4': vertical }"
-            :date="time"
-            :mobileView="!vertical"
-          />
+          <Timer :class="{ 'mr-4': vertical }" :date="time" :mobileView="!vertical" />
         </div>
         <v-tabs
           v-model="tab"
@@ -97,7 +93,11 @@
           <v-tab class="utab" v-for="(question, i) in questions" :key="i">Q. {{ i + 1 }}</v-tab>
 
           <v-tab-item v-for="(question, i) in questions" :key="i">
-            <Textques :question="question" :mobileView="!vertical" v-if="question.quesType === 'Subjective'" />
+            <Textques
+              :question="question"
+              :mobileView="!vertical"
+              v-if="question.quesType === 'Subjective'"
+            />
             <Mcqs :question="question" :mobileView="!vertical" v-if="question.quesType === 'Mcq'" />
             <Mcqm :question="question" :mobileView="!vertical" v-if="question.quesType === 'Mcqm'" />
             <FileUpload
@@ -113,7 +113,7 @@
         style="width: 80%"
         :class="{ 'justify-center': !vertical }"
       >
-        <v-btn
+        <!-- <v-btn
           class="ma-2 black--text"
           :loading="loading"
           :disabled="loading"
@@ -121,7 +121,7 @@
           @click="saveOptions"
         >
           <v-icon class="mr-2">mdi-content-save</v-icon>Save
-        </v-btn>
+        </v-btn>-->
         <v-btn
           class="ma-2 black--text"
           :loading="loading"
@@ -211,7 +211,13 @@ export default {
     FileUpload,
   },
   data: () => ({
-    questions: [],
+    questions: [
+      {
+        quesType: 'Subjective',
+        quesText: 'Why am I here?',
+        qid: 1,
+      }
+    ],
     tab: null,
     timeNow: Date.now(),
     time: 3600000,
