@@ -46,9 +46,10 @@
 
 export default {
   name: 'Stats',
+  props:["un"],
   data: () => ({
       cards: [
-        { icon:'mdi-account',title: '500',subtitle: '  Appeared Round 1', flex: 3.5 ,color:'#2F333F',progresscolor:'#B5E4CA',rotate:'-90'},
+        { icon:'mdi-account',title: '900',subtitle: '  Appeared Round 1', flex: 3.5 ,color:'#2F333F',progresscolor:'#B5E4CA',rotate:'-90'},
         { icon:'mdi-thumb-up',title: '300',subtitle: 'Evaluated', flex: 3.5,color:'#293135',progresscolor:'purple',rotate:'90'},
         { icon:'mdi-av-timer',title: '200',subtitle: 'Pending', flex: 3.5,color:'#2F333F',progresscolor:'#CABEFF',rotate:'180'},
       ],

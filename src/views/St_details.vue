@@ -223,6 +223,7 @@ export default {
       tab: null,
       status: "",
       extendtimeSnackbar:true,
+      details:[],
       items: ["ROUND 1", "ROUND 2"],
       Status: ["SELECT", "REJECT"],
       Questions: [
@@ -302,6 +303,90 @@ export default {
           },
         ],
     };
+  },
+   beforeCreate() {
+    const a = { id: this.$route.query.id };
+    console.log(a);
+    if (localStorage.getItem("token") === null) {
+      this.$router.push("/");
+    } else if (
+      VueJwtDecode.decode(localStorage.getItem("token").substring(6)).role ===
+      "s"
+    ) {
+      this.$router.push("/");
+    } else {
+      console.log(
+        VueJwtDecode.decode(localStorage.getItem("token").substring(6))
+          .clearance
+      );
+      common.getUser(a).then((res) => {
+        if (res.status === 200) {
+          this.details = res.data;
+          for (var i = 1; i <= this.details.round; i++) {
+            this.filteroptions.push(`Round ${i}`);
+          }
+          console.log(this.details);
+          this.status = res.data.status;
+          if (
+            VueJwtDecode.decode(localStorage.getItem("token").substring(6))
+              .clearance >= res.data.round ||
+            VueJwtDecode.decode(localStorage.getItem("token").substring(6))
+              .role === "su"
+          ) {
+            this.clearance = false;
+          }
+          if (
+            VueJwtDecode.decode(localStorage.getItem("token").substring(6))
+              .role === "su"
+          ) {
+            this.subool = true;
+          }
+          console.log(res);
+
+          common.getRounds().then((response) => {
+            this.rounds = response.data;
+            this.details.answers.forEach((round) => {
+              var findround = this.rounds.find(
+                (element) => element.roundNo == round.roundNo
+              );
+              var roundentry = {
+                roundNo: round.roundNo,
+                questions: [],
+              };
+              round.questions.forEach((question) => {
+                var foundques = findround.questions.find(
+                  (element) => element._id === question.qid
+                );
+                if (foundques != undefined) {
+                  var a = {
+                    quesType: question.qtype,
+                    answer: question.answer,
+                    _id: question.qid,
+                    quesLink: foundques.quesLink,
+                    quesText: foundques.quesText,
+                    options: foundques.options,
+                  };
+                  roundentry.questions.push(a);
+                }
+              });
+              this.answers.push(roundentry);
+            });
+            this.tab = this.answers.length - 1;
+          });
+          common.getAuditionStatus().then((res) => {
+            console.log(res);
+            this.currentround = res.data.round;
+          });
+          console.log(this.answers.length);
+        } else if (res.status === 401) {
+          alert("UNAUTHORISED ACCESS");
+          localStorage.clear("token");
+          this.$router.push("/");
+        } else {
+          alert("No data");
+        }
+      });
+    }
   },
 };
 </script>

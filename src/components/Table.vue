@@ -115,7 +115,7 @@
             </v-icon>
           </v-col>
           <v-col>
-            <v-icon v-if="dashboard" @click="$router.push('/st_details')"
+            <v-icon v-if="dashboard" @click="popup(item)"
               >mdi-open-in-new</v-icon
             >
           </v-col>
@@ -138,7 +138,7 @@ import VueJwtDecode from "vue-jwt-decode";
 import tableHeader from './Table_header.vue';
 export default {
   components: {tableHeader },
-  props: ["headers", "dashboard"],
+  props: ["headers", "dashboard","un"],
   data: () => ({
     round:"",
     dialog: false,
@@ -177,6 +177,10 @@ export default {
         console.log(this.members)
         this.members.forEach((e) => this.students.push(e[0]))
         this.students = this.students.filter((stu) => stu.role === "s");
+        this.students.filter((stu) => {
+          if(stu.status === "unevaluated")
+            this.un++;
+        });
         // this.completed = this.students.filter(
         //   (stu) => stu.status === "selected" || item.status === "rejected"
         // );
@@ -247,19 +251,18 @@ export default {
       }
       this.close();
     },
-    // popup() {
-    // var payload = a;
+    popup(a) {
+    var payload = a;
     // payload["lastUser"] = this.adminUser;
     // console.log(this.adminUser);
-    // common.updateEntry(payload);
-    // let routeData = this.$router.resolve({
-    //   name: "UserControl",
-    //   query: { id: a._id },
-    // });
+    common.updateEntry(payload);
+    let routeData = this.$router.resolve({
+      name: "St_details",
+      query: { id: a._id },
+    });
 
-    // window.open(routeData.href, "_blank");
-    // router.push('/log');
-    // },
+    window.open(routeData.href, "_blank");
+    },
   },
 };
 </script>

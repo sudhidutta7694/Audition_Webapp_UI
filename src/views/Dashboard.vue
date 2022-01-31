@@ -3,8 +3,8 @@
     <NavigationDrawer :role="role"/>
     <div class="main">
     <Round/>
-    <Stats/> 
-    <Table :headers="dashHeaders" :dashboard="true"/>
+    <Stats :un="un"/> 
+    <Table :headers="dashHeaders" :dashboard="true" :un="un"/>
     </div>
   </div>
 </template>
@@ -43,6 +43,7 @@ export default {
        Table
     },
     data: () => ({
+      un:0,
       dashHeaders: [
         {
           text: 'Name',
