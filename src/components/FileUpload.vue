@@ -40,7 +40,7 @@
           dense
           counter
           chips
-          accept="image/png, image/jpeg, image/bmp, .zip"
+          accept="image/png, image/jpeg, image/bmp, image/jpg, audio/mp3, audio/wav, .txt, .zip, .cpp, .js, .css, .html, .c"
           color="success"
           prepend-icon="mdi-file"
           label="Pick an File"
@@ -104,6 +104,9 @@ export default {
           localStorage.getItem("answers") === null &&
           (this.admin === null || this.admin === undefined)
         ) {
+          console.log("============")
+          console.log(this.file)
+          console.log("============")
           var newanswer = {
             answer: this.answer,
             qid: this.question.quesId,
