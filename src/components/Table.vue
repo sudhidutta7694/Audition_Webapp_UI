@@ -172,7 +172,7 @@ export default {
     common.getUsers().then((res) => {
       if (res.status === 200) {
         console.log(res.data);
-        this.students = res.data.doc;
+        this.students = res.data;
         this.students = this.students.filter((stu) => stu.role === "s");
         // this.completed = this.students.filter(
         //   (stu) => stu.status === "selected" || item.status === "rejected"

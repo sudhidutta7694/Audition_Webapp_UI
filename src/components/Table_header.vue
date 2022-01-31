@@ -9,7 +9,7 @@
             <v-tabs v-model="tab" align-with-title>
               <v-tabs-slider color="yellow"></v-tabs-slider>
 
-              <v-tab v-for="item in items" :key="item">
+              <v-tab v-for="item in Role" :key="item">
                 {{ item }}
               </v-tab>
             </v-tabs>
@@ -23,7 +23,9 @@
 <script>
 
 export default({
-  items:["a","b","c"]
+  data: () => ({
+    Role: ["su", "m", "s"],
+  }),
 })
 </script>
 
