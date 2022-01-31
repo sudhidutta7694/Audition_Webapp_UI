@@ -146,6 +146,7 @@ export default {
     page: 1,
     pageCount: 0,
     itemsPerPage: 10,
+    members: [],
     students: [],
     editedIndex: -1,
     editedItem: {
@@ -154,7 +155,7 @@ export default {
       email: "",
     },
     defaultItem: {
-      name: "",
+      username: "",
       phoneNo: "",
       email: "",
       status: "",
@@ -171,8 +172,10 @@ export default {
 
     common.getUsers().then((res) => {
       if (res.status === 200) {
-        console.log(res.data);
-        this.students = res.data.doc;
+        // console.log(res.data);
+        this.members = res.data.data;
+        console.log(this.members)
+        this.members.forEach((e) => this.students.push(e[0]))
         this.students = this.students.filter((stu) => stu.role === "s");
         // this.completed = this.students.filter(
         //   (stu) => stu.status === "selected" || item.status === "rejected"

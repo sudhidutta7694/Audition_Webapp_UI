@@ -71,20 +71,6 @@ export default {
     beforeCreate() {
         common.getStudent().then((res) => {
             this.student = res.data;
-            console.log("===========")
-            console.log(this.student)
-            console.log(this.student)
-            console.log(this.student)
-            console.log(this.student)
-            console.log(this.student)
-            console.log(this.student)
-            console.log(this.student)
-            console.log(this.student)
-            console.log(this.student)
-            console.log(this.student)
-            console.log(this.student)
-            console.log(this.student)
-            console.log("===========")
         });
         common.getAuditionStatus().then((res) => {
             this.audition = (res.data);
