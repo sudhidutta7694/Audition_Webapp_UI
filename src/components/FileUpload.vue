@@ -47,6 +47,15 @@
           outlined
         />
       </div>
+      <v-btn
+        class="ma-2 black--text"
+        :loading="loading"
+        :disabled="loading"
+        color="#4288CA"
+        @click="upload"
+      >
+        <v-icon class="mr-2">mdi-cloud-upload</v-icon>
+      </v-btn>
     </v-container>
     <v-btn
       class="ma-2 black--text"
@@ -69,6 +78,7 @@ export default {
     test: [],
     answer: "",
     file: null,
+    fileLink: null,
   }),
   components: {
     VuetifyAudio: () => import('vuetify-audio'),
@@ -88,6 +98,44 @@ export default {
 
   methods: {
     saveAnswer() {
+      if (
+        localStorage.getItem("answers") === null &&
+        (this.admin === null || this.admin === undefined)
+      ) {
+        var newanswer = {
+          answer: this.answer,
+          qid: this.question.quesId,
+          qtype: this.question.quesType,
+          roundInfo: this.question.roundmodelRoundNo,
+          ansLink: this.fileLink,
+          userUuid: this.uuid,
+        };
+        var ans = [];
+        ans.push(newanswer);
+        localStorage.setItem("answers", JSON.stringify(ans));
+      } else {
+        var answers = JSON.parse(localStorage.getItem("answers"));
+        var foundanswer = false;
+        answers.forEach(answer => {
+          if (answer.qid === this.question.quesId) {
+            answer.ansLink = this.fileLink;
+            foundanswer = true;
+          }
+        });
+        if (foundanswer === false) {
+          var newans = {
+            answer: this.answer,
+            qid: this.question.quesId,
+            qtype: this.question.quesType,
+            roundInfo: this.question.roundmodelRoundNo,
+            ansLink: this.fileLink,
+            userUuid: this.uuid,
+          };
+          answers.push(newans);
+        }
+        localStorage.setItem("answers", JSON.stringify(answers));
+      }
+
       var current_answer = JSON.parse(localStorage.getItem("answers")).find(
         answer => answer.qid === this.question.quesId
       );
@@ -95,54 +143,58 @@ export default {
         console.log(current_answer)
       });
     },
-  },
-  watch: {
-    file: {
-      handler() {
-        console.log(this.file);
-        if (
-          localStorage.getItem("answers") === null &&
-          (this.admin === null || this.admin === undefined)
-        ) {
-          console.log("============")
-          console.log(this.file)
-          console.log("============")
-          var newanswer = {
-            answer: this.answer,
-            qid: this.question.quesId,
-            qtype: this.question.quesType,
-            roundInfo: this.question.roundmodelRoundNo,
-            ansLink: this.file,
-            userUuid: this.uuid,
-          };
-          var ans = [];
-          ans.push(newanswer);
-          localStorage.setItem("answers", JSON.stringify(ans));
-        } else {
-          var answers = JSON.parse(localStorage.getItem("answers"));
-          var foundanswer = false;
-          answers.forEach(answer => {
-            if (answer.qid === this.question.quesId) {
-              answer.ansLink = this.file;
-              foundanswer = true;
-            }
-          });
-          if (foundanswer === false) {
-            var newans = {
-              answer: this.answer,
-              qid: this.question.quesId,
-              qtype: this.question.quesType,
-              roundInfo: this.question.roundmodelRoundNo,
-              ansLink: this.file,
-              userUuid: this.uuid,
-            };
-            answers.push(newans);
-          }
-          localStorage.setItem("answers", JSON.stringify(answers));
-        }
-      },
+    upload() {
+      common.upload(this.file).then((res) => {
+        console.log(res.data)
+        this.fileLink = res.data
+
+      })
     }
-  }
+  },
+  // watch: {
+  //   file: {
+  //     handler() {
+  //       console.log(this.file);
+  //   if(
+  //     localStorage.getItem("answers") === null &&
+  //       (this.admin === null || this.admin === undefined)
+  //         ) {
+  //   var newanswer = {
+  //     answer: this.answer,
+  //     qid: this.question.quesId,
+  //     qtype: this.question.quesType,
+  //     roundInfo: this.question.roundmodelRoundNo,
+  //     ansLink: this.file,
+  //     userUuid: this.uuid,
+  //   };
+  //   var ans = [];
+  //   ans.push(newanswer);
+  //   localStorage.setItem("answers", JSON.stringify(ans));
+  // } else {
+  //   var answers = JSON.parse(localStorage.getItem("answers"));
+  //   var foundanswer = false;
+  //   answers.forEach(answer => {
+  //     if (answer.qid === this.question.quesId) {
+  //       answer.ansLink = this.file;
+  //       foundanswer = true;
+  //     }
+  //   });
+  //   if (foundanswer === false) {
+  //     var newans = {
+  //       answer: this.answer,
+  //       qid: this.question.quesId,
+  //       qtype: this.question.quesType,
+  //       roundInfo: this.question.roundmodelRoundNo,
+  //       ansLink: this.file,
+  //       userUuid: this.uuid,
+  //     };
+  //     answers.push(newans);
+  //   }
+  //   localStorage.setItem("answers", JSON.stringify(answers));
+  // }
+  // },
+  //   }
+  // }
 }
 </script>
 
