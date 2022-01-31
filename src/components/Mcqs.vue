@@ -80,7 +80,7 @@
 import common from "../services/common.js";
 export default {
   name: "Mcqs",
-  props: ["question", "admin", "studentanswer", "mobileView","uuid"],
+  props: ["question", "admin", "studentanswer", "mobileView", "uuid"],
   data() {
     return {
       option: [],
@@ -104,88 +104,58 @@ export default {
   },
   methods: {
     saveAnswer() {
-      var current_answer = "";
-      console.log(this.answer);
-      if (
-        localStorage.getItem("answers") === null &&
-        (this.admin === null || this.admin === undefined)
-      ) {
-        var newanswer = {
-          answer: this.answer,
-          qid: this.question.quesId,
-          qtype: this.question.quesType,
-          roundInfo: this.question.roundmodelRoundNo,
-          ansLink: null,
-          userUuid: this.uuid,
-        };
-        var ans = [];
-        ans.push(newanswer);
-        current_answer = newanswer;
-        localStorage.setItem("answers", JSON.stringify(ans));
-      } else {
-        var answers = JSON.parse(localStorage.getItem("answers"));
-        var foundanswer = false;
-        answers.forEach(answer => {
-          if (answer.qid === this.question.quesId) {
-            answer.answer = this.answer;
-            foundanswer = true;
-          }
-        });
-        if (foundanswer === false) {
-          var newans = {
-            answer: this.answer,
-          qid: this.question.quesId,
-          qtype: this.question.quesType,
-          roundInfo: this.question.roundmodelRoundNo,
-          ansLink: null,
-          userUuid: this.uuid,
-          };
-          answers.push(newans);
-          current_answer = newans;
-        }
-        localStorage.setItem("answers", JSON.stringify(answers));
-      }
-      common.updateAnswer(current_answer);
-    }
+      var current_answer = JSON.parse(localStorage.getItem("answers")).find(
+        answer => answer.qid === this.question.quesId
+      );
+      common.updateAnswer(current_answer).then(() => {
+        console.log(current_answer)
+      });
+    },
   },
-
-  // watch: {
-  //   answer: {
-  //     handler() {
-  //       console.log(this.answer);
-  //       if (localStorage.getItem("answers") === null) {
-  //         var newanswer = {
-  //           answer: this.answer,
-  //           qid: this.question._id,
-  //           qtype: this.question.quesType,
-  //         };
-  //         var ans = [];
-  //         ans.push(newanswer);
-  //         localStorage.setItem("answers", JSON.stringify(ans));
-  //       } else {
-  //         var answers = JSON.parse(localStorage.getItem("answers"));
-  //         var foundanswer = false;
-  //         answers.forEach((answer) => {
-  //           if (answer.qid === this.question._id) {
-  //             answer.answer = this.answer;
-  //             foundanswer = true;
-  //           }
-  //         });
-  //         if (foundanswer === false) {
-  //           var newans = {
-  //             answer: this.answer,
-  //             qid: this.question._id,
-  //             qtype: this.question.quesType,
-  //           };
-  //           answers.push(newans);
-  //         }
-
-  //         localStorage.setItem("answers", JSON.stringify(answers));
-  //       }
-  //     },
-  //     deep: true,
-  //   },
-  // },
+  watch: {
+    answer: {
+      handler() {
+        console.log(this.answer);
+        if (
+          localStorage.getItem("answers") === null &&
+          (this.admin === null || this.admin === undefined)
+        ) {
+          var newanswer = {
+            answer: this.answer,
+            qid: this.question.quesId,
+            qtype: this.question.quesType,
+            roundInfo: this.question.roundmodelRoundNo,
+            ansLink: null,
+            userUuid: this.uuid,
+          };
+          var ans = [];
+          ans.push(newanswer);
+          localStorage.setItem("answers", JSON.stringify(ans));
+        } else {
+          var answers = JSON.parse(localStorage.getItem("answers"));
+          var foundanswer = false;
+          answers.forEach(answer => {
+            if (answer.qid === this.question.quesId) {
+              answer.answer = this.answer;
+              foundanswer = true;
+            }
+          });
+          if (foundanswer === false) {
+            var newans = {
+              answer: this.answer,
+              qid: this.question.quesId,
+              qtype: this.question.quesType,
+              roundInfo: this.question.roundmodelRoundNo,
+              ansLink: null,
+              userUuid: this.uuid,
+            };
+            answers.push(newans);
+          }
+          localStorage.setItem("answers", JSON.stringify(answers));
+        }
+      },
+    }
+  }
 };
 </script>
 

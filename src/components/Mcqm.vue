@@ -16,8 +16,7 @@
             'justify-center text-center mx-auto': mobileView,
             'd-flex align-center justify-start text-left': !mobileView,
           }"
-          >{{ question.quesText }}</v-card-text
-        >
+        >{{ question.quesText }}</v-card-text>
         <div
           class="mx-auto d-flex flex-column"
           :class="{ 'flex-column justify-center': mobileView }"
@@ -66,13 +65,9 @@
             />
             <div class="option_inner d-flex flex-row py-auto">
               <div class="tickmark d-flex align-center justify-center">
-                <v-icon class="icon align-center justify-center"
-                  >mdi-check</v-icon
-                >
+                <v-icon class="icon align-center justify-center">mdi-check</v-icon>
               </div>
-              <div class="name d-flex justify-center align-center text-center">
-                {{ option }}
-              </div>
+              <div class="name d-flex justify-center align-center text-center">{{ option }}</div>
             </div>
           </label>
         </div>
@@ -118,35 +113,23 @@ export default {
   },
   methods: {
     saveAnswer() {
-      var current_answer = "";
-      console.log(this.answer);
-      if (
-        localStorage.getItem("answers") === null &&
-        (this.admin === null || this.admin === undefined)
-      ) {
-        var newanswer = {
-          answer: this.answer,
-          qid: this.question.quesId,
-          qtype: this.question.quesType,
-          roundInfo: this.question.roundmodelRoundNo,
-          ansLink: null,
-          userUuid: this.uuid,
-        };
-        var ans = [];
-        ans.push(newanswer);
-        current_answer = newanswer;
-        localStorage.setItem("answers", JSON.stringify(ans));
-      } else {
-        var answers = JSON.parse(localStorage.getItem("answers"));
-        var foundanswer = false;
-        answers.forEach((answer) => {
-          if (answer.qid === this.question.quesId) {
-            answer.answer = this.answer;
-            foundanswer = true;
-          }
-        });
-        if (foundanswer === false) {
-          var newans = {
+      var current_answer = JSON.parse(localStorage.getItem("answers")).find(
+        answer => answer.qid === this.question.quesId
+      );
+      common.updateAnswer(current_answer).then(() => {
+        console.log(current_answer)
+      });
+    },
+  },
+  watch: {
+    answer: {
+      handler() {
+        console.log(this.answer);
+        if (
+          localStorage.getItem("answers") === null &&
+          (this.admin === null || this.admin === undefined)
+        ) {
+          var newanswer = {
             answer: this.answer,
             qid: this.question.quesId,
             qtype: this.question.quesType,
@@ -154,53 +137,34 @@ export default {
             ansLink: null,
             userUuid: this.uuid,
           };
-          answers.push(newans);
-          current_answer = newans;
+          var ans = [];
+          ans.push(newanswer);
+          localStorage.setItem("answers", JSON.stringify(ans));
+        } else {
+          var answers = JSON.parse(localStorage.getItem("answers"));
+          var foundanswer = false;
+          answers.forEach(answer => {
+            if (answer.qid === this.question.quesId) {
+              answer.answer = this.answer;
+              foundanswer = true;
+            }
+          });
+          if (foundanswer === false) {
+            var newans = {
+              answer: this.answer,
+              qid: this.question.quesId,
+              qtype: this.question.quesType,
+              roundInfo: this.question.roundmodelRoundNo,
+              ansLink: null,
+              userUuid: this.uuid,
+            };
+            answers.push(newans);
+          }
+          localStorage.setItem("answers", JSON.stringify(answers));
         }
-
-        localStorage.setItem("answers", JSON.stringify(answers));
-      }
-      common.updateAnswer(current_answer);
-    },
-  },
-
-  // watch: {
-  //   answer: {
-  //     handler() {
-  //       console.log(this.answer);
-  //       if (localStorage.getItem("answers") === null) {
-  //         var newanswer = {
-  //           answer: this.answer,
-  //           qid: this.question._id,
-  //           qtype: this.question.quesType,
-  //         };
-  //         var ans = [];
-  //         ans.push(newanswer);
-  //         localStorage.setItem("answers", JSON.stringify(ans));
-  //       } else {
-  //         var answers = JSON.parse(localStorage.getItem("answers"));
-  //         var foundanswer = false;
-  //         answers.forEach((answer) => {
-  //           if (answer.qid === this.question._id) {
-  //             answer.answer = this.answer;
-  //             foundanswer = true;
-  //           }
-  //         });
-  //         if (foundanswer === false) {
-  //           var newans = {
-  //             answer: this.answer,
-  //             qid: this.question._id,
-  //             qtype: this.question.quesType,
-  //           };
-  //           answers.push(newans);
-  //         }
-
-  //         localStorage.setItem("answers", JSON.stringify(answers));
-  //       }
-  //     },
-  //     deep: true,
-  //   },
-  // },
+      },
+    }
+  }
 };
 </script>
 

@@ -17,8 +17,7 @@
               'justify-center text-center mx-auto': mobileView,
               'd-flex align-center justify-start text-left': !mobileView,
             }"
-            >{{ question.quesText }}</v-card-text
-          >
+          >{{ question.quesText }}</v-card-text>
           <div
             class="mx-auto d-flex flex-column"
             :class="{ 'flex-column justify-center': mobileView }"
@@ -105,51 +104,10 @@ export default {
   },
   methods: {
     saveAnswer() {
-      /* var current_answer = "";
-      var foundanswer = false;
-      if (
-        localStorage.getItem("answers") === null &&
-        (this.admin === null || this.admin === undefined)
-      ) {
-        var newanswer = {
-          answer: this.answer,
-          qid: this.question.quesId,
-          qtype: this.question.quesType,
-          roundInfo: this.question.roundmodelRoundNo,
-          ansLink: null,
-          userUuid: this.uuid,
-        };
-        var ans = [];
-        //current_answer = newanswer;
-        ans.push(newanswer);
-        localStorage.setItem("answers", JSON.stringify(ans));
-      } else {
-        var answers = JSON.parse(localStorage.getItem("answers"));
-        answers.forEach((answer) => {
-          if (answer.qid === this.question.quesId) {
-            answer.answer = this.answer;
-            foundanswer = true;
-          }
-        });
-        if (foundanswer === false) {
-          var newans = {
-            answer: this.answer,
-            qid: this.question.quesId,
-            qtype: this.question.quesType,
-            roundInfo: this.question.roundmodelRoundNo,
-            ansLink: null,
-            userUuid: this.uuid,
-          };
-          // current_answer = newans;
-          answers.push(newans);
-        }
-
-        localStorage.setItem("answers", JSON.stringify(answers));
-      } */
       var current_answer = JSON.parse(localStorage.getItem("answers")).find(
         answer => answer.qid === this.question.quesId
       );
-      common.updateAnswer(current_answer).then(()=>{
+      common.updateAnswer(current_answer).then(() => {
         console.log(current_answer)
       });
     },
