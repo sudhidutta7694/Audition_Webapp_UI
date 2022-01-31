@@ -96,13 +96,15 @@
             <Textques
               :question="question"
               :mobileView="!vertical"
+              :uuid="uuid"
               v-if="question.quesType === 'Subjective'"
             />
-            <Mcqs :question="question" :mobileView="!vertical" v-if="question.quesType === 'Mcq'" />
-            <Mcqm :question="question" :mobileView="!vertical" v-if="question.quesType === 'Mcqm'" />
+            <Mcqs :question="question" :mobileView="!vertical" :uuid="uuid" v-if="question.quesType === 'Mcq'" />
+            <Mcqm :question="question" :mobileView="!vertical" :uuid="uuid" v-if="question.quesType === 'Mcqm'" />
             <FileUpload
               :question="question"
               :mobileView="!vertical"
+              :uuid="uuid"
               v-if="question.quesType === 'file'"
             />
           </v-tab-item>
@@ -198,7 +200,8 @@ import Textques from "../components/Textques.vue";
 import Mcqs from "../components/Mcqs.vue";
 import Mcqm from "../components/Mcqm.vue";
 import FileUpload from "../components/FileUpload.vue";
-import common from "../services/common.js"
+import common from "../services/common.js";
+import VueJwtDecode from "vue-jwt-decode";
 //import SingleCorrect from '../components/SingleCorrect.vue';
 
 export default {
@@ -211,17 +214,12 @@ export default {
     FileUpload,
   },
   data: () => ({
-    questions: [
-      {
-        quesType: 'Subjective',
-        quesText: 'Why am I here?',
-        qid: 1,
-      }
-    ],
+    questions: [],
     tab: null,
     timeNow: Date.now(),
     time: 3600000,
     drawer: false,
+    uuid: VueJwtDecode.decode(localStorage.getItem("token").substring(6)).uuid,
   }),
   computed: {
     vertical() {
@@ -242,6 +240,7 @@ export default {
     },
   },
   beforeCreate() {
+    console.log(localStorage.getItem("token"));
     if (localStorage.getItem("token") === null) {
       this.$router.push("/");
     } else {
@@ -249,6 +248,9 @@ export default {
       common.getstudentRound().then(res => {
         console.log(res.data.time)
         let t = res.data.time - 2000 - new Date().getTime();
+        console.log("============")
+        console.log(t);
+        console.log("============")
         if (t > 0) {
           this.time = Math.round(t / 1000);
           this.questions = res.data.data[0].question_set_models;
@@ -260,9 +262,11 @@ export default {
           this.$router.push("/");
         }
       });
-      common.getAnswers().then(res => {
+     common.getAnswers().then(res => {
         console.log(res.data);
-        localStorage.setItem("answers", JSON.stringify(res.data.answers));
+        if(localStorage.getItem("answers")===null){
+          localStorage.setItem("answers", JSON.stringify(res.data.answers));
+        }
       });
     }
   },
