@@ -115,8 +115,9 @@ export default {
   },
   mounted() {
     this.token = localStorage.getItem('token');
-    if(token != null && token != undefined){
+    if (this.token != null && this.token != undefined) {
       this.$router.push("/dash")
+    }
   }
 };
 </script>

@@ -1,28 +1,60 @@
 <template>
-<div class="table-container">
-  <div class="table-header">
-    <v-list-item three-line>
-      <v-list-item-content style="height: 50px">
-        <div class="text-overline mb-4">
-          <div class="pointer"></div>
-          <div v-if="dashboard">PARTICIPANTS</div>
-          
-          <template v-if="!dashboard">
-            <v-tabs v-model="tab" align-with-title background-color="transparent">
-              <v-tabs-slider color="yellow"></v-tabs-slider>
+  <div class="table-container">
+    <v-dialog v-model="dialog" max-width="500px">
+      <v-card>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" sm="6" md="4">
+                <v-select
+                  :items="Role"
+                  v-model="role"
+                  label="Role"
+                  dense
+                  outlined
+                  class="mb-10 dropdown"
+                ></v-select>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
 
-              <v-tab v-for="item in Role_ui" :key="item" class="ml-0">
-                {{ item }}
-              </v-tab>
-            </v-tabs>
-          </template>
-        </div>
-      </v-list-item-content>
-    </v-list-item>
-  </div>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
+          <v-btn color="blue darken-1" text @click="changeRole()">
+            Save
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <div class="table-header">
+      <v-list-item three-line>
+        <v-list-item-content style="height: 50px">
+          <div class="text-overline mb-4">
+            <div class="pointer"></div>
+            <div v-if="dashboard">PARTICIPANTS</div>
+
+            <template v-if="!dashboard">
+              <v-tabs
+                v-model="tab"
+                align-with-title
+                background-color="transparent"
+              >
+                <v-tabs-slider color="yellow"></v-tabs-slider>
+
+                <v-tab v-for="item in Role_ui" :key="item" class="ml-0">
+                  {{ item }}
+                </v-tab>
+              </v-tabs>
+            </template>
+          </div>
+        </v-list-item-content>
+      </v-list-item>
+    </div>
 
     <v-data-table
-       v-if="tab == 0 || dashboard"
+      v-if="tab == 0 || dashboard"
       :headers="headers"
       :items="students"
       sort-by="calories"
@@ -43,39 +75,11 @@
         </v-row>
         <v-row>
           <v-col>
-            <v-icon small v-if="!dashboard" class="mr-2" @click="editItem()">
+            <v-icon small v-if="!dashboard" class="mr-2" @click="editItem(item)">
               mdi-pencil
             </v-icon>
           </v-col>
         </v-row>
-        <v-dialog v-model="dialog" max-width="500px">
-          <v-card>
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-select
-                      :items="Role"
-                      v-model="role"
-                      label="Role"
-                      dense
-                      outlined
-                      class="mb-10 dropdown"
-                    ></v-select>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn color="blue darken-1" text @click="changeRole(item.uuid)">
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
       </template>
     </v-data-table>
     <v-data-table
@@ -100,39 +104,11 @@
         </v-row>
         <v-row>
           <v-col>
-            <v-icon small v-if="!dashboard" class="mr-2" @click="editItem()">
+            <v-icon small v-if="!dashboard" class="mr-2" @click="editItem(item)">
               mdi-pencil
             </v-icon>
           </v-col>
         </v-row>
-        <v-dialog v-model="dialog" max-width="500px">
-          <v-card>
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-select
-                      :items="Role"
-                      v-model="role"
-                      label="Role"
-                      dense
-                      outlined
-                      class="mb-10 dropdown"
-                    ></v-select>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn color="blue darken-1" text @click="changeRole(item.uuid)">
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
       </template>
     </v-data-table>
     <v-data-table
@@ -148,48 +124,18 @@
       style="width: 95%; background-color: #1a1d1f"
     >
       <template v-slot:[`item.actions`]="{ item }">
-        <v-row>
-          <v-col>
-            <v-icon v-if="dashboard" @click="popup(item)"
+        <v-row class="pa-10" >
+          <v-col v-if="dashboard">
+            <v-icon @click="popup(item)"
               >mdi-open-in-new</v-icon
             >
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-icon small v-if="!dashboard" class="mr-2" @click="editItem()">
+         </v-col>
+          <v-col v-else>
+            <v-icon small  class="mr-2" @click="editItem(item)">
               mdi-pencil
             </v-icon>
           </v-col>
         </v-row>
-        <v-dialog v-model="dialog" max-width="500px">
-          <v-card>
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-select
-                      :items="Role"
-                      v-model="role"
-                      label="Role"
-                      dense
-                      outlined
-                      class="mb-10 dropdown"
-                    ></v-select>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn color="blue darken-1" text @click="changeRole(item.uuid)">
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
       </template>
     </v-data-table>
     <v-pagination
@@ -198,7 +144,7 @@
       color="#B5E4CA"
       class="ma-5"
     ></v-pagination>
-</div>
+  </div>
 </template>
 
 <script>
@@ -223,6 +169,7 @@ export default {
     members: [],
     students: [],
     Role: ["s", "m", "su"],
+    user:null,
     Role_ui: ["STUDENTS", "MEMBERS", "SUPERUSERS"],
   }),
   created() {
@@ -272,9 +219,11 @@ export default {
   },
 
   methods: {
-    editItem() {
+    editItem(user) {
       console.log("clicked");
       this.dialog = true;
+      this.item = user;
+      console.log(this.item);
     },
     // close() {
     //   this.dialog = false;
@@ -283,16 +232,16 @@ export default {
     //     this.editedIndex = -1;
     //   });
     // },
-    changeRole(id) {
+    changeRole() {
       var a = {
-        uuid: id,
+        uuid: this.item.uuid,
         role: this.role,
       };
       console.log(a);
       common.changeRole(a).then(() => {
         if (this.role === "m") {
           var b = {
-            uuid: id,
+            uuid: this.item.uuid,
             clearance: this.clearance,
           };
 
@@ -312,7 +261,6 @@ export default {
           common.getUsers().then((res) => {
             if (res.status === 200) {
               this.all = res.data.data;
-              
             }
           });
         }

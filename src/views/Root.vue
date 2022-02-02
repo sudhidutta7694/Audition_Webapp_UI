@@ -4,17 +4,25 @@
     <div class="main">
       <Sparkline />
       <div class="top">
-        <v-btn color="#BEFFC1" class="ma-2 black--text" @click="btnHandler()"> {{btntext}} </v-btn>
-        <v-btn light class="ma-2 black--text" v-if="audition.status === 'ong'"
-                v-on:click="extendtime"> Extend Time (By 10 min) </v-btn>
+        <v-btn color="#BEFFC1" class="ma-2 black--text" @click="btnHandler()">
+          {{ btntext }}
+        </v-btn>
+        <v-btn
+          light
+          class="ma-2 black--text"
+          v-if="audition.status === 'ong'"
+          v-on:click="extendtime"
+        >
+          Extend Time (By 10 min)
+        </v-btn>
       </div>
-      <Table :headers="rootHeaders" :dashboard="false"/>
+      <Table :headers="rootHeaders" :dashboard="false" />
       <v-snackbar
         v-model="eventSnackbar"
         class="text-center black--text snackbar"
         color="red"
         :timeout="2000"
-        >{{text}}</v-snackbar
+        >{{ text }}</v-snackbar
       >
       <v-snackbar
         v-model="extendtimeSnackbar"
@@ -60,17 +68,17 @@ export default {
   data: () => ({
     snackbar: false,
     eventSnackbar: false,
-    text:"",
-    btntext:"",
+    text: "",
+    btntext: "",
     audition: [],
-    tab:null,
+    tab: null,
     extendtimeSnackbar: false,
     rootHeaders: [
       {
         text: "Name",
         align: "start",
         sortable: false,
-        value: "uuid",
+        value: "username",
       },
       { text: "Phone No", value: "ph.no" },
       { text: "Email", value: "email" },
@@ -95,10 +103,10 @@ export default {
     });
   },
   methods: {
-    extendtime(){
-      common.extendtime({id:'all'}).then(()=>{
-        this.extendtimeSnackbar=true;
-      })
+    extendtime() {
+      common.extendtime({ id: "all" }).then(() => {
+        this.extendtimeSnackbar = true;
+      });
     },
     btnHandler() {
       if (this.audition.status === "ong") {
@@ -126,7 +134,7 @@ export default {
           }
         });
       }
-      this.eventSnackbar= true;
+      this.eventSnackbar = true;
       common.getAuditionStatus().then((res) => {
         console.log("After Btn Click:");
         console.log(res);
@@ -140,6 +148,16 @@ export default {
         }
       });
     },
+  },
+  beforeCreate() {
+    if (localStorage.getItem("token") === null) {
+      this.$router.push("/");
+    } else if (
+      VueJwtDecode.decode(localStorage.getItem("token").substring(6)).role ===
+      "s"
+    ) {
+      this.$router.push("/");
+    }
   },
 };
 </script>
