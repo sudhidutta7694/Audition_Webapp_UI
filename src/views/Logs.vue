@@ -6,18 +6,12 @@
         <v-list-item>
           <v-list-item-content style="height: 50px">
             <div class="text-overline mb-4">
-              <div class="pointer"></div>
-              LOG
+              <div class="pointer"></div>LOG
             </div>
           </v-list-item-content>
         </v-list-item>
       </v-card>
-      <v-card
-        class="overview mt-5 pa-5"
-        max-width="95%"
-        outlined
-        color="#1A1D1F"
-      >
+      <v-card class="overview mt-5 pa-5" max-width="95%" outlined color="#1A1D1F">
         <v-card-text class="py-0">
           <v-timeline align-top dense>
             <v-timeline-item color="pink" small>
@@ -122,6 +116,8 @@ export default {
         console.log("Messages");
         console.log(this.messages);
       });
+      console.log("=========")
+      console.log(this.messages)
     };
   },
 

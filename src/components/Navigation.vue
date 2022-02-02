@@ -122,7 +122,9 @@ export default {
   methods: {
     logout() {
       common.logout().then(() => {
+        localStorage.removeItem("token")
         this.$router.push("/")
+
       })
     }
   }
