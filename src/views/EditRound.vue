@@ -1,19 +1,19 @@
 <template>
   <div class="background">
-    <NavigationDrawer/>
+    <NavigationDrawer :role="role" />
     <div class="main">
-    <EditTable/>
+      <EditTable />
     </div>
   </div>
 </template>
 <style scoped>
-.background{
-    background-color:  #111315;
-    display: flex;
-    height: 100%;
-    overflow: hidden;
+.background {
+  background-color: #111315;
+  display: flex;
+  height: 100%;
+  overflow: hidden;
 }
-.main{
+.main {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -22,19 +22,31 @@
   overflow: hidden;
   margin-left: 210px;
 }
-
 </style>
 
 <script>
-import NavigationDrawer from '../components/Navigation.vue'
-import EditTable from '../components/editTable.vue'
+import NavigationDrawer from "../components/Navigation.vue";
+import EditTable from "../components/editTable.vue";
+import VueJwtDecode from "vue-jwt-decode";
 export default {
-    name: 'Dashboard',
-    components:{
-       NavigationDrawer,
-       EditTable
-
-
-    },
-  }
+  name: "Dashboard",
+  components: {
+    NavigationDrawer,
+    EditTable,
+  },
+  created() {
+    var tok = VueJwtDecode.decode(localStorage.getItem("token").substring(6));
+    this.role = tok.role;
+  },
+  beforeCreate() {
+    if (localStorage.getItem("token") === null) {
+      this.$router.push("/");
+    } else if (
+      VueJwtDecode.decode(localStorage.getItem("token").substring(6)).role ===
+      "s"
+    ) {
+      this.$router.push("/");
+    }
+  },
+};
 </script>

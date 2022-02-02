@@ -20,6 +20,7 @@
       <v-form v-if="signIn">
         <v-text-field
           v-model="emailId"
+          :rules="emailRules"
           class="mx-auto txt-in"
           label="E-MAIL ID"
           outlined
@@ -27,28 +28,22 @@
         ></v-text-field>
         <v-text-field
           v-model="passwd"
+          :rules="passwordRules"
           class="mx-auto txt-in"
           label="PASSWORD"
           type="password"
           outlined
           filled
         ></v-text-field>
-        <div
-          class="d-flex flex-column justify-center align-self-center background signinbtn"
-        >
+        <div class="d-flex flex-column justify-center align-self-center background signinbtn">
           <v-btn @click="SignIn">Sign-In</v-btn>
         </div>
       </v-form>
       <v-form class="form" v-else>
-        <v-text-field
-          v-model="name"
-          class="mx-auto txt-in"
-          label="NAME"
-          outlined
-          filled
-        ></v-text-field>
+        <v-text-field v-model="name" class="mx-auto txt-in" label="NAME" outlined filled></v-text-field>
         <v-text-field
           v-model="emailId"
+          :rules="emailRules"
           class="mx-auto txt-in"
           label="E-MAIL ID"
           outlined
@@ -56,6 +51,7 @@
         ></v-text-field>
         <v-text-field
           v-model="phoneNo"
+          :rules="phoneRules"
           class="mx-auto txt-in"
           label="PHONE NUMBER"
           outlined
@@ -66,12 +62,11 @@
           class="mx-auto txt-in"
           label="PASSWORD"
           type="password"
+          :rules="passwordRules"
           outlined
           filled
         ></v-text-field>
-        <div
-          class="d-flex flex-column justify-center align-self-center background signinbtn"
-        >
+        <div class="d-flex flex-column justify-center align-self-center background signinbtn">
           <v-btn @click="SignUp">Sign-Up</v-btn>
         </div>
       </v-form>
@@ -82,12 +77,12 @@
       <v-divider class="mt-3 mx-4"></v-divider>
     </div>
     <div class="d-flex justify-center align-center mx-auto alt">
-      <v-btn @click="googleLogin" class="google ic" icon
-        ><img class="ic" src="../assets/google.svg"
-      /></v-btn>
-      <v-btn @click="githubLogin" class="github ic" icon
-        ><img class="ic" src="../assets/github.svg"
-      /></v-btn>
+      <v-btn @click="googleLogin" class="google ic" icon>
+        <img class="ic" src="../assets/google.svg" />
+      </v-btn>
+      <v-btn @click="githubLogin" class="github ic" icon>
+        <img class="ic" src="../assets/github.svg" />
+      </v-btn>
     </div>
   </div>
 </template>
@@ -104,18 +99,25 @@ export default {
       passwd: "",
       name: "",
       phoneNo: "",
-      //   emailRules: [
-      //     (v) => !!v || "Required.",
-      //     (v) =>
-      //       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/.test(
-      //           v
-      //         ) || "Invalid Email address",
-      //   ],
+      emailRules: [
+        (v) => !!v || "Required.",
+        (v) =>
+          /^(([^<>()/[\]\\.,;:\s@"]+(\.[^<>()/[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/.test(
+            v
+          ) || "Invalid Email address",
+      ],
       passwordRules: [
         (v) => !!v || "Required.",
         (v) => v.length >= 8 || "Min 8 characters",
       ],
       errorMessage: "",
+      phoneRules: [
+        v => !!v || "Phone No is required",
+        v => /^-?(\d+\.?\d*)$|(\d*\.?\d+)$/.test(v) || "Phone no must be valid",
+        v =>
+          (v && v.length <= 10 && v.length >= 10) ||
+          "Enter a valid (91+) 10 digit Phone no"
+      ],
     };
   },
   methods: {
@@ -142,6 +144,7 @@ export default {
       const user = {
         username: this.name,
         email: this.emailId,
+        phone: this.phoneNo,
         password: this.passwd,
         isAdmin: false,
       };
@@ -151,7 +154,7 @@ export default {
           this.$router.push("/dash");
         } else {
           this.emailSnack = true;
-          this.emailId = this.passwd = this.name = "";
+          this.emailId = this.passwd = this.name = this.phoneNo = "";
         }
       });
     },

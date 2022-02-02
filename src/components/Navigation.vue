@@ -27,7 +27,7 @@
             <v-list-item-icon>
               <v-icon color="#7B849F">mdi-account</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="font-weight-bold sidebar">Student Dashboard</v-list-item-title>
+            <v-list-item-title class="font-weight-bold sidebar">Admin Panel</v-list-item-title>
           </v-list-item>
         </router-link>
         <router-link v-if="role === 'su'" :to="{ name: 'Root' }" class="navbar-items">
@@ -102,7 +102,7 @@
       </v-list>
       <template v-slot:append>
         <div class="pa-2">
-          <v-list-item link>
+          <v-list-item link @click="logout">
             <v-list-item-icon>
               <v-icon color="#7B849F">mdi-logout</v-icon>
             </v-list-item-icon>
@@ -115,10 +115,19 @@
 </template>
 
 <script>
-
+import common from '../services/common.js'
 export default {
   name: 'NavigationDrawer',
-  props: ["role"]
+  props: ["role"],
+  methods: {
+    logout() {
+      common.logout().then(() => {
+        localStorage.removeItem("token")
+        this.$router.push("/")
+
+      })
+    }
+  }
 }
 </script>
 

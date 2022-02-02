@@ -6,30 +6,34 @@
                 <v-icon class="pro_icon" size="60">mdi-account-circle-outline</v-icon>
                 <div class="text-center mx-auto text-lg-h6 mb-5">PROFILE</div>
                 <div class="mx-auto">
+                    Name:
                     <v-text-field v-model="username" readonly solo>{{ username }}</v-text-field>
                 </div>
                 <div class="mx-auto">
+                    Email Id:
                     <v-text-field v-model="emailId" readonly solo>{{ emailId }}</v-text-field>
                 </div>
-                <div class="d-flex justify-center align-center mx-auto">
+                <div class="mx-auto">
+                    Phone Number:
                     <v-text-field
                         v-model="phoneNo"
-                        label="Phone Number"
                         :disabled="!edit"
                         :readonly="!edit"
                         :solo="!edit"
                         :outlined="edit"
                         :rules="phoneRules"
+                        placeholder="Required*"
                     >{{ phoneNo }}</v-text-field>
                 </div>
-                <div class="d-flex mx-auto">
+                <div class="mx-auto">
+                    Roll Number:
                     <v-text-field
                         v-model="roll"
-                        label="Roll Number"
                         :disabled="!edit"
                         :readonly="!edit"
                         :solo="!edit"
                         :outlined="edit"
+                        placeholder="Required*"
                         :rules="rollRules"
                     >{{ roll }}</v-text-field>
                 </div>
@@ -45,7 +49,7 @@
                     v-if="edit"
                     class="black--text mx-auto mb-4"
                     color="#4288CA"
-                    @click="setProfile()"
+                    @click="setProfile"
                 >
                     <v-icon class="mr-1">mdi-content-save</v-icon>Save Profile
                 </v-btn>
@@ -69,8 +73,9 @@ export default {
             role: "",
             username: "",
             emailId: "",
-            phoneNo: null,
-            roll: null,
+            phoneNo: "",
+            roll: "",
+            profile: [],
             phoneRules: [
                 v => !!v || "Phone No is required",
                 v => /^-?(\d+\.?\d*)$|(\d*\.?\d+)$/.test(v) || "Phone no must be valid",
@@ -87,6 +92,14 @@ export default {
             ],
             edit: false,
         }
+    },
+    beforeCreate() {
+        common.getProfile().then(res => {
+            this.profile = res.data;
+            this.phoneNo = this.profile.phone;
+            this.roll = this.profile.roll;
+            console.log(this.profile);
+        });
     },
     created() {
         this.$vuetify.theme.dark = true;

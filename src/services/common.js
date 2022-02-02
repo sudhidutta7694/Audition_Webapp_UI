@@ -60,6 +60,11 @@ export default {
       headers: { Authorization: localStorage.getItem("token") },
     })
   },
+  editQues(id) {
+    return Api().put('/editquestion', id, {
+      headers: { Authorization: localStorage.getItem("token") },
+    })
+  },
 
   setClearance(id) {
     return Api().put('protected/setclearance', id, {
@@ -104,6 +109,12 @@ export default {
   submitRound(payload) {
     return Api().put('/student/answerround', payload, {
       headers: { Authorization: localStorage.getItem("token") }
+    })
+  },
+  deleteQues(id){
+    return Api().delete('/removeQuestion', {
+      headers: { Authorization: localStorage.getItem("token") },
+      data:id
     })
   },
   getResult() {

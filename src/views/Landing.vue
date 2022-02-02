@@ -41,6 +41,17 @@
                     >Student Dashboard</v-btn>
                     <v-btn v-if="su" class="mx-auto mt-3" @click="$router.push('/root')">Root Panel</v-btn>
                 </div>
+                <v-dialog v-model="dialog" width="500">
+                    <v-card>
+                        <v-card-text>Please Update your profile.</v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <router-link to="/profile">
+                                <v-btn color="primary" text @click="dialog = false">Go to Profile</v-btn>
+                            </router-link>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
             </v-card>
         </div>
     </div>
@@ -66,6 +77,8 @@ export default {
             phone: null,
             roll: null,
             role: "",
+            valid: Boolean,
+            dialog: !this.valid,
         };
     },
     beforeCreate() {
@@ -81,9 +94,6 @@ export default {
             this.roll = this.profile.roll;
             console.log(this.profile);
         });
-        if (localStorage.getItem("token") === null) {
-            this.$router.push("/");
-        }
     },
     created() {
         this.$vuetify.theme.dark = true;
@@ -98,6 +108,11 @@ export default {
             }
             this.role = tok.role;
             this.username = tok.username;
+            if (tok.phone !== null && tok.roll !== null) {
+                this.valid = true
+            } else {
+                this.valid = false
+            }
         }
     },
 };
