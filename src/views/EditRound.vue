@@ -1,6 +1,6 @@
 <template>
   <div class="background">
-    <NavigationDrawer/>
+    <NavigationDrawer :role="role"/>
     <div class="main">
     <EditTable/>
     </div>
@@ -28,6 +28,7 @@
 <script>
 import NavigationDrawer from '../components/Navigation.vue'
 import EditTable from '../components/editTable.vue'
+import VueJwtDecode from "vue-jwt-decode";
 export default {
     name: 'Dashboard',
     components:{
@@ -35,6 +36,11 @@ export default {
        EditTable
 
 
+    },
+    created() {
+
+            var tok = VueJwtDecode.decode(localStorage.getItem("token").substring(6));
+            this.role = tok.role;
     },
   }
 </script>

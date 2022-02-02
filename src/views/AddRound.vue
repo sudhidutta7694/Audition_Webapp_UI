@@ -1,6 +1,6 @@
 <template>
   <div class="background">
-    <NavigationDrawer/>
+    <NavigationDrawer :role="role"/>
     <div class="main">
     <div class="container">
           <QuesTimeline v-bind:Questions="Questions"/>
@@ -49,6 +49,7 @@
 import QuesTimeline from '../components/QuestionTimeline.vue'
 import NavigationDrawer from '../components/Navigation.vue'
 import AddForm from '../components/Add-Form.vue'
+import VueJwtDecode from "vue-jwt-decode";
 export default {
   data: () => ({
       Questions:[]
@@ -59,14 +60,10 @@ export default {
     AddForm,
     QuesTimeline
   },
-  watch: {
-    Questions: {
-      handler() {
-        if (localStorage.getItem("Questions"))
-      this.Questions = JSON.parse(localStorage.getItem("Questions"));
-      },
-      deep: true
+  created() {
+
+            var tok = VueJwtDecode.decode(localStorage.getItem("token").substring(6));
+            this.role = tok.role;
     },
-  },
 }
 </script>
