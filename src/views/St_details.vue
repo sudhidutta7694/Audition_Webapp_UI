@@ -225,8 +225,6 @@ export default {
       status: "",
       extendtimeSnackbar:true,
       details:[],
-      subool:false,
-      responses:[],
       items: ["ROUND 1", "ROUND 2"],
       Status: ["SELECT", "REJECT"],
       Questions: [
@@ -263,10 +261,11 @@ export default {
           QuesType: "ATTACH FILE",
         }
       ],
+
     };
   },
    beforeCreate() {
-    const a = { uuid: this.$route.query.uuid };
+    const a = { id: this.$route.query.id };
     console.log(a);
     if (localStorage.getItem("token") === null) {
       this.$router.push("/");
@@ -282,15 +281,11 @@ export default {
       );
       common.getUser(a).then((res) => {
         if (res.status === 200) {
-          this.details = res.data.data[0][0];
-          this.responses = res.data.data[0][1];
-          console.log({
-            "details":this.details,
-            "responses": this.responses
-          })
-          /* for (var i = 1; i <= this.details.round; i++) {
+          this.details = res.data;
+          for (var i = 1; i <= this.details.round; i++) {
             this.filteroptions.push(`Round ${i}`);
-          } */
+          }
+          console.log(this.details);
           this.status = res.data.status;
           if (
             VueJwtDecode.decode(localStorage.getItem("token").substring(6))

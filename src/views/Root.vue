@@ -1,6 +1,6 @@
 <template>
   <div class="background">
-    <NavigationDrawer />
+    <NavigationDrawer :role="role"/>
     <div class="main">
       <Sparkline />
       <div class="top">
@@ -47,6 +47,7 @@
 import NavigationDrawer from "../components/Navigation.vue";
 import Sparkline from "../components/sparkline.vue";
 import Table from "../components/Table.vue";
+import VueJwtDecode from "vue-jwt-decode";
 export default {
   name: "Root",
   components: {
@@ -63,7 +64,7 @@ export default {
         text: "Name",
         align: "start",
         sortable: false,
-        value: "name",
+        value: "uuid",
       },
       { text: "Phone No", value: "ph.no" },
       { text: "Email", value: "email" },
@@ -71,5 +72,10 @@ export default {
       { text: "Set Role", value: "actions", sortable: false },
     ],
   }),
+  created() {
+
+            var tok = VueJwtDecode.decode(localStorage.getItem("token").substring(6));
+            this.role = tok.role;
+    },
 };
 </script>

@@ -1,6 +1,7 @@
 <template>
   <div class="table-container">
-    <tableHeader :dashboard="dashboard"/>
+    <tableHeader :dashboard="dashboard" />
+
     <v-data-table
       :headers="headers"
       :items="students"
@@ -12,114 +13,49 @@
       @page-count="pageCount = $event"
       style="width: 95%; background-color: #1a1d1f"
     >
-      <template v-slot:top>
-        <div v-if="dashboard">
-          <v-dialog v-model="dialog" max-width="500px">
-            <v-card>
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.name"
-                        label="Name"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.phoneNo"
-                        label="Ph. No."
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.email"
-                        label="Email"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">
-                  Cancel
-                </v-btn>
-                <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-card-title class="text-h5"
-                >Are you sure you want to delete this item?</v-card-title
-              >
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete"
-                  >Cancel</v-btn
-                >
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                  >OK</v-btn
-                >
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </div>
-        <div v-if="!dashboard">
-          <v-dialog v-model="dialog" max-width="500px">
-            <v-card>
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-select
-                        :items="Role"
-                        v-model="editedItem.role"
-                        label="Role"
-                        dense
-                        outlined
-                        class="mb-10 dropdown"
-                        style="
-                          width: 100%;
-                          border: 0.2px solid #7b849f;
-                          height: 40px;
-                        "
-                      ></v-select>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">
-                  Cancel
-                </v-btn>
-                <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </div>
-      </template>
       <template v-slot:[`item.actions`]="{ item }">
         <v-row>
-          <v-col>
-            <v-icon small class="mr-2" @click="editItem(item)">
-              mdi-pencil
-            </v-icon>
-            <v-icon small @click="deleteItem(item)" v-if="dashboard">
-              mdi-delete
-            </v-icon>
-          </v-col>
           <v-col>
             <v-icon v-if="dashboard" @click="popup(item)"
               >mdi-open-in-new</v-icon
             >
           </v-col>
         </v-row>
+        <v-row>
+          <v-col>
+            <v-icon small v-if="!dashboard" class="mr-2" @click="editItem()">
+              mdi-pencil
+            </v-icon>
+          </v-col>
+        </v-row>
+        <v-dialog v-model="dialog" max-width="500px">
+          <v-card>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-select
+                      :items="Role"
+                      v-model="role"
+                      label="Role"
+                      dense
+                      outlined
+                      class="mb-10 dropdown"
+                    ></v-select>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
+              <v-btn color="blue darken-1" text @click="changeRole(item.uuid)">
+                Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </template>
     </v-data-table>
     <v-pagination
@@ -135,12 +71,12 @@
 import common from "@/services/common.js";
 import VueJwtDecode from "vue-jwt-decode";
 // import Header from './Header.vue';
-import tableHeader from './Table_header.vue';
+import tableHeader from "./Table_header.vue";
 export default {
-  components: {tableHeader },
-  props: ["headers", "dashboard","un"],
+  components: { tableHeader },
+  props: ["headers", "dashboard", "un"],
   data: () => ({
-    round:"",
+    round: "",
     dialog: false,
     dialogDelete: false,
     page: 1,
@@ -148,19 +84,6 @@ export default {
     itemsPerPage: 10,
     members: [],
     students: [],
-    editedIndex: -1,
-    editedItem: {
-      name: "",
-      phoneNo: "",
-      email: "",
-    },
-    defaultItem: {
-      username: "",
-      phoneNo: "",
-      email: "",
-      status: "",
-      role: "",
-    },
     Role: ["su", "m", "s"],
   }),
   created() {
@@ -174,12 +97,11 @@ export default {
       if (res.status === 200) {
         // console.log(res.data);
         this.members = res.data.data;
-        console.log(this.members)
-        this.members.forEach((e) => this.students.push(e[0]))
+        console.log(this.members);
+        this.members.forEach((e) => this.students.push(e[0]));
         this.students = this.students.filter((stu) => stu.role === "s");
         this.students.filter((stu) => {
-          if(stu.status === "unevaluated")
-            this.un++;
+          if (stu.status === "unevaluated") this.un++;
         });
         // this.completed = this.students.filter(
         //   (stu) => stu.status === "selected" || item.status === "rejected"
@@ -209,59 +131,75 @@ export default {
   },
 
   methods: {
-
-    editItem(item) {
-      this.editedIndex = this.students.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+    editItem() {
+      console.log("clicked");
       this.dialog = true;
     },
+    // close() {
+    //   this.dialog = false;
+    //   this.$nextTick(() => {
+    //     this.editedItem = Object.assign({}, this.defaultItem);
+    //     this.editedIndex = -1;
+    //   });
+    // },
+    changeRole(id) {
+      var a = {
+        uuid: id,
+        role: this.role,
+      };
+      console.log(a);
+      common.changeRole(a).then(() => {
+        if (this.role === "m") {
+          var b = {
+            uuid: id,
+            clearance: this.clearance,
+          };
 
-    deleteItem(item) {
-      this.editedIndex = this.students.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialogDelete = true;
-    },
+          common.setClearance(b).then((res) => {
+            console.log(res.data);
+            // this.roleSnackbar = true;
+            this.dialog = false;
+          });
 
-    deleteItemConfirm() {
-      this.students.splice(this.editedIndex, 1);
-      this.closeDelete();
-    },
-
-    close() {
-      this.dialog = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
+          common.getUsers().then((res) => {
+            if (res.status === 200) {
+              this.members = res.data.data;
+              console.log(this.members);
+              this.members.forEach((e) => this.students.push(e[0]));
+              this.students = this.students.filter((stu) => stu.role === "s");
+            }
+          });
+        } else {
+          // this.roleSnackbar = true;
+          this.dialog = false;
+          common.getUsers().then((res) => {
+            if (res.status === 200) {
+              this.members = res.data.data;
+              console.log(this.members);
+              this.members.forEach((e) => this.students.push(e[0]));
+              this.students = this.students.filter((stu) => stu.role === "s");
+            }
+          });
+        }
       });
-    },
-
-    closeDelete() {
-      this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
-      } else {
-        this.students.push(this.editedItem);
-      }
-      this.close();
+      // if (this.editedIndex > -1) {
+      //   Object.assign(this.students[this.editedIndex], this.editedItem);
+      // } else {
+      //   this.students.push(this.editedItem);
+      // }
+      // this.close();
     },
     popup(a) {
-    var payload = a;
-    // payload["lastUser"] = this.adminUser;
-    // console.log(this.adminUser);
-    common.updateEntry(payload);
-    let routeData = this.$router.resolve({
-      name: "St_details",
-      query: { uuid: a.uuid },
-    });
+      var payload = a;
+      // payload["lastUser"] = this.adminUser;
+      // console.log(this.adminUser);
+      common.updateEntry(payload);
+      let routeData = this.$router.resolve({
+        name: "St_details",
+        query: { uuid: a.uuid },
+      });
 
-    window.open(routeData.href, "_blank");
+      window.open(routeData.href, "_blank");
     },
   },
 };

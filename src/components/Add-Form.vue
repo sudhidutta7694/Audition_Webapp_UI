@@ -133,7 +133,7 @@
 import UploadImg from '../components/UploadImg.vue'
 import UploadAudio from '../components/UploadAudio.vue'
 import Header from '../components/Header.vue'
-// import VueJwtDecode from "vue-jwt-decode";
+import VueJwtDecode from "vue-jwt-decode";
 import common from "@/services/common.js";
 
 export default {
@@ -145,12 +145,13 @@ export default {
   },
   props: ["Questions"],
   data: () => ({
-    Rtime:"",
+    Rtime:10,
     Ques: "",
     Questype: "",
     ImgLink:"",
     AudioLink:"",
-    MediaFiles: [],
+    score: 0,
+    // MediaFiles: [],
     // Questions:[],
     showBtn: true,
     showMediaBtn:false,
@@ -174,25 +175,25 @@ export default {
         choice4:this.choice4
       })
       console.log(this.options);
+        this.choice1 = "",
+        this.choice2 = "",
+        this.choice3 = "",
+        this.choice4 = ""
       this.showBtn = false;
     },
     addQues() {
       if (this.Ques !== "") {
         this.Questions.push({
           quesText: this.Ques,
+          score: this.score,
           quesType: this.Questype,
           options: this.options,
         });
-        console.log(this.ImgLink);
         console.log("==");
         console.log(this.Questions);
         this.Ques = [];
-        this.Questype = "";
         this.options = [];
-        this.choice1 = "",
-        this.choice2 = "",
-        this.choice3 = "",
-        this.choice4 = ""
+        this.Questype = "";
         this.showBtn = true;
       }
     },
@@ -204,41 +205,41 @@ export default {
         console.log(res.data);
         console.log("==========")
         localStorage.removeItem("Questions");
+        this.Questions.splice(0,this.Questions.length)   
         this.snackbar = true;
-        localStorage.removeItem("Questions");
-        this.Questions.splice(0,this.Questions.length)  
       });  
     }
   },
-  // beforeCreate() {
-  //   if (localStorage.getItem("token") === null) {
-  //     this.$router.push("/");
-  //   } else if (
-  //     VueJwtDecode.decode(localStorage.getItem("token").substring(6)).role ===
-  //     "s"
-  //   ) {
-  //     this.$router.push("/");
-  //   }
-  // },
+  beforeCreate() {
+    if (localStorage.getItem("token") === null) {
+      this.$router.push("/");
+    } else if (
+      VueJwtDecode.decode(localStorage.getItem("token").substring(6)).role ===
+      "s"
+    ) {
+      this.$router.push("/");
+    }
+  },
   watch: {
     Questions: {
       handler() {
+        console.log(this.Questions);
         localStorage.setItem("Questions", JSON.stringify(this.Questions));
       },
       deep: true
     },
-    file: {
-      handler() {
-        console.log(this.file);
-      }
-    }
+    // file: {
+    //   handler() {
+    //     console.log(this.file);
+    //   }
+    // }
   },
-  mounted() {
-    console.log("App mounted!");
-    if (localStorage.getItem("Questions"))
-      this.Questions = JSON.parse(localStorage.getItem("Questions"));
-    else localStorage.removeItem("Questions");
-  },
+  // mounted() {
+  //   console.log("App mounted!");
+  //   if (localStorage.getItem("Questions"))
+  //     this.Questions = JSON.parse(localStorage.getItem("Questions"));
+  //   else localStorage.removeItem("Questions");
+  // },
 }
 </script>
 

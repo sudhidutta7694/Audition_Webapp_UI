@@ -27,7 +27,7 @@
             <v-list-item-icon>
               <v-icon color="#7B849F">mdi-account</v-icon>
             </v-list-item-icon>
-            <v-list-item-title class="font-weight-bold sidebar">Student Dashboard</v-list-item-title>
+            <v-list-item-title class="font-weight-bold sidebar">Admin Panel</v-list-item-title>
           </v-list-item>
         </router-link>
         <router-link v-if="role === 'su'" :to="{ name: 'Root' }" class="navbar-items">
