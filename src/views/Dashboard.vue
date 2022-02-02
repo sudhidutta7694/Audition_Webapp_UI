@@ -49,7 +49,7 @@ export default {
           text: 'Name',
           align: 'start',
           sortable: false,
-          value: 'username',
+          value: 'uuid',
         },
         { text: 'Phone No', value: 'ph.no' },
         { text: 'Email', value: 'email' },

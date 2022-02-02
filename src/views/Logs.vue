@@ -114,15 +114,15 @@ export default {
   created() {
     var tok = VueJwtDecode.decode(localStorage.getItem("token").substring(6));
     this.role = tok.role;
-    let event = new EventSource(`${process.env.VUE_APP_BASE_URL}events`);
+    let event = new EventSource(`${process.env.VUE_APP_BASE_URL}/events`);
     console.log(event);
     event.onmessage = (ev) => {
       JSON.parse(ev.data).forEach((log) => {
         this.messages.push(log);
+        console.log("Messages");
+        console.log(this.messages);
       });
     };
-    console.log("Messages");
-    console.log(this.messages);
   },
 
   beforeCreate() {

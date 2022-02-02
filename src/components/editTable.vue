@@ -123,19 +123,19 @@
       grow
       class="mt-10"
     >
-      <v-tab v-for="item in items" :key="item">
-        {{ item }}
+      <v-tab v-for="(item,index) in rounds" :key="index">
+        ROUND {{ index + 1}}
       </v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="tab">
-      <v-tab-item v-for="item in items" :key="item">
+      <v-tab-item v-for="(item,index) in rounds" :key="index">
         <v-card color="basil" flat>
           <v-stepper
             v-model="e6"
             vertical
             style="background-color: transparent"
-            v-for="(question, n) in Questions"
+            v-for="(question, n) in item.question_set_models"
             :key="n"
           >
             <v-stepper-step
@@ -143,11 +143,11 @@
               :step="n + 1"
               color="#a692ff"
             >
-              {{ question.Ques }}
+              {{ question.quesText }}
               <v-icon class="ma-2" @click="editItem(question)">
                 mdi-pencil
               </v-icon>
-              <small>{{ question.QuesType }}</small>
+              <small>{{ question.quesType }}</small>
             </v-stepper-step>
             <v-stepper-items>
               <v-stepper-content :step="n + 1">
@@ -224,41 +224,8 @@ export default {
         QuesType: "",
       },
       Qtype: ["MULTIPLE CHOICE", "SINGLE CHOICE", "ATTACH FILE", "TEXTAREA"],
-      items: ["ROUND 1", "ROUND 2", "ROUND 3", "ROUND 4", "ROUND 5"],
-      Questions: [
-        {
-          Ques: "abc",
-          QuesType: "SINGLE CHOICE",
-          options:[
-            {
-              choice1:"xyz",
-              choice2:"xyz",
-              choice3:"xyz",
-              choice4:"xyz",
-            }
-          ]
-        },
-        {
-          Ques: "abc",
-          QuesType: "TEXTAREA",
-        },
-        {
-          Ques: "abc",
-          QuesType: "MULTIPLE CHOICE",
-          options:[
-            {
-              choice1:"xyz",
-              choice2:"xyz",
-              choice3:"xyz",
-              choice4:"xyz",
-            }
-          ]
-        },
-        {
-          Ques: "abc",
-          QuesType: "ATTACH FILE",
-        }
-      ],
+      rounds:[],
+      Questions: [],
     };
   },
   beforeCreate() {
@@ -286,7 +253,7 @@ export default {
     },
     datapopulate(round) {
       this.time = round.time;
-      this.questions = round.questions;
+      
       if (this.panel != undefined) {
         this.questions = null;
       }
@@ -295,6 +262,7 @@ export default {
       this.editedIndex = this.Questions.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
+      this.editQues = item;
     },
 
     deleteItem(item) {
