@@ -124,16 +124,14 @@
       style="width: 95%; background-color: #1a1d1f"
     >
       <template v-slot:[`item.actions`]="{ item }">
-        <v-row>
-          <v-col>
-            <v-icon v-if="dashboard" @click="popup(item)"
+        <v-row class="pa-10" >
+          <v-col v-if="dashboard">
+            <v-icon @click="popup(item)"
               >mdi-open-in-new</v-icon
             >
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-icon small v-if="!dashboard" class="mr-2" @click="editItem(item)">
+         </v-col>
+          <v-col v-else>
+            <v-icon small  class="mr-2" @click="editItem(item)">
               mdi-pencil
             </v-icon>
           </v-col>

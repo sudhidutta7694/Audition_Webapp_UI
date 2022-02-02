@@ -1,27 +1,25 @@
 <template>
   <div class="background">
-    <NavigationDrawer :role="role"/>
+    <NavigationDrawer :role="role" />
     <div class="main">
-    <div class="container">
-          <QuesTimeline v-bind:Questions="Questions"/>
-      <div class="inputQues">
-          <AddForm v-bind:Questions="Questions"/>
+      <div class="container">
+        <QuesTimeline v-bind:Questions="Questions" />
+        <div class="inputQues">
+          <AddForm v-bind:Questions="Questions" />
+        </div>
       </div>
-  
     </div>
-  </div>  
-    </div>
+  </div>
 </template>
 
-
 <style scoped>
-.background{
-    background-color:  #111315;
-    display: flex;
-    height: 100%;
-    overflow: hidden;
+.background {
+  background-color: #111315;
+  display: flex;
+  height: 100%;
+  overflow: hidden;
 }
-.main{
+.main {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -30,40 +28,47 @@
   overflow: hidden;
   margin-left: 210px;
   margin-right: 95px;
-  
 }
-.container{
+.container {
   display: flex;
   border: 2px solid #293135;
   border-radius: 10px;
   padding: 20px;
-  
 }
-.inputQues{
+.inputQues {
   /* border: 2px solid pink; */
   width: 100%;
 }
 </style>
 
 <script>
-import QuesTimeline from '../components/QuestionTimeline.vue'
-import NavigationDrawer from '../components/Navigation.vue'
-import AddForm from '../components/Add-Form.vue'
+import QuesTimeline from "../components/QuestionTimeline.vue";
+import NavigationDrawer from "../components/Navigation.vue";
+import AddForm from "../components/Add-Form.vue";
 import VueJwtDecode from "vue-jwt-decode";
 export default {
   data: () => ({
-      Questions:[]
-    }),
+    Questions: [],
+  }),
 
   components: {
     NavigationDrawer,
     AddForm,
-    QuesTimeline
+    QuesTimeline,
   },
   created() {
-
-            var tok = VueJwtDecode.decode(localStorage.getItem("token").substring(6));
-            this.role = tok.role;
-    },
-}
+    var tok = VueJwtDecode.decode(localStorage.getItem("token").substring(6));
+    this.role = tok.role;
+  },
+  beforeCreate() {
+    if (localStorage.getItem("token") === null) {
+      this.$router.push("/");
+    } else if (
+      VueJwtDecode.decode(localStorage.getItem("token").substring(6)).role ===
+      "s"
+    ) {
+      this.$router.push("/");
+    }
+  },
+};
 </script>

@@ -13,59 +13,18 @@
       </v-card>
       <v-card class="overview mt-5 pa-5" max-width="95%" outlined color="#1A1D1F">
         <v-card-text class="py-0">
-          <v-timeline align-top dense>
-            <v-timeline-item color="pink" small>
+          <v-timeline align-top dense v-for="(msg,index) in messages" :key="index">
+            <v-timeline-item :color="color[index%2]" small>
               <v-row class="pt-1">
+                  
                 <v-col cols="3">
-                  <strong>Sat Jan 15 2022 11:12:52</strong>
+                  <strong>{{new Date(msg.createdAt).toString().substring(0,24)}}</strong>
                 </v-col>
                 <v-col>
-                  <strong>Mouli Ghosh</strong>
+                  <strong>{{msg.user}}</strong>
                 </v-col>
                 <v-col>
-                  <strong>Published Result</strong>
-                </v-col>
-              </v-row>
-            </v-timeline-item>
-
-            <v-timeline-item color="teal lighten-3" small>
-              <v-row class="pt-1">
-                <v-col cols="3">
-                  <strong>Sat Jan 15 2022 11:12:52</strong>
-                </v-col>
-                <v-col>
-                  <strong>Mouli Ghosh</strong>
-                </v-col>
-                <v-col>
-                  <strong>Published Result</strong>
-                </v-col>
-              </v-row>
-            </v-timeline-item>
-
-            <v-timeline-item color="pink" small>
-              <v-row class="pt-1">
-                <v-col cols="3">
-                  <strong>Sat Jan 15 2022 11:12:52</strong>
-                </v-col>
-                <v-col>
-                  <strong>Mouli Ghosh</strong>
-                </v-col>
-                <v-col>
-                  <strong>Published Result</strong>
-                </v-col>
-              </v-row>
-            </v-timeline-item>
-
-            <v-timeline-item color="teal lighten-3" small>
-              <v-row class="pt-1">
-                <v-col cols="3">
-                  <strong>Sat Jan 15 2022 11:12:52</strong>
-                </v-col>
-                <v-col>
-                  <strong>Mouli Ghosh</strong>
-                </v-col>
-                <v-col>
-                  <strong>Published Result</strong>
+                  <strong>{{msg.message}}</strong>
                 </v-col>
               </v-row>
             </v-timeline-item>
@@ -104,20 +63,20 @@ export default {
   },
   data: () => ({
     messages: [],
+    color:["pink","teal lighten-3"
+    ]
   }),
   created() {
     var tok = VueJwtDecode.decode(localStorage.getItem("token").substring(6));
     this.role = tok.role;
     let event = new EventSource(`${process.env.VUE_APP_BASE_URL}/events`);
-    console.log(event);
+    // console.log(event);
     event.onmessage = (ev) => {
       JSON.parse(ev.data).forEach((log) => {
         this.messages.push(log);
         console.log("Messages");
         console.log(this.messages);
       });
-      console.log("=========")
-      console.log(this.messages)
     };
   },
 
