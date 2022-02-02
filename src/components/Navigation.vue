@@ -102,7 +102,7 @@
       </v-list>
       <template v-slot:append>
         <div class="pa-2">
-          <v-list-item link>
+          <v-list-item link @click="logout">
             <v-list-item-icon>
               <v-icon color="#7B849F">mdi-logout</v-icon>
             </v-list-item-icon>
@@ -115,10 +115,17 @@
 </template>
 
 <script>
-
+import common from '../services/common.js'
 export default {
   name: 'NavigationDrawer',
-  props: ["role"]
+  props: ["role"],
+  methods: {
+    logout() {
+      common.logout().then(() => {
+        this.$router.push("/")
+      })
+    }
+  }
 }
 </script>
 
