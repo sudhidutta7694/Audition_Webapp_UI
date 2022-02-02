@@ -54,7 +54,7 @@ export default {
         { text: 'Phone No', value: 'ph.no' },
         { text: 'Email', value: 'email' },
         { text: 'Status', value: 'status' },
-        { text: 'Actions', value: 'actions', sortable: false },
+        { text: 'Details', value: 'actions', sortable: false },
       ],
       role:""
     }),

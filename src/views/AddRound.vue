@@ -60,15 +60,6 @@ export default {
     AddForm,
     QuesTimeline
   },
-  watch: {
-    Questions: {
-      handler() {
-        if (localStorage.getItem("Questions"))
-      this.Questions = JSON.parse(localStorage.getItem("Questions"));
-      },
-      deep: true
-    },
-  },
   created() {
 
             var tok = VueJwtDecode.decode(localStorage.getItem("token").substring(6));

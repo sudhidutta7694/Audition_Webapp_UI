@@ -121,6 +121,7 @@ export default {
         this.messages.push(log);
       });
     };
+    console.log("Messages");
     console.log(this.messages);
   },
 

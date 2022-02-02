@@ -7,7 +7,7 @@
           <div v-if="dashboard">PARTICIPANTS</div>
           
           <template v-if="!dashboard" >
-            <v-tabs v-model="tab" align-with-title background-color="transparent">
+            <v-tabs v-model="abc" align-with-title background-color="transparent">
               <v-tabs-slider color="yellow"></v-tabs-slider>
 
               <v-tab v-for="item in Role" :key="item">
@@ -24,7 +24,7 @@
 <script>
 
 export default({
-    props:["dashboard"],
+    props:["dashboard","abc"],
   data: () => ({
     Role: ["STUDENT", "MEMBER", "SUPERUSER"],
   }),

@@ -1,10 +1,144 @@
 <template>
-  <div class="table-container">
-    <tableHeader :dashboard="dashboard" />
+<div class="table-container">
+  <div class="table-header">
+    <v-list-item three-line>
+      <v-list-item-content style="height: 50px">
+        <div class="text-overline mb-4">
+          <div class="pointer"></div>
+          <div v-if="dashboard">PARTICIPANTS</div>
+          
+          <template v-if="!dashboard">
+            <v-tabs v-model="tab" align-with-title background-color="transparent">
+              <v-tabs-slider color="yellow"></v-tabs-slider>
+
+              <v-tab v-for="item in Role_ui" :key="item" class="ml-0">
+                {{ item }}
+              </v-tab>
+            </v-tabs>
+          </template>
+        </div>
+      </v-list-item-content>
+    </v-list-item>
+  </div>
 
     <v-data-table
+       v-if="tab == 0 || dashboard"
       :headers="headers"
       :items="students"
+      sort-by="calories"
+      class="elevation-8 pa-5"
+      :page.sync="page"
+      :items-per-page="itemsPerPage"
+      hide-default-footer
+      @page-count="pageCount = $event"
+      style="width: 95%; background-color: #1a1d1f"
+    >
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-row>
+          <v-col>
+            <v-icon v-if="dashboard" @click="popup(item)"
+              >mdi-open-in-new</v-icon
+            >
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-icon small v-if="!dashboard" class="mr-2" @click="editItem()">
+              mdi-pencil
+            </v-icon>
+          </v-col>
+        </v-row>
+        <v-dialog v-model="dialog" max-width="500px">
+          <v-card>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-select
+                      :items="Role"
+                      v-model="role"
+                      label="Role"
+                      dense
+                      outlined
+                      class="mb-10 dropdown"
+                    ></v-select>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
+              <v-btn color="blue darken-1" text @click="changeRole(item.uuid)">
+                Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </template>
+    </v-data-table>
+    <v-data-table
+      v-if="tab == 1"
+      :headers="headers"
+      :items="members"
+      sort-by="calories"
+      class="elevation-8 pa-5"
+      :page.sync="page"
+      :items-per-page="itemsPerPage"
+      hide-default-footer
+      @page-count="pageCount = $event"
+      style="width: 95%; background-color: #1a1d1f"
+    >
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-row>
+          <v-col>
+            <v-icon v-if="dashboard" @click="popup(item)"
+              >mdi-open-in-new</v-icon
+            >
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-icon small v-if="!dashboard" class="mr-2" @click="editItem()">
+              mdi-pencil
+            </v-icon>
+          </v-col>
+        </v-row>
+        <v-dialog v-model="dialog" max-width="500px">
+          <v-card>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-select
+                      :items="Role"
+                      v-model="role"
+                      label="Role"
+                      dense
+                      outlined
+                      class="mb-10 dropdown"
+                    ></v-select>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
+              <v-btn color="blue darken-1" text @click="changeRole(item.uuid)">
+                Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </template>
+    </v-data-table>
+    <v-data-table
+      v-if="tab == 2"
+      :headers="headers"
+      :items="superusers"
       sort-by="calories"
       class="elevation-8 pa-5"
       :page.sync="page"
@@ -64,27 +198,32 @@
       color="#B5E4CA"
       class="ma-5"
     ></v-pagination>
-  </div>
+</div>
 </template>
 
 <script>
 import common from "@/services/common.js";
 import VueJwtDecode from "vue-jwt-decode";
 // import Header from './Header.vue';
-import tableHeader from "./Table_header.vue";
+// import tableHeader from "./Table_header.vue";
 export default {
-  components: { tableHeader },
+  // components: { tableHeader },
   props: ["headers", "dashboard", "un"],
   data: () => ({
     round: "",
+    tab: null,
+    all: [],
     dialog: false,
     dialogDelete: false,
     page: 1,
     pageCount: 0,
     itemsPerPage: 10,
+    store: [],
+    superusers: [],
     members: [],
     students: [],
-    Role: ["su", "m", "s"],
+    Role: ["s", "m", "su"],
+    Role_ui: ["STUDENTS", "MEMBERS", "SUPERUSERS"],
   }),
   created() {
     this.adminUser = VueJwtDecode.decode(
@@ -96,16 +235,18 @@ export default {
     common.getUsers().then((res) => {
       if (res.status === 200) {
         // console.log(res.data);
-        this.members = res.data.data;
+        this.all = res.data.data;
+        this.all.forEach((e) => this.store.push(e[0]));
+        console.log(this.store);
+        this.students = this.store.filter((stu) => stu.role === "s");
+        console.log("Students");
+        console.log(this.students);
+        this.members = this.store.filter((stu) => stu.role === "m");
+        console.log("Members");
         console.log(this.members);
-        this.members.forEach((e) => this.students.push(e[0]));
-        this.students = this.students.filter((stu) => stu.role === "s");
-        this.students.filter((stu) => {
-          if (stu.status === "unevaluated") this.un++;
-        });
-        // this.completed = this.students.filter(
-        //   (stu) => stu.status === "selected" || item.status === "rejected"
-        // );
+        this.superusers = this.store.filter((stu) => stu.role === "su");
+        console.log("SuperUsers");
+        console.log(this.superusers);
       } else if (res.status === 401) {
         alert("UNAUTHORISED ACCESS");
         localStorage.clear("token");
@@ -155,18 +296,14 @@ export default {
             clearance: this.clearance,
           };
 
-          common.setClearance(b).then((res) => {
-            console.log(res.data);
+          common.setClearance(b).then(() => {
             // this.roleSnackbar = true;
             this.dialog = false;
           });
 
           common.getUsers().then((res) => {
             if (res.status === 200) {
-              this.members = res.data.data;
-              console.log(this.members);
-              this.members.forEach((e) => this.students.push(e[0]));
-              this.students = this.students.filter((stu) => stu.role === "s");
+              this.all = res.data.data;
             }
           });
         } else {
@@ -174,10 +311,8 @@ export default {
           this.dialog = false;
           common.getUsers().then((res) => {
             if (res.status === 200) {
-              this.members = res.data.data;
-              console.log(this.members);
-              this.members.forEach((e) => this.students.push(e[0]));
-              this.students = this.students.filter((stu) => stu.role === "s");
+              this.all = res.data.data;
+              
             }
           });
         }

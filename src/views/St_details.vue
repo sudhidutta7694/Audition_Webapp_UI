@@ -12,11 +12,6 @@
       >
       <v-btn
         @click="wildcard"
-        v-if="
-            currentround > details.round &&
-            (status === 'rejected' || status === 'unevaluated') &&
-            subool === true
-          "
         color="primary"
         >WILD-CARD</v-btn
       >
@@ -24,40 +19,38 @@
           class="mx-2"
           light
           small
-          v-if="currentround === details.round && subool === true"
           v-on:click="extendtime"
           height="35px"
           >Extend Time (By 10 min)</v-btn
         >
         </div>
-        <h2 class="text-center" v-if="details.time > 0" style="padding: 0px; margin: 5px;">
-          Time ends at: {{ new Date(details.time).toString().substring(0, 24) }}
+        <h2 class="text-center" style="padding: 0px; margin: 5px;">
+          Time ends at: 
         </h2>
-        <h2 class="text-center" v-if="details.time == 0" style="padding: 0px; margin: 5px;">Hasn't attempted yet</h2>
+        <h2 class="text-center" style="padding: 0px; margin: 5px;">Hasn't attempted yet</h2>
       <v-stepper v-model="e1" width="95%">
         <v-stepper-header>
-          <v-stepper-step :complete="1" step="1"> {{ details.name.toUpperCase() }} </v-stepper-step>
+          <v-stepper-step :complete="1" step="1">  </v-stepper-step>
 
           <v-divider></v-divider>
 
-          <v-stepper-step :complete="2" step="2"> {{ details.phone }} </v-stepper-step>
+          <v-stepper-step :complete="2" step="2"> </v-stepper-step>
 
           <v-divider></v-divider>
 
           <v-stepper-step step="3" :complete="3">
-            {{ details.email }}
           </v-stepper-step>
           <v-divider></v-divider>
-          <v-stepper-step step="4" :complete="4"> {{ details.roll }} </v-stepper-step>
+          <v-stepper-step step="4" :complete="4">  </v-stepper-step>
         </v-stepper-header>
       </v-stepper>
       <v-row>
         <v-col>
       <div class="mt-10">
-        <v-card v-if="answers.length == 0">
+        <v-card>
             <h2 style="color: red; text-align: center;">Hasn't attempted any questions.</h2>
         </v-card>
-        <v-card class="overview" max-width="95%" outlined color="#1A1D1F" v-if="answers.length != 0">
+        <v-card class="overview" max-width="95%" outlined color="#1A1D1F">
           <v-tabs
             v-model="tab"
             background-color="transparent"
@@ -65,22 +58,22 @@
             grow
             class="mt-10"
           >
-            <v-tab v-for="round in answers" :key="round.roundNo">
+            <!-- <v-tab v-for="round in answers" :key="round.roundNo">
               Round {{ round.roundNo }}
-            </v-tab>
+            </v-tab> -->
           </v-tabs>
 
-          <v-tabs-items v-model="tab">
-            <v-tab-item v-for="round in answers" :key="round.roundNo">
+          <!-- <v-tabs-items v-model="tab"> -->
+            <!-- <v-tab-item v-for="round in answers" :key="round.roundNo"> -->
               <v-card color="basil" flat>
-                <div v-for="(question,index) in round.questions"
+                <!-- <div v-for="(question,index) in round.questions"
                   :key="question._id" class="ma-5">
                   <h1>{{index+1}}. {{question.Ques}}</h1>
                   <h5>ANSWER:</h5><small>{{question.answer}}</small>
-                </div>
+                </div> -->
               </v-card>
-            </v-tab-item>
-          </v-tabs-items>
+            <!-- </v-tab-item>
+          </v-tabs-items> -->
         </v-card>
       </div>
         </v-col>
@@ -110,7 +103,7 @@
           ></v-textarea>
 
           <v-btn color="#beffc1" class="black--text" @click="submitFeedback"> SAVE </v-btn>
-        <v-alert outlined color="#00FFFF">
+        <!-- <v-alert outlined color="#00FFFF">
               <div class="title">FEEDBACKS</div>
               <v-select
                 v-model="filter"
@@ -153,7 +146,7 @@
                   </template>
                 </v-data-iterator>
               </div>
-            </v-alert>
+            </v-alert> -->
         </v-card>
       </div>
       </v-col>
