@@ -17,7 +17,7 @@
       >
         <v-img src="../assets/glug.png" aspect-ratio="1"></v-img>
       </v-app-bar-nav-icon>
-      <v-toolbar-title v-if="!mobileView" class="d-flex flex-column title ml-n2">
+      <v-toolbar-title v-if="!mobileView" class="d-flex flex-column title ml-n2 green--text">
         <p class="mb-0 title_text">GNU/LINUX USERS' GROUP</p>
         <p class="mb-0 title_text">NIT DURGAPUR</p>
       </v-toolbar-title>
@@ -69,7 +69,7 @@
 
     <div class="d-flex bd" :class="{ 'flex-column mb-4': mobileView }">
       <div
-        class="d-flex flex-column justify-center align-center heading"
+        class="d-flex flex-column justify-center heading"
         :class="{ 'ml-16': !mobileView, 'align-center mx-auto': mobileView }"
       >
         <p>AUDITION</p>
@@ -113,6 +113,12 @@ export default {
       this.$router.push("/dash");
     }
   },
+  mounted() {
+    this.token = localStorage.getItem('token');
+    if (this.token != null && this.token != undefined) {
+      this.$router.push("/dash")
+    }
+  }
 };
 </script>
 
@@ -131,7 +137,8 @@ export default {
   font-style: normal;
   font-weight: normal;
   font-size: 60px;
-  letter-spacing: 0.4em;
+  letter-spacing: 0.6em;
+  padding-left: 4vw;
 }
 .bd {
   width: 100%;
@@ -153,6 +160,7 @@ export default {
     font-size: 30px;
     margin-left: 40px;
     margin-bottom: 40px;
+    padding: 0;
   }
   .bgp {
     height: 100vh;

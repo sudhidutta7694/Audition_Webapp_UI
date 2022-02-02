@@ -222,8 +222,8 @@ export default {
   height: 105px;
 }
 .ic {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
 }
 .v-btn {
   align-self: center;
