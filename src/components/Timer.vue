@@ -64,6 +64,7 @@ export default {
   },
   methods: {
     timeUp() {
+      this.saveAnswer();
 
       this.$router.push("/dash");
     },
@@ -71,10 +72,8 @@ export default {
       this.timerInterval = setInterval(() => (this.timePassed += 1), 1000);
     },
     saveAnswer() {
-      var current_answer = JSON.parse(localStorage.getItem("answers")).find(
-        answer => answer.qid === this.question.quesId
-      );
-      common.updateAnswer(current_answer).then(() => {
+      var current_answer = JSON.parse(localStorage.getItem("answers"))
+      common.submitRound(current_answer).then(() => {
         console.log(current_answer)
       });
     },
