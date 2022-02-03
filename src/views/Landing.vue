@@ -13,7 +13,7 @@
                     <v-btn
                         v-if="audition.status === 'res' && audition.round !== 0"
                         class="mx-auto mt-3"
-                        @click="$router.push('/result')"
+                        @click="$router.push('/results')"
                     >View Results</v-btn>
 
                     <div

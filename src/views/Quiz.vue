@@ -11,62 +11,7 @@
     >
       <v-icon>mdi-menu</v-icon>
     </v-btn>
-    <v-navigation-drawer
-      v-model="drawer"
-      absolute
-      :temporary="!vertical"
-      :permanent="vertical"
-      color="#1A1D1F"
-      height="100vh"
-      class="drawer"
-      width="180px"
-    >
-      <v-list>
-        <v-list-item class="px-2">
-          <v-list-item-avatar>
-            <v-img src="../assets/glug.png"></v-img>
-          </v-list-item-avatar>
-          <v-list-item-title class="header">GLUG</v-list-item-title>
-        </v-list-item>
-      </v-list>
-      <v-list nav dense>
-        <v-list-item class="mt-5"></v-list-item>
-        <router-link :to="{ name: 'DashBoard_Student' }" class="navbar-items">
-          <v-list-item link>
-            <v-list-item-icon>
-              <v-icon color="#7B849F">mdi-view-dashboard</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title class="font-weight-light sidebar">Dashboard</v-list-item-title>
-          </v-list-item>
-        </router-link>
-        <router-link :to="{ name: 'Profile' }" class="navbar-items">
-          <v-list-item link>
-            <v-list-item-icon>
-              <v-icon color="#7B849F">mdi-account-box</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title class="font-weight-light sidebar">Profile</v-list-item-title>
-          </v-list-item>
-        </router-link>
-        <router-link :to="{ name: 'Rules' }" class="navbar-items">
-          <v-list-item link>
-            <v-list-item-icon>
-              <v-icon color="#7B849F">mdi-book-edit-outline</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title class="font-weight-light sidebar">Rules</v-list-item-title>
-          </v-list-item>
-        </router-link>
-      </v-list>
-      <template v-slot:append>
-        <div class="pa-2">
-          <v-list-item link>
-            <v-list-item-icon>
-              <v-icon color="#7B849F">mdi-logout</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title class="sidebar">Logout</v-list-item-title>
-          </v-list-item>
-        </div>
-      </template>
-    </v-navigation-drawer>
+    <Navigation :role="role" />
     <v-container class="main_card">
       <v-card outlined elevation="2" class="mx-auto my-10" style="width: 80%">
         <div class="d-flex">
@@ -130,15 +75,15 @@
         style="width: 80%"
         :class="{ 'justify-center': !vertical }"
       >
-        <!-- <v-btn
+        <v-btn
           class="ma-2 black--text"
           :loading="loading"
           :disabled="loading"
           color="#4288CA"
-          @click="saveOptions"
+          @click="saveRound"
         >
-          <v-icon class="mr-2">mdi-content-save</v-icon>Save
-        </v-btn>-->
+          <v-icon class="mr-2">mdi-content-save</v-icon>Save Round
+        </v-btn>
         <v-btn
           class="ma-2 black--text"
           :loading="loading"
@@ -209,7 +154,7 @@
 </style>
 
 <script>
-//import Navigation from '../components/Navigation_student.vue';
+import Navigation from '../components/Navigation.vue';
 import Timer from "../components/Timer.vue";
 import Textques from "../components/Textques.vue";
 import Mcqs from "../components/Mcqs.vue";
@@ -227,6 +172,7 @@ export default {
     Mcqm,
     Mcqs,
     FileUpload,
+    Navigation,
   },
   data: () => ({
     questions: [],
@@ -235,6 +181,7 @@ export default {
     time: null,
     drawer: false,
     uuid: VueJwtDecode.decode(localStorage.getItem("token").substring(6)).uuid,
+    role: "",
   }),
   computed: {
     vertical() {
@@ -250,8 +197,12 @@ export default {
     nextQuestion() {
       this.tab = this.tab + 1;
     },
-    saveOptions() {
-      localStorage.setItem("student_answers", JSON.stringify());
+    saveRound() {
+      var current_answer = localStorage.getItem("answers")
+
+      common.submitRound(current_answer).then(() => {
+        console.log(current_answer)
+      });
     },
   },
   beforeCreate() {
@@ -281,6 +232,15 @@ export default {
           localStorage.setItem("answers", JSON.stringify(res.data.answers));
         }
       });
+    }
+  },
+  created() {
+    this.$vuetify.theme.dark = true;
+    if (localStorage.getItem("token") === null) {
+      this.$router.push("/");
+    } else {
+      var tok = VueJwtDecode.decode(localStorage.getItem("token").substring(6));
+      this.role = tok.role;
     }
   },
 };

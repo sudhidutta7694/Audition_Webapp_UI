@@ -12,6 +12,7 @@ import Quiz from '../views/Quiz.vue'
 import Logs from '../views/Logs.vue'
 import St_details from '../views/St_details.vue'
 import Profile from '../views/Profile.vue'
+import results from '../views/results.vue'
 
 Vue.use(VueRouter)
 
@@ -75,6 +76,11 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: Profile,
+  },
+  {
+    path: '/results',
+    name: 'Results',
+    component: results,
   }
   
 ]

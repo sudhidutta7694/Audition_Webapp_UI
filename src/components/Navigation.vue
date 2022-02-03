@@ -1,9 +1,19 @@
 <template>
   <div class="nav">
+    <v-img
+      v-if="mobileView"
+      class="nav_icon"
+      :class="{ 'mx-1': !mobileView, 'ml-3 mt-3': mobileView }"
+      @click="drawer = !drawer"
+      src="../assets/glug.png"
+      aspect-ratio="1"
+    ></v-img>
     <v-navigation-drawer
-      permanent
+      :permanent="!mobileView"
+      :temporary="mobileView"
+      v-model="drawer"
       fixed
-      expand-on-hover
+      :expand-on-hover="!mobileView"
       color="#1A1D1F"
       class="drawer"
       height="100%"
@@ -119,6 +129,11 @@ import common from '../services/common.js'
 export default {
   name: 'NavigationDrawer',
   props: ["role"],
+  data() {
+    return {
+      drawer: !this.mobileView,
+    }
+  },
   methods: {
     logout() {
       common.logout().then(() => {
@@ -127,6 +142,16 @@ export default {
 
       })
     }
+  },
+  computed: {
+    mobileView() {
+      var s = this.$vuetify.breakpoint.name;
+      if (s == "xs" || s == "sm") {
+        return true;
+      } else {
+        return false;
+      }
+    },
   }
 }
 </script>
@@ -151,5 +176,17 @@ export default {
 }
 .navbar-items {
   text-decoration: none;
+}
+
+.nav_icon {
+  width: 60px;
+  height: 60px;
+}
+
+@media screen and (max-width: 960px) {
+  .nav_icon {
+    width: 40px;
+    height: 40px;
+  }
 }
 </style>

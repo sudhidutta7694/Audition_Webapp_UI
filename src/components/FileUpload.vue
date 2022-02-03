@@ -16,12 +16,14 @@
           :class="{ 'flex-column justify-center': mobileView }"
           style="min-width: 20%;"
         >
-          <v-img
-            class="ma-4 img"
-            v-if="question.ImageLink"
-            :src="question.ImageLink"
-            :class="{ 'mx-auto': mobileView, 'mt-0': !mobileView }"
-          ></v-img>
+          <a :href="question.ImageLink" target="_blank">
+            <v-img
+              class="ma-4 img"
+              v-if="question.ImageLink"
+              :src="question.ImageLink"
+              :class="{ 'mx-auto': mobileView, 'mt-0': !mobileView }"
+            ></v-img>
+          </a>
           <vuetify-audio
             class="ma-4"
             v-if="question.AudioLink"
@@ -47,22 +49,13 @@
           @change="upload"
         />
       </div>
-      <v-btn
-        class="ma-2 black--text"
-        :loading="loading"
-        :disabled="loading"
-        color="#4288CA"
-        @click="upload"
-      >
-        <v-icon class="mr-2">mdi-cloud-upload</v-icon>
-      </v-btn>
     </v-container>
     <v-btn
       class="ma-2 black--text"
       :loading="loading"
       :disabled="loading"
       color="#4288CA"
-      @click="saveAnswer"
+      @click="pushAnswer"
     >
       <v-icon class="mr-2">mdi-content-save</v-icon>Save
     </v-btn>
@@ -79,9 +72,9 @@ export default {
     answer: "",
     file: "",
     fileLink: "",
-    errorDialog:Boolean,
-    errorText:"",
-    maxSize:1024,
+    errorDialog: Boolean,
+    errorText: "",
+    maxSize: 1024,
   }),
   components: {
     VuetifyAudio: () => import('vuetify-audio'),
@@ -138,13 +131,6 @@ export default {
         }
         localStorage.setItem("answers", JSON.stringify(answers));
       }
-
-      var current_answer = JSON.parse(localStorage.getItem("answers")).find(
-        answer => answer.qid === this.question.quesId
-      );
-      common.updateAnswer(current_answer).then(() => {
-        console.log(current_answer)
-      });
     },
     async onFileChange(event) {
       console.log("Lol")
@@ -152,75 +138,39 @@ export default {
       let file = event.target.files
       console.log(fieldName)
       console.log(file)
-        // const { maxSize } = this
-        let imageFile = file[0]
-        if (file.length>0) {
-          // let size = imageFile.size / maxSize / maxSize
-          let formData = new FormData()
-            // let imageURL = URL.createObjectURL(imageFile)
-            formData.append(fieldName, imageFile)
-            // Emit the FormData and image URL to the parent component
-            // this.$emit('input', { formData, imageURL })
-            await common.upload(formData).then(res => {
-                console.log(res.data);
-                this.fileLink = res.data.link;
-            });
-        }
+      // const { maxSize } = this
+      let imageFile = file[0]
+      if (file.length > 0) {
+        // let size = imageFile.size / maxSize / maxSize
+        let formData = new FormData()
+        // let imageURL = URL.createObjectURL(imageFile)
+        formData.append(fieldName, imageFile)
+        // Emit the FormData and image URL to the parent component
+        // this.$emit('input', { formData, imageURL })
+        await common.upload(formData).then(res => {
+          console.log(res.data);
+          this.fileLink = res.data.link;
+        });
+      }
     },
     upload() {
       let formData = new FormData()
       formData.append("file", this.file, this.file.name);
       common.upload(formData).then((res) => {
         console.log(res.data.link)
-        this.fileLink = res.data.link
-
+        this.fileLink = res.data.link;
       })
+      this.saveAnswer();
+    },
+    pushAnswer() {
+      var current_answer = JSON.parse(localStorage.getItem("answers")).find(
+        answer => answer.qid === this.question.quesId
+      );
+      common.updateAnswer(current_answer).then(() => {
+        console.log(current_answer)
+      });
     }
   },
-  // watch: {
-  //   file: {
-  //     handler() {
-  //       console.log(this.file);
-  //   if(
-  //     localStorage.getItem("answers") === null &&
-  //       (this.admin === null || this.admin === undefined)
-  //         ) {
-  //   var newanswer = {
-  //     answer: this.answer,
-  //     qid: this.question.quesId,
-  //     qtype: this.question.quesType,
-  //     roundInfo: this.question.roundmodelRoundNo,
-  //     ansLink: this.file,
-  //     userUuid: this.uuid,
-  //   };
-  //   var ans = [];
-  //   ans.push(newanswer);
-  //   localStorage.setItem("answers", JSON.stringify(ans));
-  // } else {
-  //   var answers = JSON.parse(localStorage.getItem("answers"));
-  //   var foundanswer = false;
-  //   answers.forEach(answer => {
-  //     if (answer.qid === this.question.quesId) {
-  //       answer.ansLink = this.file;
-  //       foundanswer = true;
-  //     }
-  //   });
-  //   if (foundanswer === false) {
-  //     var newans = {
-  //       answer: this.answer,
-  //       qid: this.question.quesId,
-  //       qtype: this.question.quesType,
-  //       roundInfo: this.question.roundmodelRoundNo,
-  //       ansLink: this.file,
-  //       userUuid: this.uuid,
-  //     };
-  //     answers.push(newans);
-  //   }
-  //   localStorage.setItem("answers", JSON.stringify(answers));
-  // }
-  // },
-  //   }
-  // }
 }
 </script>
 

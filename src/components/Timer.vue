@@ -70,7 +70,7 @@ export default {
       this.$router.push("/dash");
     },
     saveAnswer() {
-      var current_answer = JSON.parse(localStorage.getItem("answers"))
+      var current_answer = localStorage.getItem("answers")
 
       common.submitRound(current_answer).then(() => {
         console.log(current_answer)

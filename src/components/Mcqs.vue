@@ -16,12 +16,14 @@
           :class="{ 'flex-column justify-center': mobileView }"
           style="min-width: 20%;"
         >
-          <v-img
-            class="ma-4 img"
-            v-if="question.ImageLink"
-            :src="question.ImageLink"
-            :class="{ 'mx-auto': mobileView, 'mt-0': !mobileView }"
-          ></v-img>
+          <a :href="question.ImageLink" target="_blank">
+            <v-img
+              class="ma-4 img"
+              v-if="question.ImageLink"
+              :src="question.ImageLink"
+              :class="{ 'mx-auto': mobileView, 'mt-0': !mobileView }"
+            ></v-img>
+          </a>
           <vuetify-audio
             class="ma-4"
             v-if="question.AudioLink"
