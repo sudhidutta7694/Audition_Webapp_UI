@@ -28,10 +28,9 @@
                         class="mx-auto mt-3"
                         @click="$router.push('/quiz')"
                     >Attempt Quiz</v-btn>
-
                     <div
                         class="mx-auto mt-3"
-                        v-if="audition.status === 'ong' && student.studenttime < new Date()"
+                        v-else-if="audition.status === 'ong' && student.studenttime < new Date()"
                     >Your Attempt for this round is finished.</div>
 
                     <div

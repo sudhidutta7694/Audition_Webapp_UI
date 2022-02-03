@@ -265,7 +265,7 @@ export default {
         console.log(new Date(res.data.time).toLocaleTimeString('en-US')) */
         let t = res.data.time - 2000 - new Date().getTime();
         if (t > 0) {
-          this.time = Math.round(t / 1000);
+          this.time = res.data.time;
           this.questions = res.data.data[0].question_set_models;
           console.log(this.questions)
           this.round = res.data.data[0].roundNo;
