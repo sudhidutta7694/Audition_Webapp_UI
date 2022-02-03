@@ -28,12 +28,12 @@
                     <v-btn
                         v-if="
                         audition.status === 'ong' &&
-                        (student.studenttime === 0 || su || member || (student.studenttime > 0 && student.studenttime > new Date()))"
+                        (student.studenttime === 0  || (student.studenttime > 0 && student.studenttime > new Date()))"
                         class="mx-auto mt-3"
                         @click="$router.push('/quiz')"
                     >Attempt Quiz</v-btn>
 
-                    <div v-else class="mx-auto">Round {{ audition.round }} is not live yet.</div>
+                    <div v-if="audition.status==='res' && audition.time===undefined" class="mx-auto">Round {{ audition.round }} is not live yet.</div>
                     <v-btn
                         v-if="member || su"
                         class="mx-auto mt-3"
@@ -78,12 +78,13 @@ export default {
             roll: null,
             role: "",
             valid: Boolean,
-            dialog: !this.valid,
+            dialog: false,
         };
     },
     beforeCreate() {
         common.getStudent().then((res) => {
             this.student = res.data;
+            this.student.studenttime = Number(this.student.studenttime)
         });
         common.getAuditionStatus().then((res) => {
             this.audition = (res.data);

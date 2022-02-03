@@ -97,7 +97,7 @@
               :question="question"
               :mobileView="!vertical"
               :uuid="uuid"
-              v-if="question.quesType === 'Subjective'"
+              v-if="question.quesType === 'Subjective' || question.quesType === 'TEXTAREA' " 
             />
             <Mcqs :question="question" :mobileView="!vertical" :uuid="uuid" v-if="question.quesType === 'Mcq'" />
             <Mcqm :question="question" :mobileView="!vertical" :uuid="uuid" v-if="question.quesType === 'Mcqm'" />
