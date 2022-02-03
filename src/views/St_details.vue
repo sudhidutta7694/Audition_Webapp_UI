@@ -65,10 +65,7 @@
       <v-row>
         <v-col>
           <div class="mt-10">
-            <v-card
-              v-if="answers.length == 0"
-              class="pa-10"
-            >
+            <v-card v-if="answers.length == 0" class="pa-10">
               <h2 style="color: red; text-align: center">
                 Hasn't attempted any questions.
               </h2>
@@ -324,11 +321,11 @@ export default {
           // console.log(res);
           this.time = new Date(this.details.time).toString().substring(0, 24);
           this.color =
-            (this.details.status == "unevaluated"
+            this.details.status == "unevaluated"
               ? "grey"
-              : (this.details.status == "selected"
+              : this.details.status == "selected"
               ? "green"
-              : "red"));
+              : "red";
           common.getRounds().then((res) => {
             this.rounds = res.data;
             console.log(this.responses);
@@ -359,8 +356,9 @@ export default {
                   roundentry.questions.push(a);
                 }
               });
-              if(roundentry.questions.length != 0)
-              {this.answers.push(roundentry);}
+              if (roundentry.questions.length != 0) {
+                this.answers.push(roundentry);
+              }
             });
             console.log(this.answers);
           });
@@ -407,6 +405,11 @@ export default {
   created() {
     var tok = VueJwtDecode.decode(localStorage.getItem("token").substring(6));
     this.role = tok.role;
+  },
+  wildcard() {
+    common.wildcard(this.details.uuid).then(() => {
+      this.$router.push("/admin");
+    });
   },
 };
 </script>
