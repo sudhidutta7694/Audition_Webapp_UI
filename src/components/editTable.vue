@@ -36,57 +36,18 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-col>
-                  <v-file-input
-                    chips
-                    multiple
-                    label="Image Input"
-                  ></v-file-input>
-                </v-col>
-                <v-col>
-                  <v-file-input
-                    chips
-                    multiple
-                    label="Audio Input"
-                  ></v-file-input>
-                </v-col>
-              </v-row>
-              <v-row>
                 <v-container
                   v-if="
                     editQues.quesType == 'SINGLE CHOICE' ||
                     editQues.quesType == 'MULTIPLE CHOICE'
                   "
-                >
-                  <v-row>
+                >  
+                  <v-row v-for="(option,index) in editQues.options.split(',')"
+                        :key="index">
                     <v-col cols="12" sm="6">
                       <v-text-field
-                        v-model="choice1"
-                        label="Choice 1"
-                        solo
-                      ></v-text-field>
-                    </v-col>
-
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        v-model="choice2"
-                        solo
-                        label="Choice 2"
-                      ></v-text-field>
-                    </v-col>
-
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        v-model="choice3"
-                        solo
-                        label="Choice 3"
-                      ></v-text-field>
-                    </v-col>
-
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        v-model="choice4"
-                        label="Choice 4"
+                        v-model="choice"
+                        :label="option"
                         solo
                       ></v-text-field>
                     </v-col>
@@ -138,7 +99,7 @@
         class="mt-10"
       >
         <v-tab v-for="(item, index) in rounds" :key="index">
-          ROUND {{ index + 1 }}
+          ROUND {{ item.roundNo }}
         </v-tab>
       </v-tabs>
 
@@ -166,11 +127,20 @@
               <v-stepper-items>
                 <v-stepper-content :step="n + 1">
                   <v-img
+                    v-if="question.ImageLink"
                     height="300"
                     width="300"
                     class="ma-5"
-                    src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+                    :src="question.ImageLink"
                   ></v-img>
+                  <vuetify-audio
+                    v-if="question.AudioLink"
+                    :file="question.AudioLink"
+                    class="ma-5 elevation-0"
+                    :ended="audioFinish"
+                    style="width:400px"
+                    downloadable
+                  ></vuetify-audio>
                   <v-textarea
                     class="mt-10"
                     v-if="question.quesType == 'TEXTAREA'"
@@ -199,11 +169,11 @@
                   >
                     <v-radio-group>
                       <v-radio
-                        v-for="n in question.options[0]"
-                        :key="n"
-                        :label="n"
-                        :value="n"
-                        style="color: red"
+                        v-for="option in question.options.split(',')"
+                        :key="option"
+                        :label="option"
+                        :value="option"
+                        color="#00FFBF"
                       ></v-radio>
                     </v-radio-group>
                   </v-container>
@@ -234,7 +204,7 @@
         color="#4288CA"
         :disabled="Ques === '' || Questype === ''"
         @click="addQues"
-      >  
+      >
         <v-icon dark> mdi-plus </v-icon>
       </v-btn>
       <v-btn outlined color="green" class="ma-5">SAVE ROUND</v-btn>
@@ -245,6 +215,9 @@
 <script>
 import common from "@/services/common.js";
 export default {
+  components:{
+   VuetifyAudio: () => import("vuetify-audio"),
+  },
   data() {
     return {
       e6: 1,
@@ -264,6 +237,7 @@ export default {
     common.getRounds().then((res) => {
       console.log(res);
       this.rounds = res.data;
+      console.log(this.rounds);
     });
   },
   watch: {
@@ -275,8 +249,8 @@ export default {
     },
   },
   methods: {
-    next(n) {
-      var l = this.Questions.length;
+    next(n,l) {
+      console.log(n);
       if (n + 1 == l) {
         this.e6 = 1;
       } else {
@@ -351,7 +325,8 @@ export default {
 .edit {
   border-radius: 10px;
 }
-.btm{
-  display: flex;justify-content: center;
+.btm {
+  display: flex;
+  justify-content: center;
 }
 </style>

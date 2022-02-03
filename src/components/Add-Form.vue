@@ -17,19 +17,8 @@
           <div class="media">
             UPLOAD FILES:
             <div class="uploadBox">
-              <image-input v-model="avatar" :ImgLink="ImgLink">
-                <div slot="activator">
-                  <div v-ripple v-if="!avatar" class="upload pa-3">
-                    <div class="inner">
-                      <v-icon dark right x-large> mdi-image-plus </v-icon>
-                    </div>
-                  </div>
-                  <v-avatar size="100px" v-ripple v-else class="upload pa-3">
-                    <img :src="avatar.imageURL" alt="avatar" />
-                  </v-avatar>
-                </div>
-              </image-input>
-              <UploadAudio :AudioLink="AudioLink" />
+              <UploadImage @getImageLink="updateImageLink" />
+              <UploadAudio @getAudioLink="updateAudioLink" />
             </div>
           </div>
           QUSETION TYPE:
@@ -137,14 +126,14 @@
 </template>
 
 <script>
-import ImageInput from "./ImageInput.vue";
+import UploadImage from "./UploadImg.vue";
 import UploadAudio from "../components/UploadAudio.vue";
 import Header from "../components/Header.vue";
 import common from "@/services/common.js";
 
 export default {
   components: {
-    ImageInput: ImageInput,
+    UploadImage,
     UploadAudio,
     Header,
   },
@@ -170,6 +159,7 @@ export default {
     loading: false,
     loading1: false,
     snackbar: false,
+    currentround: "",
     Qtype: ["SINGLE CHOICE", "MULTIPLE CHOICE", "ATTACH FILE", "TEXTAREA"],
   }),
   methods: {
@@ -194,6 +184,8 @@ export default {
           score: this.score,
           quesType: this.Questype,
           options: this.options,
+          ImageLink : this.ImgLink,
+          AudioLink : this.AudioLink,
         });
         console.log("==");
         console.log(this.Questions);
@@ -201,6 +193,7 @@ export default {
         this.options = [];
         this.Questype = "";
         this.showBtn = true;
+        this.avatar = null;
       }
     },
     saveRound() {
@@ -223,6 +216,14 @@ export default {
       this.saving = false;
       this.saved = true;
     },
+    updateImageLink(link){
+      console.log(link.link);
+      this.ImgLink = link.link;
+    },
+    updateAudioLink(link){
+      console.log(link.link);
+      this.AudioLink = link.link;
+    }
   },
   watch: {
     Questions: {
@@ -239,12 +240,7 @@ export default {
       deep: true,
     },
   },
-  // mounted() {
-  //   console.log("App mounted!");
-  //   if (localStorage.getItem("Questions"))
-  //     this.Questions = JSON.parse(localStorage.getItem("Questions"));
-  //   else localStorage.removeItem("Questions");
-  // },
+  
 };
 </script>
 

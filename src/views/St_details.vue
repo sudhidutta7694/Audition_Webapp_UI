@@ -1,6 +1,6 @@
 <template>
   <div class="background">
-    <NavigationDrawer :role="role"/>
+    <NavigationDrawer :role="role" />
     <div class="main">
       <div class="top">
         <v-btn outlined :color="color" class="mr-2">{{ details.status }}</v-btn>
@@ -65,12 +65,7 @@
       <v-row>
         <v-col>
           <div class="mt-10">
-            <v-card
-              v-if="answers.length == 0"
-              class="pa-10"
-              style="background-color: transparent"
-              elevation="0"
-            >
+            <v-card v-if="answers.length == 0" class="pa-10">
               <h2 style="color: red; text-align: center">
                 Hasn't attempted any questions.
               </h2>
@@ -99,12 +94,16 @@
                   <v-card color="basil" flat>
                     <div
                       v-for="(question, index) in round.questions"
-                      :key="question._id"
+                      :key="index"
                       class="ma-5"
                     >
-                      <h1>{{ index + 1 }}. {{ question.Ques }}</h1>
-                      <h5>ANSWER:</h5>
-                      <small>{{ question.answer }}</small>
+                      <h2>{{ index + 1 }}. {{ question.quesText }}</h2>
+                      <div style="display: flex">
+                        <h5 style="color: grey">ANSWER:</h5>
+                        <h4 class="ml-5" style="color: blue">
+                          {{ question.answer }}
+                        </h4>
+                      </div>
                     </div>
                   </v-card>
                 </v-tab-item>
@@ -263,7 +262,7 @@ export default {
     return {
       e6: 1,
       tab: null,
-      color: "blue",
+      color: "",
       subool: false,
       currentround: "",
       status: "",
@@ -275,6 +274,7 @@ export default {
       rounds: [],
       responses: [],
       answers: [],
+      respons: [],
       statusSnackbar: false,
       statusUpdate: "",
       time: "",
@@ -298,7 +298,7 @@ export default {
         if (res.status === 200) {
           console.log(res.data);
           this.details = res.data.data[0][0];
-          this.responses = res.data.data[0][1];
+          this.responses = res.data.data[0][1].responses;
           console.log(this.details);
           for (var i = 1; i <= this.details.round; i++) {
             this.filteroptions.push(`Round ${i}`);
@@ -320,26 +320,35 @@ export default {
           }
           // console.log(res);
           this.time = new Date(this.details.time).toString().substring(0, 24);
+          this.color =
+            this.details.status == "unevaluated"
+              ? "grey"
+              : this.details.status == "selected"
+              ? "green"
+              : "red";
           common.getRounds().then((res) => {
             this.rounds = res.data;
+            console.log(this.responses);
             console.log(this.rounds);
-            this.responses.forEach((round) => {
-              var findround = this.rounds.find(
-                (element) => element.roundNo == round.roundNo
-              );
+            this.rounds.forEach((round) => {
+              this.responses.forEach((resp) => {
+                if (resp.roundInfo == round.roundNo) {
+                  this.respons.push(resp);
+                }
+              });
               var roundentry = {
                 roundNo: round.roundNo,
                 questions: [],
               };
-              round.questions.forEach((question) => {
-                var foundques = findround.question_set_models.find(
-                  (element) => element.id === question.qid
+              this.respons.forEach((question) => {
+                var foundques = round.question_set_models.find(
+                  (e) => e.quesId == question.qid
                 );
                 if (foundques != undefined) {
                   var a = {
                     quesType: question.qtype,
                     answer: question.answer,
-                    id: question.qid,
+                    _id: question.qid,
                     quesLink: foundques.quesLink,
                     quesText: foundques.quesText,
                     options: foundques.options,
@@ -347,11 +356,13 @@ export default {
                   roundentry.questions.push(a);
                 }
               });
-              this.answers.push(roundentry);
+              if (roundentry.questions.length != 0) {
+                this.answers.push(roundentry);
+              }
             });
-            console.log(this.answers.length);
-            this.tab = this.answers.length - 1;
+            console.log(this.answers);
           });
+          this.tab = this.answers.length - 1;
           common.getAuditionStatus().then((res) => {
             console.log(res);
             this.currentround = res.data.round;
@@ -386,20 +397,19 @@ export default {
       this.statusSnackbar = true;
       var a = this.details;
       common.updateEntry(a).then((res) => {
-        this.color =
-          this.details.status == "unevaluated"
-            ? "grey"
-            : this.details.status == "selected"
-            ? "green"
-            : "red";
         this.statusUpdate = res.data.message;
-        // alert(res.data.message);
+        alert(res.data.message);
       });
     },
   },
   created() {
     var tok = VueJwtDecode.decode(localStorage.getItem("token").substring(6));
     this.role = tok.role;
+  },
+  wildcard() {
+    common.wildcard(this.details.uuid).then(() => {
+      this.$router.push("/admin");
+    });
   },
 };
 </script>

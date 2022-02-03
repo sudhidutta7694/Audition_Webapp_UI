@@ -9,7 +9,8 @@
       <v-layout class="justify-center">
         <v-flex xs12 sm12 lg12>
           <div align-center>
-            <v-img contain max-height="400px" style="border-radius: 10px; margin: 20px;" src="./wallppr.jpg"></v-img>
+            {{question.ImageLink}}
+            <v-img contain max-height="400px" style="border-radius: 10px; margin: 20px;" :src="question.ImageLink"></v-img>
             <vuetify-audio :file="file" color="white" :ended="audioFinish" downloadable style="background-color:#1A1D1F; box-shadow:none"></vuetify-audio>
             <v-container>
                 <v-row>

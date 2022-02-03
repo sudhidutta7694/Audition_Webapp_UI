@@ -6,7 +6,7 @@
     color="#1A1D1F"
   >
     <div v-if="Questions.length == 0" class="emptyTimeline">
-      ADD QUESTIONS FOR ROUND 1
+      ADD QUESTIONS FOR ROUND {{currentround+1}}
     </div>
     <v-timeline v-else>
       <v-timeline-item
@@ -41,10 +41,10 @@
               </v-card-title>
               <v-img
                 height="250"
-                src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+                :src="question.ImageLink"
               ></v-img>
               <vuetify-audio
-                :file="file"
+                :file="question.AudioLink"
                 class="ma-5 elevation-0"
                 :ended="audioFinish"
                 downloadable
@@ -134,6 +134,7 @@
 </style>
 
 <script>
+import common from "@/services/common.js";
 export default {
   props: ["Questions"],
   components: {
@@ -143,6 +144,7 @@ export default {
     options: [],
     dialog: false,
     dialogDelete: false,
+    currentround: "",
     file: "http://www.hochmuth.com/mp3/Boccherini_Concerto_478-1.mp3",
   }),
   methods: {
@@ -164,6 +166,12 @@ export default {
     if (localStorage.getItem("Questions"))
       this.Questions = JSON.parse(localStorage.getItem("Questions"));
     else localStorage.removeItem("Questions");
+  },
+  beforeCreate() {
+    common.getAuditionStatus().then((res) => {
+      console.log(res);
+      this.currentround = res.data.round;
+    });
   },
 };
 </script>

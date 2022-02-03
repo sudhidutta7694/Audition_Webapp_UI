@@ -1,83 +1,83 @@
 <template>
-      <image-input v-model="avatar" :ImgLink="ImgLink">
-        <div slot="activator">
-          <div v-ripple v-if="!avatar" class="upload pa-3">
-            <div class="inner">
-               <v-icon
-          dark
-          right
-          x-large
-        > 
-          mdi-image-plus
-        </v-icon>
-            </div>
-            
-          </div> 
-            <v-avatar size="100px" v-ripple v-else class="upload pa-3">
-            <img :src="avatar.imageURL" alt="avatar">
-          </v-avatar>
+  <image-input v-model="avatar" @getLink="updateLink">
+    <div slot="activator">
+      <div v-ripple v-if="!avatar" class="upload pa-3">
+        <div class="inner">
+          <v-icon dark right x-large> mdi-image-plus </v-icon>
         </div>
-      </image-input>
+      </div>
+      <v-avatar size="100px" v-ripple v-else class="upload pa-3">
+        <img :src="avatar.imageURL" alt="avatar" />
+      </v-avatar>
+    </div>
+  </image-input>
 </template>
 
 <script>
-import ImageInput from './ImageInput.vue'
+import ImageInput from "./ImageInput.vue";
 export default {
-  name: 'app',
-  data () {
+  name: "app",
+  data() {
     return {
       avatar: null,
       saving: false,
-      saved: false
-    }
+      saved: false,
+    };
   },
-  props:["ImgLink"],
   components: {
-    ImageInput: ImageInput
+    ImageInput: ImageInput,
   },
-  watch:{
+  watch: {
     avatar: {
-      handler: function() {
-        this.saved = false
+      handler: function () {
+        this.saved = false;
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     uploadImage() {
-      this.saving = true
-      setTimeout(() => this.savedAvatar(), 1000)
+      this.saving = true;
+      setTimeout(() => this.savedAvatar(), 1000);
     },
     savedAvatar() {
-      this.saving = false
-      this.saved = true
-    }
-  }
-}
+      this.saving = false;
+      this.saved = true;
+    },
+    updateLink(link) {
+      // console.log(link.link);
+      this.ImageLink = link.link;
+      this.$emit("getImageLink", {
+        link: this.ImageLink,
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>
-.upload{
+.upload {
   display: flex;
   justify-content: center;
   height: 200px;
   width: 200px;
   border-radius: 20px;
-  background-color: #1A1D1F;
-  border: 1px solid #7B849F;
+  background-color: #1a1d1f;
+  border: 1px solid #7b849f;
   margin: 10px;
   margin-bottom: 30px;
   margin-top: 30px;
 }
-.text{
+.text {
   opacity: 0.4;
 }
-.inner{
+.inner {
   border: 2px dashed rgb(7, 7, 7);
   height: 170px;
   width: 170px;
   border-radius: 20px;
-  display: flex;justify-content: center;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 </style>
