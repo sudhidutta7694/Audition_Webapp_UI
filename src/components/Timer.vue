@@ -20,25 +20,29 @@
   </v-container>
 </template>
 <script>
+import common from '../services/common.js'
 export default {
   name: 'Timer',
   mounted() {
-    this.timerInterval = setInterval(() => (this.timePassed += 1), 1000);
+    window.setInterval(() => {
+      this.now = Math.trunc((new Date()).getTime() / 1000);
+    }, 1000);
   },
-  props: ["time", "mobileView"],
+  props: ["time", "mobileView", "question"],
   data() {
     return {
       timePassed: 0,
       timerInterval: null,
       stop: false,
+      now: Math.trunc((new Date()).getTime() / 1000),
     }
   },
   computed: {
-    seconds: function() {
+    seconds: function () {
       return Math.trunc(this.timeLeft % 60);
     },
-    minutes: function() {
-      return Math.trunc(this.timeLeft / 60);
+    minutes: function () {
+      return Math.trunc(this.timeLeft / 60) % 60;
     },
     // hours() {
     //   return Math.trunc((this.date - this.now) / 60 / 60) % 24;
@@ -46,24 +50,31 @@ export default {
     // days() {
     //   return Math.trunc((this.date - this.now) / 60 / 60 / 24);
     // },
-    timeLeft: function() {
-      return this.time - this.timePassed;
+    timeLeft: function () {
+      return this.time - this.now;
     }
   },
   watch: {
-    timeLeft(newValue) {
-      if (newValue === 0) {
-        this.timeUp();
+    timeLeft(value) {
+      if (value <= 0) {
         this.stop = true;
+        console.log("ZA WARUDOOOO!!!!")
+        this.timeUp()
       }
     }
   },
   methods: {
     timeUp() {
-      clearInterval(this.timerInterval);
+      this.saveAnswer();
+
+      this.$router.push("/dash");
     },
-    startTimer() {
-      this.timerInterval = setInterval(() => (this.timePassed += 1), 1000);
+    saveAnswer() {
+      var current_answer = JSON.parse(localStorage.getItem("answers"))
+
+      common.submitRound(current_answer).then(() => {
+        console.log(current_answer)
+      });
     },
   }
 }

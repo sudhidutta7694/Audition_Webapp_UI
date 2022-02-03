@@ -146,7 +146,7 @@ export default {
     })
   },
   setProfile(profile) {
-    return Api().post("profile", profile, {
+    return Api().post("profile", profile,  {
       headers: { Authorization: localStorage.getItem("token") }
     })
   },

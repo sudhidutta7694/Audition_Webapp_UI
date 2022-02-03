@@ -9,15 +9,10 @@
                 elevation="3"
             >
                 <div class="d-flex flex-column align-center">
-                    <div>{{ username }}</div>
                     <div class="text-center text-lg-h4">Current Round: {{ audition.round }}</div>
-                    <div
-                        v-if="audition.status === 'res'"
-                        class="mx-auto text-center"
-                    >Round {{ audition.round }} is available now!</div>
                     <v-btn
-                        v-if="audition.status === 'res'"
-                        class="mx-auto"
+                        v-if="audition.status === 'res' && audition.round !== 0"
+                        class="mx-auto mt-3"
                         @click="$router.push('/result')"
                     >View Results</v-btn>
 
@@ -25,15 +20,28 @@
                         v-if="audition.status === 'ong'"
                         class="mx-auto mt-3"
                     >Round {{ audition.round }} is live now!</div>
+
                     <v-btn
                         v-if="
                         audition.status === 'ong' &&
-                        (student.studenttime === 0  || (student.studenttime > 0 && student.studenttime > new Date()))"
+                        (student.studenttime === 0 || (student.studenttime > 0 && student.studenttime > new Date()) && valid === true)"
                         class="mx-auto mt-3"
                         @click="$router.push('/quiz')"
                     >Attempt Quiz</v-btn>
+                    <div
+                        class="mx-auto mt-3"
+                        v-else-if="audition.status === 'ong' && student.studenttime < new Date()"
+                    >Your Attempt for this round is finished.</div>
 
-                    <div v-if="audition.status==='res' && audition.time===undefined" class="mx-auto">Round {{ audition.round }} is not live yet.</div>
+                    <div
+                        class="mx-auto mt-3"
+                        v-if="audition.status === 'def'"
+                    >Round is Over, Please wait for results.</div>
+
+                    <div
+                        v-if="audition.status === 'res' && audition.round === 0"
+                        class="mx-auto"
+                    >Round {{ audition.round }} is not live yet.</div>
                     <v-btn
                         v-if="member || su"
                         class="mx-auto mt-3"
@@ -46,7 +54,7 @@
                         <v-card-text>Please Update your profile.</v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <router-link to="/profile">
+                            <router-link to="/profile" style="text-decoration: none;">
                                 <v-btn color="primary" text @click="dialog = false">Go to Profile</v-btn>
                             </router-link>
                         </v-card-actions>
@@ -93,6 +101,8 @@ export default {
             this.profile = res.data;
             this.phone = this.profile.phone;
             this.roll = this.profile.roll;
+            this.valid = this.profile.profilebool;
+            this.dialog = !this.valid;
             console.log(this.profile);
         });
     },
@@ -109,11 +119,6 @@ export default {
             }
             this.role = tok.role;
             this.username = tok.username;
-            if (tok.phone !== null && tok.roll !== null) {
-                this.valid = true
-            } else {
-                this.valid = false
-            }
         }
     },
 };

@@ -98,6 +98,7 @@ export default {
             this.profile = res.data;
             this.phoneNo = this.profile.phone;
             this.roll = this.profile.roll;
+            console.log("-------------")
             console.log(this.profile);
         });
     },
@@ -110,14 +111,11 @@ export default {
             this.role = tok.role;
             this.username = tok.username;
             this.emailId = tok.email;
-            this.phoneNo = tok.phone;
-            this.roll = tok.roll;
-            console.log(tok)
         }
     },
     methods: {
         setProfile() {
-            common.setProfile({ roll: this.roll, phone: this.phone }).then(() => {
+            common.setProfile({ roll: this.roll, phone: this.phoneNo }).then(() => {
                 this.dialog = false;
                 this.profile.profilebool = true;
             });
