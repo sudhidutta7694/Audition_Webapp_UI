@@ -1,82 +1,88 @@
 <template>
-      <image-input v-model="avatar">
-        <div slot="activator">
-          <div v-ripple v-if="!avatar" class="upload pa-3">
-            <div class="inner">
-               <v-icon
-          dark
-          right
-          x-large
-        > 
-          mdi-headphones
-        </v-icon>
-            </div>
-            
-          </div> 
-            <v-avatar size="100px" v-ripple v-else class="upload pa-3">
-            <img :src="avatar.imageURL" alt="avatar">
-          </v-avatar>
+  <audio-input v-model="avatar" @getAudioLink="updateLink">
+    <div slot="activator">
+      <div v-ripple v-if="!avatar" class="upload pa-3">
+        <div class="inner">
+          <v-icon dark right x-large> mdi-headphones </v-icon>
         </div>
-      </image-input>
+      </div>
+      <v-icon
+        v-else
+        class="upload"
+        style="height: 100px; width: 100px"
+        size="50px"
+        >mdi-volume-high</v-icon
+      >
+    </div>
+  </audio-input>
 </template>
 
 <script>
-import ImageInput from './ImageInput.vue'
+import AudioInput from "./AudioInput.vue";
 export default {
-  name: 'app',
-  data () {
+  name: "app",
+  data() {
     return {
       avatar: null,
       saving: false,
-      saved: false
-    }
+      saved: false,
+      AudioLink: "",
+    };
   },
   components: {
-    ImageInput: ImageInput
+    AudioInput: AudioInput,
   },
-  watch:{
+  watch: {
     avatar: {
-      handler: function() {
-        this.saved = false
+      handler: function () {
+        this.saved = false;
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
-    uploadImage() {
-      this.saving = true
-      setTimeout(() => this.savedAvatar(), 1000)
+    uploadAudio() {
+      this.saving = true;
+      setTimeout(() => this.savedAvatar(), 1000);
     },
     savedAvatar() {
-      this.saving = false
-      this.saved = true
-    }
-  }
-}
+      this.saving = false;
+      this.saved = true;
+    },
+    updateLink(link) {
+      // console.log(link.link);
+      this.AudioLink = link.link;
+      this.$emit("getAudioLink", {
+        link: this.AudioLink,
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>
-.upload{
+.upload {
   display: flex;
   justify-content: center;
   height: 200px;
   width: 200px;
   border-radius: 20px;
-  background-color: #1A1D1F;
-  border: 1px solid #7B849F;
+  background-color: #1a1d1f;
+  border: 1px solid #7b849f;
   margin: 10px;
   margin-bottom: 30px;
   margin-top: 30px;
 }
-.text{
+.text {
   opacity: 0.4;
 }
-.inner{
+.inner {
   border: 2px dashed rgb(7, 7, 7);
   height: 170px;
   width: 170px;
   border-radius: 20px;
-  display: flex;justify-content: center;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 </style>

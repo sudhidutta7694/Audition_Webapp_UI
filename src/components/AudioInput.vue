@@ -25,13 +25,13 @@
 <script>
 import common from "@/services/common.js";
 export default {
-  name: "image-input",
+  name: "audio-input",
   data: () => ({
     errorDialog: null,
     errorText: "",
     uploadFieldName: "file",
     maxSize: 1024,
-    ImgLink: "",
+    AudioLink: "",
   }),
   props: [{ value: Object }],
   methods: {
@@ -40,31 +40,24 @@ export default {
     },
     async onFileChange(fieldName, file) {
       const { maxSize } = this;
-      let imageFile = file[0];
+      let audioFile = file[0];
       if (file.length > 0) {
-        let size = imageFile.size / maxSize / maxSize;
-        if (!imageFile.type.match("image.*")) {
-          // check whether the upload is an image
-          this.errorDialog = true;
-          this.errorText = "Please choose an image file";
-        } else if (size > 1) {
-          // check whether the size is greater than the size limit
+        let size = audioFile.size / maxSize / maxSize;
+        console.log(audioFile.type);
+        if (size > 1) {
           this.errorDialog = true;
           this.errorText =
-            "Your file is too big! Please select an image under 1MB";
+            "Your file is too big!"
         } else {
-          // Append file into FormData and turn file into image URL
           let formData = new FormData();
-          let imageURL = URL.createObjectURL(imageFile);
-          formData.append(fieldName, imageFile);
-          // Emit the FormData and image URL to the parent component
-          this.$emit("input", { formData, imageURL });
+          let audioURL = URL.createObjectURL(audioFile);
+          formData.append(fieldName, audioFile);
+          this.$emit("input", { formData, audioURL });
           await common.upload(formData).then((res) => {
-            // console.log(res.data);
-            this.ImgLink = res.data.link;
-            // console.log(this.ImgLink);
-            this.$emit("getLink", {
-              link: this.ImgLink,
+            this.AudioLink = res.data.link;
+            console.log(this.AudioLink);
+            this.$emit("getAudioLink", {
+              link: this.AudioLink,
             });
           });
         }

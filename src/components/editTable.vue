@@ -138,7 +138,7 @@
         class="mt-10"
       >
         <v-tab v-for="(item, index) in rounds" :key="index">
-          ROUND {{ index + 1 }}
+          ROUND {{ item.roundNo}}
         </v-tab>
       </v-tabs>
 

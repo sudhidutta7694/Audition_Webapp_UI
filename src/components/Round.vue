@@ -1,6 +1,6 @@
 <template>
     <div class="round">
-      Current Round : {{round}}
+      Current Round : {{currentround+1}}
       </div>
 </template>
 
@@ -8,13 +8,21 @@
 import common from "@/services/common.js";
 export default{
    name:'Round',
-   round:"",
+   data:() =>({
+    currentround: ""
+   }),
    created() {
      common.getAuditionStatus().then((res) => {
       console.log(res);
       this.round = res.data.round;
     });
-   }
+   },
+   beforeCreate() {
+    common.getAuditionStatus().then((res) => {
+      console.log(res);
+      this.currentround = res.data.round;
+    });
+  },
    
 }
 </script>
