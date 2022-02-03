@@ -55,10 +55,11 @@ export default {
     }
   },
   watch: {
-    timeLeft(newValue) {
-      if (newValue === 0) {
-        this.timeUp();
+    timeLeft(value) {
+      if (value <= 0) {
         this.stop = true;
+        console.log("ZA WARUDOOOO!!!!")
+        this.timeUp()
       }
     }
   },
@@ -68,11 +69,9 @@ export default {
 
       this.$router.push("/dash");
     },
-    startTimer() {
-      this.timerInterval = setInterval(() => (this.timePassed += 1), 1000);
-    },
     saveAnswer() {
       var current_answer = JSON.parse(localStorage.getItem("answers"))
+
       common.submitRound(current_answer).then(() => {
         console.log(current_answer)
       });
