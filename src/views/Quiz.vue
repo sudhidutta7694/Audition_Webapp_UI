@@ -80,7 +80,12 @@
               </div>
             </v-list-item-content>
           </v-list-item>
-          <Timer :class="{ 'mr-4': vertical }" :time="time" :mobileView="!vertical" />
+          <Timer
+            :class="{ 'mr-4': vertical }"
+            :time="time"
+            :mobileView="!vertical"
+            :question="questions"
+          />
         </div>
         <v-tabs
           v-model="tab"
@@ -97,15 +102,25 @@
               :question="question"
               :mobileView="!vertical"
               :uuid="uuid"
-              v-if="question.quesType === 'Subjective'"
+              v-if="question.quesType === 'TEXTAREA'"
             />
-            <Mcqs :question="question" :mobileView="!vertical" :uuid="uuid" v-if="question.quesType === 'Mcq'" />
-            <Mcqm :question="question" :mobileView="!vertical" :uuid="uuid" v-if="question.quesType === 'Mcqm'" />
+            <Mcqs
+              :question="question"
+              :mobileView="!vertical"
+              :uuid="uuid"
+              v-if="question.quesType === 'SINGLE CHOICE'"
+            />
+            <Mcqm
+              :question="question"
+              :mobileView="!vertical"
+              :uuid="uuid"
+              v-if="question.quesType === 'MULTIPLE CHOICE'"
+            />
             <FileUpload
               :question="question"
               :mobileView="!vertical"
               :uuid="uuid"
-              v-if="question.quesType === 'file'"
+              v-if="question.quesType === 'ATTACH FILE'"
             />
           </v-tab-item>
         </v-tabs>
@@ -260,9 +275,9 @@ export default {
           this.$router.push("/");
         }
       });
-     common.getAnswers().then(res => {
+      common.getAnswers().then(res => {
         console.log(res.data);
-        if(localStorage.getItem("answers")===null){
+        if (localStorage.getItem("answers") === null) {
           localStorage.setItem("answers", JSON.stringify(res.data.answers));
         }
       });
