@@ -87,7 +87,7 @@ export default {
             roll: null,
             role: "",
             valid: Boolean,
-            dialog: Boolean,
+            dialog: false,
         };
     },
     beforeCreate() {
