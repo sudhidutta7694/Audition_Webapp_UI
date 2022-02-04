@@ -126,7 +126,7 @@ export default {
   result() {
     return Api().get('/result', {
       headers: { Authorization: localStorage.getItem("token") }
-    }),
+    })
   },
   deleteRound(id) {
     return Api().delete('removeRound', {
