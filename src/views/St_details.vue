@@ -103,9 +103,6 @@
                         <h4 class="ml-5" style="color: blue" v-if="question.answer">
                           {{ question.answer }}
                         </h4>
-                        <h4>
-                          {{question}}
-                        </h4>
                       </div>
                     </div>
                   </v-card>

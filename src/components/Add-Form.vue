@@ -17,8 +17,8 @@
           <div class="media">
             UPLOAD FILES:
             <div class="uploadBox">
-              <UploadImage @getImageLink="updateImageLink" />
-              <UploadAudio @getAudioLink="updateAudioLink" />
+              <UploadImage @getImageLink="updateImageLink" :avatar="avatar"/>
+              <UploadAudio @getAudioLink="updateAudioLink"/>
             </div>
           </div>
           QUSETION TYPE:

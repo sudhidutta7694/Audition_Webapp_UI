@@ -17,9 +17,9 @@
 import ImageInput from "./ImageInput.vue";
 export default {
   name: "app",
+  props:["avatar"],
   data() {
     return {
-      avatar: null,
       saving: false,
       saved: false,
     };
