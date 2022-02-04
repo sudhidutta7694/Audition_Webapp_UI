@@ -160,14 +160,6 @@ export default {
       window.location.href = `${process.env.VUE_APP_BASE_URL}auth/github/`;
     },
   },
-  beforeCreate() {
-    var token = this.$route.query.token;
-    if (token != null) {
-      token = "Bearer " + token;
-      localStorage.setItem("token", token);
-      this.$router.push("/dash");
-    }
-  },
 };
 </script>
 

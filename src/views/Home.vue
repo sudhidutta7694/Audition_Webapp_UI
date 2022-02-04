@@ -111,6 +111,8 @@ export default {
   },
   beforeCreate() {
     var token = this.$route.query.token;
+    console.log("-------")
+    console.log(token)
     if (token != null) {
       token = "Bearer " + token;
       localStorage.setItem("token", token);
@@ -154,9 +156,9 @@ export default {
   width: 100vw;
   height: 100vh;
   overflow-x: hidden;
-  background: url("../assets/triangle.gif");
+  background: url("../assets/tunnel.gif");
   background-repeat: no-repeat;
-  background-size: 100% 100%;
+  background-size: cover;
 }
 .nav_icon {
   width: 60px;
