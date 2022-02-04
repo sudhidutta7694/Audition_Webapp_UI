@@ -1,29 +1,32 @@
 <template>
     <div>
         <Navigation :role="role" />
-        <v-container>
-            <v-simple-table fixed-header height="300px" style="width:L 80%">
-                <template v-slot:default>
-                    <thead>
-                        <tr>
-                            <th class="text-left">Name</th>
-                            <th class="text-left">Calories</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="item in desserts" :key="item.name">
-                            <td>{{ item.name }}</td>
-                            <td>{{ item.calories }}</td>
-                        </tr>
-                    </tbody>
-                </template>
-            </v-simple-table>
+        <v-container class="d-flex align-center justify-center" style="width: 80%">
+            <v-card class="elevation-8">
+                <div>
+                    <v-list-item three-line>
+                        <v-list-item-content>
+                            <div class="text-overline">
+                                <div class="pointer"></div>
+                                <div>PARTICIPANTS SELECTED FOR NEXT ROUND</div>
+                            </div>
+                        </v-list-item-content>
+                    </v-list-item>
+                </div>
+                <v-data-table
+                    :headers="headers"
+                    :items="result.username"
+                    :items-per-page="itemsPerPage"
+                    class="pa-5 pt-0"
+                ></v-data-table>
+            </v-card>
         </v-container>
     </div>
 </template>
 <script>
 import Navigation from '../components/Navigation.vue'
 import VueJwtDecode from 'vue-jwt-decode'
+import common from '../services/common.js'
 
 export default {
     name: 'result',
@@ -32,48 +35,27 @@ export default {
     },
     data() {
         return {
+            itemsPerPage: 10,
+            headers: [
+                {
+                    text: 'Name',
+                    align: 'start',
+                    value: 'name',
+                },
+                { text: 'Feedback', value: 'feedback' },
+            ],
             desserts: [
                 {
-                    name: 'Frozen Yogurt',
-                    calories: 159,
+                    name: 'Akhilesh Yadav',
+                    feedback: 'Bruh',
+
                 },
                 {
-                    name: 'Ice cream sandwich',
-                    calories: 237,
-                },
-                {
-                    name: 'Eclair',
-                    calories: 262,
-                },
-                {
-                    name: 'Cupcake',
-                    calories: 305,
-                },
-                {
-                    name: 'Gingerbread',
-                    calories: 356,
-                },
-                {
-                    name: 'Jelly bean',
-                    calories: 375,
-                },
-                {
-                    name: 'Lollipop',
-                    calories: 392,
-                },
-                {
-                    name: 'Honeycomb',
-                    calories: 408,
-                },
-                {
-                    name: 'Donut',
-                    calories: 452,
-                },
-                {
-                    name: 'KitKat',
-                    calories: 518,
+                    name: 'Rudra Jalan',
+                    feedback: 'Kya bhai?'
                 },
             ],
+            result: null,
             role: "",
         }
     },
@@ -86,5 +68,28 @@ export default {
             this.role = tok.role;
         }
     },
+    beforeCreate() {
+        common.result().then((res) => {
+            this.result = res.data
+            console.log("----------")
+            console.log(this.result)
+            console.log("-----------")
+            console.log(res.data)
+        })
+    }
 }
 </script>
+
+<style >
+.pointer {
+    background-color: #a692ff;
+    width: 10px;
+    border-radius: 10px;
+    margin-right: 8px;
+}
+
+.text-overline {
+    display: flex;
+    align-items: center;
+}
+</style>

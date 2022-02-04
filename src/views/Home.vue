@@ -149,6 +149,7 @@ export default {
   width: 100vw;
   height: 90vh;
   overflow-x: hidden;
+  background: url(https://giphy.com/embed/3NSBjjb7wL6Jq) no-repeat center center;
 }
 .nav_icon {
   width: 60px;

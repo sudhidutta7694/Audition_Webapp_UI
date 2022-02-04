@@ -123,14 +123,16 @@ export default {
       data:id
     })
   },
-  deleteRound(id){
+  result() {
+    return Api().get('/result', {
+      headers: { Authorization: localStorage.getItem("token") }
+    })
+  },
+  deleteRound(id) {
     return Api().delete('removeRound', {
       headers: { Authorization: localStorage.getItem("token") },
       data:id
     })
-  },
-  getResult() {
-    return Api().get('getResult')
   },
   getStudent() {
     return Api().get('/student/get', {

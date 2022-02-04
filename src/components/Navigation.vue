@@ -7,7 +7,7 @@
       @click="drawer = !drawer"
       src="../assets/glug.png"
       aspect-ratio="1"
-      fixed
+      style="position: fixed;"
     ></v-img>
     <v-navigation-drawer
       :permanent="!mobileView"
