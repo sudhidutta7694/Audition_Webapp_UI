@@ -76,6 +76,12 @@ export default {
       headers: { Authorization: localStorage.getItem("token") },
     })
   },
+  addQues(q) {
+    return Api().post('/addQuestion', q, {
+      headers: { Authorization: localStorage.getItem("token") },
+    })
+
+  },
   stopRound() {
     return Api().post('protected/stopround', null, {
       headers: { Authorization: localStorage.getItem("token") },
@@ -117,6 +123,12 @@ export default {
       data:id
     })
   },
+  deleteRound(id){
+    return Api().delete('removeRound', {
+      headers: { Authorization: localStorage.getItem("token") },
+      data:id
+    })
+  },
   getResult() {
     return Api().get('getResult')
   },
@@ -151,7 +163,7 @@ export default {
     })
   },
   wildcard(id) {
-    return Api().post("wildcard", { uid: id }, {
+    return Api().post("/wildcard", { uuid: id }, {
       headers: { Authorization: localStorage.getItem("token") }
     })
   }

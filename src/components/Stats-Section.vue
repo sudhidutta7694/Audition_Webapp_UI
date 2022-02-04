@@ -42,10 +42,9 @@
 </template>
 
 <script>
-
+import common from "../services/common.js";
 export default {
   name: 'Stats',
-  props:["un"],
   data: () => ({
     cards: [
       { icon: 'mdi-account', title: '500', subtitle: '  Appeared Round 1', flex: 3.5, color: '#2F333F', progresscolor: '#B5E4CA', rotate: '-90' },
@@ -54,11 +53,38 @@ export default {
     ],
     interval: {},
     value: 0,
+    un:0,
+    tot:0
   }),
   beforeDestroy() {
     clearInterval(this.interval)
   },
+  beforeCreate(){
+    common.getUsers().then((res) => {
+      if (res.status === 200) {
+        this.all = res.data.data;
+        this.all.forEach((e) => this.store.push(e[0]));
+        this.students = this.store.filter((stu) => stu.role === "s");
+        console.log(this.students);
+        this.tot = this.students.length;
+        this.students.forEach((e)=>{
+           if(e.status == 'unevaluated')
+           this.un++;
+        })
+        console.log(this.un);
+      } else if (res.status === 401) {
+        alert("UNAUTHORISED ACCESS");
+        localStorage.clear("token");
+        this.$router.push("/");
+      } else {
+        alert("No data");
+      }
+    });
+  },
   mounted() {
+    this.cards[0].title = this.tot;
+    this.cards[1].title = this.un;
+    this.cards[2].title = (this.tot-this.un);
     this.interval = setInterval(() => {
       if (this.value === 50) {
         return (this.value = 0)

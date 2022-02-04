@@ -100,8 +100,11 @@
                       <h2>{{ index + 1 }}. {{ question.quesText }}</h2>
                       <div style="display: flex">
                         <h5 style="color: grey">ANSWER:</h5>
-                        <h4 class="ml-5" style="color: blue">
+                        <h4 class="ml-5" style="color: blue" v-if="question.answer">
                           {{ question.answer }}
+                        </h4>
+                        <h4>
+                          {{question}}
                         </h4>
                       </div>
                     </div>
@@ -200,6 +203,7 @@
     <v-snackbar v-model="statusSnackbar" color="success" elevation="12" app>{{
       statusUpdate
     }}</v-snackbar>
+    <v-snackbar v-model="feedsnack" color="success" elevation="12" app>FEEDBACK SUBMITTED</v-snackbar>
     <v-snackbar
       v-model="extendtimeSnackbar"
       class="text-center"
@@ -266,6 +270,8 @@ export default {
       subool: false,
       currentround: "",
       status: "",
+      feedback: "",
+      feedsnack:false,
       extendtimeSnackbar: false,
       details: [],
       filteroptions: [],
@@ -278,6 +284,7 @@ export default {
       statusSnackbar: false,
       statusUpdate: "",
       time: "",
+      adminUser: "",
     };
   },
   beforeCreate() {
@@ -378,6 +385,22 @@ export default {
     }
   },
   methods: {
+    submitFeedback() {
+      console.log("sav");
+      common
+        .updateFeedback({
+          round:this.details.round,
+          uuid: this.details.uuid,
+          username: this.adminUser,
+          feedback: this.feedback,
+        })
+        .then(() => {
+          this.feedsnack = true;
+          this.feedback = "";
+          // this.panel = [];
+          // alert(res.data.message);
+        });
+    },
     extendtime() {
       common.extendtime({ uuid: this.details.uuid }).then(() => {
         if (this.details.time < new Date().getTime())
@@ -398,18 +421,22 @@ export default {
       var a = this.details;
       common.updateEntry(a).then((res) => {
         this.statusUpdate = res.data.message;
-        alert(res.data.message);
+      });
+    },
+    wildcard() {
+      console.log("clicked");
+      common.wildcard(this.details.uuid).then(() => {
+        // this.$router.push("/admin");
+        console.log("done");
       });
     },
   },
   created() {
     var tok = VueJwtDecode.decode(localStorage.getItem("token").substring(6));
     this.role = tok.role;
-  },
-  wildcard() {
-    common.wildcard(this.details.uuid).then(() => {
-      this.$router.push("/admin");
-    });
+    this.adminUser = VueJwtDecode.decode(
+      localStorage.getItem("token").substring(6)
+    ).UserName;
   },
 };
 </script>

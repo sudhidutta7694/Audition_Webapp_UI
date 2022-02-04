@@ -5,11 +5,110 @@
         <v-list-item-content style="height: 50px">
           <div class="text-overline mb-4">
             <div class="pointer"></div>
-            EDIT ROUNDS
+            EDIT ROUND
           </div>
         </v-list-item-content>
       </v-list-item>
-      <v-dialog v-model="dialog" max-width="800px">
+      <v-dialog v-model="dialogAdd" max-width="800px">
+        <v-card
+          class="pa-5"
+          style="border: 2px solid grey; border-radius: 20px"
+        >
+          <v-card-text>
+            <v-container>
+              QUESTION:
+              <input
+                outlined
+                color="#BEFFC1"
+                class="ma-2"
+                name="input-7-4"
+                v-model="quesText"
+                style="width: 40%; border: 1px solid grey"
+              />
+              <div class="media">
+                UPLOAD FILES:
+                <div class="uploadBox">
+                  <UploadImage @getImageLink="addImageLink" />
+                  <UploadAudio @getAudioLink="addAudioLink" />
+                </div>
+              </div>
+              QUSETION TYPE:
+              <v-select
+                :items="Qtype"
+                v-model="Questype"
+                dense
+                outlined
+                value=""
+                color="#7B849F"
+                class="mb-10 dropdown"
+                style="width: 30%; border: 0.2px solid #7b849f; height: 40px"
+              ></v-select>
+              <div
+                class="mcq-options mx-5 pa-5"
+                v-if="
+                  Questype === 'SINGLE CHOICE' || Questype === 'MULTIPLE CHOICE'
+                "
+              >
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        v-model="choice1"
+                        label="Choice 1"
+                        solo
+                      ></v-text-field>
+                    </v-col>
+
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        v-model="choice2"
+                        solo
+                        label="Choice 2"
+                      ></v-text-field>
+                    </v-col>
+
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        v-model="choice3"
+                        solo
+                        label="Choice 3"
+                      ></v-text-field>
+                    </v-col>
+
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        v-model="choice4"
+                        label="Choice 4"
+                        solo
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <div class="d-flex float-right mr-12 pa-2">
+                    <v-btn
+                      class="ma-2 black--text"
+                      color="#BEFFC1"
+                      @click="saveOptions"
+                      v-if="showBtn"
+                    >
+                      Save
+                    </v-btn>
+                  </div>
+                </v-container>
+              </div>
+              <v-btn
+                class="ma-5"
+                dark
+                color="#4288CA"
+                :disabled="Ques === '' || Questype === ''"
+                @click="saveQues()"
+              >
+                ADD
+              </v-btn>
+            </v-container>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialogEdit" max-width="800px">
         <v-card
           class="pa-5"
           style="border: 2px solid grey; border-radius: 20px"
@@ -35,15 +134,21 @@
                   ></v-select>
                 </v-col>
               </v-row>
+              <div class="uploadBox">
+                <UploadImage @getImageLink="updateImageLink" />
+                <UploadAudio @getAudioLink="updateAudioLink" />
+              </div>
               <v-row>
                 <v-container
                   v-if="
                     editQues.quesType == 'SINGLE CHOICE' ||
                     editQues.quesType == 'MULTIPLE CHOICE'
                   "
-                >  
-                  <v-row v-for="(option,index) in editQues.options.split(',')"
-                        :key="index">
+                >
+                  <v-row
+                    v-for="(option, index) in editQues.options.split(',')"
+                    :key="index"
+                  >
                     <v-col cols="12" sm="6">
                       <v-text-field
                         v-model="choice"
@@ -138,7 +243,7 @@
                     :file="question.AudioLink"
                     class="ma-5 elevation-0"
                     :ended="audioFinish"
-                    style="width:400px"
+                    style="width: 400px"
                     downloadable
                   ></vuetify-audio>
                   <v-textarea
@@ -192,45 +297,62 @@
               </v-stepper-items>
             </v-stepper>
           </v-card>
+          <div class="btm">
+            <v-btn class="ma-5" outlined color="red" @click="removeRound(item)"
+              >DELETE ROUND</v-btn
+            >
+            <v-btn
+              class="ma-5"
+              fab
+              dark
+              color="#4288CA"
+              :disabled="Ques === '' || Questype === ''"
+              @click="addQues(item)"
+            >
+              <v-icon dark> mdi-plus </v-icon>
+            </v-btn>
+          </div>
         </v-tab-item>
       </v-tabs-items>
     </v-card>
-    <div class="btm">
-      <v-btn class="ma-5" outlined color="red">DELETE ROUND</v-btn>
-      <v-btn
-        class="ma-5"
-        fab
-        dark
-        color="#4288CA"
-        :disabled="Ques === '' || Questype === ''"
-        @click="addQues"
-      >
-        <v-icon dark> mdi-plus </v-icon>
-      </v-btn>
-      <v-btn outlined color="green" class="ma-5">SAVE ROUND</v-btn>
-    </div>
   </div>
 </template>
 
 <script>
 import common from "@/services/common.js";
+import UploadImage from "./UploadImg.vue";
+import UploadAudio from "../components/UploadAudio.vue";
 export default {
-  components:{
-   VuetifyAudio: () => import("vuetify-audio"),
+  components: {
+    VuetifyAudio: () => import("vuetify-audio"),
+    UploadImage,
+    UploadAudio,
   },
   data() {
     return {
       e6: 1,
       tab: null,
-      dialog: false,
+      dialogAdd: false,
+      dialogEdit: false,
       dialogDelete: false,
       editedIndex: -1,
+      opt: [],
       showBtn: true,
       editQues: {},
       dltQues: {},
       Qtype: ["MULTIPLE CHOICE", "SINGLE CHOICE", "ATTACH FILE", "TEXTAREA"],
       rounds: [],
       Questions: [],
+      round: "",
+      quesText: "",
+      quesType: "",
+      ImageLink: "",
+      AudioLink: "",
+      choice1: "",
+      choice2: "",
+      choice3: "",
+      choice4: "",
+      options: [],
     };
   },
   beforeCreate() {
@@ -249,7 +371,7 @@ export default {
     },
   },
   methods: {
-    next(n,l) {
+    next(n, l) {
       console.log(n);
       if (n + 1 == l) {
         this.e6 = 1;
@@ -267,8 +389,9 @@ export default {
     editItem(item) {
       this.editedIndex = this.Questions.indexOf(item);
       console.log(item);
-      this.dialog = true;
+      this.dialogEdit = true;
       this.editQues = item;
+      this.editQues.options.split(",");
     },
 
     deleteItem(item) {
@@ -312,12 +435,64 @@ export default {
         quesId: this.editQues.quesId,
         quesText: this.editQues.quesText,
         quesType: this.editQues.quesType,
+        ImageLink: this.editQues.ImageLink,
+        AudioLink: this.editQues.AudioLink,
       };
 
       console.log(this.editQues.quesId);
       common.editQues(a);
       this.close();
     },
+    updateImageLink(link) {
+      console.log(link.link);
+      this.editQues.ImageLink = link.link;
+    },
+    updateAudioLink(link) {
+      console.log(link.link);
+      this.editQues.AudioLink = link.link;
+    },
+    addImageLink(link) {
+      console.log(link.link);
+      this.ImageLink = link.link;
+    },
+    addAudioLink(link) {
+      console.log(link.link);
+      this.AudioLink = link.link;
+    },
+    addQues(item) {
+      this.dialogAdd = true;
+      this.round = item;
+    },
+    saveOptions() {
+      this.options.push({
+        choice1: this.choice1,
+        choice2: this.choice2,
+        choice3: this.choice3,
+        choice4: this.choice4,
+      });
+      console.log(this.options);
+      this.showBtn = false;
+    },
+    saveQues() {
+      var a = {
+        roundNo: this.round.roundNo,
+        quesText: this.quesText,
+        quesType: this.quesType,
+        ImageLink: this.ImageLink,
+        AudioLink: this.AudioLink,
+        // options: this.options,
+      };
+      this.dialogAdd = false;
+      common.addQues(a);
+    },
+    removeRound(item) {
+      console.log("clicked");
+      var a = {
+        roundNo: item.roundNo,
+      };
+      common.deleteRound(a);
+    },
+    
   },
 };
 </script>
@@ -327,6 +502,9 @@ export default {
 }
 .btm {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
+}
+.uploadBox {
+  display: flex;
 }
 </style>

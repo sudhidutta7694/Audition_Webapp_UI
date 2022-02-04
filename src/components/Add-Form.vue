@@ -208,14 +208,6 @@ export default {
         this.snackbar = true;
       });
     },
-    uploadImage() {
-      this.saving = true;
-      setTimeout(() => this.savedAvatar(), 1000);
-    },
-    savedAvatar() {
-      this.saving = false;
-      this.saved = true;
-    },
     updateImageLink(link){
       console.log(link.link);
       this.ImgLink = link.link;
