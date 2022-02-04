@@ -109,19 +109,19 @@ export default {
       }
     },
   },
-  beforeCreate() {
-    var token = this.$route.query.token;
-    console.log("-------")
-    console.log(token)
-    console.log(this.$route.query.token)
-    console.log(this.$route.query)
-    console.log(this.$route)
-    if (token != null) {
-      token = "Bearer " + token;
-      localStorage.setItem("token", token);
-      this.$router.push("/dash");
-    }
-  },
+  // beforeCreate() {
+  //   var token = this.$route.query.token;
+  //   console.log("-------")
+  //   console.log(token)
+  //   console.log(this.$route.query.token)
+  //   console.log(this.$route.query)
+  //   console.log(this.$route)
+  //   if (token != null) {
+  //     token = "Bearer " + token;
+  //     localStorage.setItem("token", token);
+  //     this.$router.push("/dash");
+  //   }
+  // },
   mounted() {
     this.token = localStorage.getItem('token');
     if (this.token != null && this.token != undefined) {
