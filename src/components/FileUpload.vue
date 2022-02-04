@@ -163,9 +163,7 @@ export default {
       this.saveAnswer();
     },
     pushAnswer() {
-      var current_answer = JSON.parse(localStorage.getItem("answers")).find(
-        answer => answer.qid === this.question.quesId
-      );
+      var current_answer = localStorage.getItem("answers")
       common.updateAnswer(current_answer).then(() => {
         console.log(current_answer)
       });

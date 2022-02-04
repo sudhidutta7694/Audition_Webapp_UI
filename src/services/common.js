@@ -117,8 +117,10 @@ export default {
       data:id
     })
   },
-  getResult() {
-    return Api().get('getResult')
+  result() {
+    return Api().get('/result', {
+      headers: { Authorization: localStorage.getItem("token") }
+    })
   },
   getStudent() {
     return Api().get('/student/get', {
