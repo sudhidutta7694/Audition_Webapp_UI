@@ -109,8 +109,8 @@ export default {
           if (e.status == "unevaluated") this.un++;
         });
         this.cards[0].title = this.tot;
-        this.cards[1].title = this.un;
-        this.cards[2].title = this.tot - this.un;
+        this.cards[1].title = this.tot - this.un;
+        this.cards[2].title = this.un;
         console.log(this.un);
       } else if (res.status === 401) {
         alert("UNAUTHORISED ACCESS");
