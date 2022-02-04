@@ -76,6 +76,7 @@ export default {
             console.log("-----------")
             console.log(res.data)
         })
+
     }
 }
 </script>
