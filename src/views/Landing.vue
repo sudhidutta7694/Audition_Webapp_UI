@@ -3,8 +3,7 @@
         <Navigation :role="role" />
         <div class="d-flex flex-column align-center justify-center main">
             <v-card
-                class="d-flex flex-column align-center justify-center"
-                style="width: 40%"
+                class="d-flex flex-column align-center justify-center main-card"
                 height="30%"
                 elevation="3"
             >
@@ -121,6 +120,16 @@ export default {
             this.username = tok.username;
         }
     },
+    computed: {
+        vertical() {
+            var s = this.$vuetify.breakpoint.name;
+            if (s == "xs" || s == "sm") {
+                return false;
+            } else {
+                return true;
+            }
+        },
+    },
 };
 </script>
 
@@ -133,10 +142,24 @@ export default {
     margin-left: 210px;
 }
 
+.main-card {
+    width: 40%;
+}
+
 .bg {
     background-color: #111315;
     display: flex;
     height: 100%;
     overflow: hidden;
+}
+
+@media screen and (max-width: 960px) {
+    .main {
+        margin: 10px;
+    }
+
+    .main-card {
+        width: 80%;
+    }
 }
 </style>

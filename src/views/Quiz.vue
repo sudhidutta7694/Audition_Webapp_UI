@@ -1,16 +1,5 @@
 <template>
   <div>
-    <v-btn
-      v-if="!vertical"
-      @click="drawer = !drawer"
-      class="ml-5 mt-5"
-      fab
-      dark
-      color="teal darken-1"
-      style="position: fixed; z-index: 2"
-    >
-      <v-icon>mdi-menu</v-icon>
-    </v-btn>
     <Navigation :role="role" />
     <v-container class="main_card">
       <v-card outlined elevation="2" class="mx-auto my-10" style="width: 80%">

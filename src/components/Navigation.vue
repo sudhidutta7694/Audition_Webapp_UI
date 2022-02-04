@@ -7,6 +7,7 @@
       @click="drawer = !drawer"
       src="../assets/glug.png"
       aspect-ratio="1"
+      fixed
     ></v-img>
     <v-navigation-drawer
       :permanent="!mobileView"
@@ -156,7 +157,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style >
 .nav {
   height: 100%;
   position: fixed;
@@ -187,6 +188,10 @@ export default {
   .nav_icon {
     width: 40px;
     height: 40px;
+  }
+
+  .nav {
+    z-index: 2;
   }
 }
 </style>

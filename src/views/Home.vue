@@ -148,6 +148,7 @@ export default {
 .bgp {
   width: 100vw;
   height: 90vh;
+  overflow-x: hidden;
 }
 .nav_icon {
   width: 60px;
