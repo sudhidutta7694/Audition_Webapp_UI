@@ -3,8 +3,8 @@
     <NavigationDrawer :role="role" />
     <div class="main">
       <Round />
-      <Stats :un="un" />
-      <Table :headers="dashHeaders" :dashboard="true" :un="un" />
+      <Stats/>
+      <Table :headers="dashHeaders" :dashboard="true"/>
     </div>
   </div>
 </template>
@@ -32,7 +32,7 @@ import Stats from "../components/Stats-Section.vue";
 import Round from "../components/Round.vue";
 import Table from "../components/Table.vue";
 import VueJwtDecode from "vue-jwt-decode";
-// import common from "../services/common.js";
+
 export default {
   name: "Dashboard",
   components: {
@@ -42,7 +42,11 @@ export default {
     Table,
   },
   data: () => ({
-    un: 0,
+    all:[],
+    students:[],
+    store:[],
+    un:0,
+    tot:0,
     dashHeaders: [
       {
         text: "Name",
@@ -57,9 +61,13 @@ export default {
     ],
     role: "",
   }),
+  mounted() {
+     
+  },
   created() {
     var tok = VueJwtDecode.decode(localStorage.getItem("token").substring(6));
     this.role = tok.role;
+    
   },
   beforeCreate() {
     if (localStorage.getItem("token") === null) {

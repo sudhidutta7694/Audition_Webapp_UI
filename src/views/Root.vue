@@ -104,7 +104,7 @@ export default {
   },
   methods: {
     extendtime() {
-      common.extendtime({ id: "all" }).then(() => {
+      common.extendtime({ uuid: "all" }).then(() => {
         this.extendtimeSnackbar = true;
       });
     },
