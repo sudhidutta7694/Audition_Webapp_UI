@@ -66,7 +66,7 @@ export default {
   methods: {
     timeUp() {
       this.saveAnswer();
-
+      localStorage.removeItem("answers")
       this.$router.push("/dash");
     },
     saveAnswer() {
