@@ -35,7 +35,7 @@
               QUSETION TYPE:
               <v-select
                 :items="Qtype"
-                v-model="Questype"
+                v-model="quesType"
                 dense
                 outlined
                 value=""
@@ -46,7 +46,7 @@
               <div
                 class="mcq-options mx-5 pa-5"
                 v-if="
-                  Questype === 'SINGLE CHOICE' || Questype === 'MULTIPLE CHOICE'
+                  quesType === 'SINGLE CHOICE' || quesType === 'MULTIPLE CHOICE'
                 "
               >
                 <v-container>
@@ -66,7 +66,8 @@
                         label="Choice 2"
                       ></v-text-field>
                     </v-col>
-
+                  </v-row>
+                  <v-row>
                     <v-col cols="12" sm="6">
                       <v-text-field
                         v-model="choice3"
@@ -99,7 +100,7 @@
                 class="ma-5"
                 dark
                 color="#4288CA"
-                :disabled="Ques === '' || Questype === ''"
+                :disabled="quesText === '' || quesType === ''"
                 @click="saveQues()"
               >
                 ADD
@@ -145,19 +146,20 @@
                     editQues.quesType == 'MULTIPLE CHOICE'
                   "
                 >
+                  <!-- <h3>OPTIONS</h3>
                   <v-row
                     v-for="(option, index) in editQues.options.split(',')"
                     :key="index"
+                    class="ma-5"
                   >
-                    <v-col cols="12" sm="6">
                       <v-text-field
+                        style="width:1px"
                         v-model="choice"
                         :label="option"
                         solo
                       ></v-text-field>
-                    </v-col>
-                  </v-row>
-                  <div class="d-flex float-right mr-12 pa-2">
+                  </v-row> -->
+                  <!-- <div class="d-flex float-right mr-12 pa-2">
                     <v-btn
                       class="ma-2 black--text"
                       color="#BEFFC1"
@@ -166,7 +168,7 @@
                     >
                       Save Options
                     </v-btn>
-                  </div>
+                  </div> -->
                 </v-container>
               </v-row>
             </v-container>
@@ -306,7 +308,6 @@
               fab
               dark
               color="#4288CA"
-              :disabled="Ques === '' || Questype === ''"
               @click="addQues(item)"
             >
               <v-icon dark> mdi-plus </v-icon>
@@ -391,7 +392,7 @@ export default {
       console.log(item);
       this.dialogEdit = true;
       this.editQues = item;
-      this.editQues.options.split(",");
+      // var opt = this.editQues.options; 
     },
 
     deleteItem(item) {
@@ -411,7 +412,7 @@ export default {
     },
 
     close() {
-      this.dialog = false;
+      this.dialogEdit = false;
       this.$nextTick(() => {
         this.editQues = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
@@ -438,7 +439,7 @@ export default {
         ImageLink: this.editQues.ImageLink,
         AudioLink: this.editQues.AudioLink,
       };
-
+      console.log(a);
       console.log(this.editQues.quesId);
       common.editQues(a);
       this.close();

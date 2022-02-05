@@ -100,8 +100,19 @@
                       <h2>{{ index + 1 }}. {{ question.quesText }}</h2>
                       <div style="display: flex">
                         <h5 style="color: grey">ANSWER:</h5>
-                        <h4 class="ml-5" style="color: blue" v-if="question.answer">
+                        <h4
+                          class="ml-5"
+                          style="color: blue"
+                          v-if="question.answer"
+                        >
                           {{ question.answer }}
+                        </h4>
+                        <h4
+                          class="ml-5"
+                          style="color: blue"
+                          v-if="question.ansLink"
+                        >
+                          {{ question.ansLink }}
                         </h4>
                       </div>
                     </div>
@@ -148,59 +159,26 @@
               >
                 SAVE
               </v-btn>
-              <!-- <v-alert outlined color="#00FFFF">
-              <div class="title">FEEDBACKS</div>
-              <v-select
-                v-model="filter"
-                :items="filteroptions"
-                label="See feedback for ..."
-                solo
-              ></v-select>
-
-              <div>
-                <v-data-iterator
-                  :items="filteredItems"
-                  item-key="_id"
-                  :single-expand="expand"
-                >
-                  <template v-slot:default="{ items }">
-                    <v-row>
-                      <v-col
-                        v-for="item in items"
-                        :key="item._id"
-                        cols="40"
-                        sm="12"
-                      >
-                        <v-alert outlined color="#00FFFF">
-                          <v-list-item-content>
-                            {{ item.feedback }}
-                          </v-list-item-content>
-                          <v-divider
-                            class="my-4 info"
-                            style="opacity: 0.22"
-                          ></v-divider>
-                          <v-list-item-content>
-                            <v-list-item-title
-                              >- {{ item.user }} in Round
-                              {{ item.round }}</v-list-item-title
-                            >
-                          </v-list-item-content>
-                        </v-alert>
-                      </v-col>
-                    </v-row>
-                  </template>
-                </v-data-iterator>
-              </div>
-            </v-alert> -->
+              <h4 class="mt-5">FEEDBACKS:</h4>
+              <v-data-table
+                :headers="headers"
+                :items="feebacks"
+                hide-default-footer
+                class="elevation-1 ma-5 pa-5"
+                style="background: transparent"
+              ></v-data-table>
             </v-card>
           </div>
         </v-col>
       </v-row>
+      <v-row> </v-row>
     </div>
     <v-snackbar v-model="statusSnackbar" color="success" elevation="12" app>{{
       statusUpdate
     }}</v-snackbar>
-    <v-snackbar v-model="feedsnack" color="success" elevation="12" app>FEEDBACK SUBMITTED</v-snackbar>
+    <v-snackbar v-model="feedsnack" color="success" elevation="12" app
+      >FEEDBACK SUBMITTED</v-snackbar
+    >
     <v-snackbar
       v-model="extendtimeSnackbar"
       class="text-center"
@@ -268,7 +246,7 @@ export default {
       currentround: "",
       status: "",
       feedback: "",
-      feedsnack:false,
+      feedsnack: false,
       extendtimeSnackbar: false,
       details: [],
       filteroptions: [],
@@ -282,6 +260,16 @@ export default {
       statusUpdate: "",
       time: "",
       adminUser: "",
+      feedbacks: [],
+      headers: [
+        {
+          text: "ROUND",
+          align: "start",
+          value: "round",
+        },
+        { text: "FEEDBACK", value: "feedback" },
+        { text: "BY", value: "username" },
+      ],
     };
   },
   beforeCreate() {
@@ -303,7 +291,8 @@ export default {
           console.log(res.data);
           this.details = res.data.data[0][0];
           this.responses = res.data.data[0][1].responses;
-          console.log(this.details);
+          this.feebacks = this.details.feedback;
+          console.log(this.responses);
           for (var i = 1; i <= this.details.round; i++) {
             this.filteroptions.push(`Round ${i}`);
           }
@@ -384,19 +373,19 @@ export default {
   methods: {
     submitFeedback() {
       console.log("sav");
-      common
-        .updateFeedback({
-          round:this.details.round,
-          uuid: this.details.uuid,
-          username: this.adminUser,
-          feedback: this.feedback,
-        })
-        .then(() => {
-          this.feedsnack = true;
-          this.feedback = "";
-          // this.panel = [];
-          // alert(res.data.message);
-        });
+      console.log(this.adminUser);
+      var a = {
+        round: this.details.round,
+        uuid: this.details.uuid,
+        username: this.adminUser,
+        feedback: this.feedback,
+      };
+      common.updateFeedback(a).then(() => {
+        this.feedsnack = true;
+        this.feedback = "";
+        // this.panel = [];
+        // alert(res.data.message);
+      });
     },
     extendtime() {
       common.extendtime({ uuid: this.details.uuid }).then(() => {
@@ -433,7 +422,7 @@ export default {
     this.role = tok.role;
     this.adminUser = VueJwtDecode.decode(
       localStorage.getItem("token").substring(6)
-    ).UserName;
+    ).username;
   },
 };
 </script>

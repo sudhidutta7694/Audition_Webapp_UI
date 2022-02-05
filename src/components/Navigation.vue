@@ -25,7 +25,7 @@
           <v-list-item-avatar>
             <v-img src="../assets/glug.png"></v-img>
           </v-list-item-avatar>
-          <v-list-item-title class="header">AUDITION</v-list-item-title>
+          <v-list-item-title class="header" style="color:white"><strong>{{adminUser.toUpperCase()}}</strong> </v-list-item-title>
         </v-list-item>
       </v-list>
       <v-list nav dense>
@@ -127,12 +127,14 @@
 
 <script>
 import common from '../services/common.js'
+import VueJwtDecode from "vue-jwt-decode";
 export default {
   name: 'NavigationDrawer',
   props: ["role"],
   data() {
     return {
       drawer: !this.mobileView,
+      adminUser:"",
     }
   },
   methods: {
@@ -153,7 +155,12 @@ export default {
         return false;
       }
     },
-  }
+  },
+  created() {
+    this.adminUser = VueJwtDecode.decode(
+      localStorage.getItem("token").substring(6)
+    ).username;
+  },
 }
 </script>
 

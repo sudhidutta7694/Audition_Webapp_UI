@@ -2,7 +2,7 @@
   <div class="background">
     <NavigationDrawer :role="role" />
     <div class="main">
-      <Sparkline />
+      <!-- <Sparkline /> -->
       <div class="top">
         <v-btn color="#BEFFC1" class="ma-2 black--text" @click="btnHandler()">
           {{ btntext }}
@@ -54,7 +54,7 @@
 
 <script>
 import NavigationDrawer from "../components/Navigation.vue";
-import Sparkline from "../components/sparkline.vue";
+// import Sparkline from "../components/sparkline.vue";
 import Table from "../components/Table.vue";
 import VueJwtDecode from "vue-jwt-decode";
 import common from "@/services/common.js";
@@ -63,7 +63,7 @@ export default {
   components: {
     NavigationDrawer,
     Table,
-    Sparkline,
+    // Sparkline,
   },
   data: () => ({
     snackbar: false,
