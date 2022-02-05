@@ -1,7 +1,7 @@
 <template>
-  <audio-input v-model="avatar" @getAudioLink="updateLink">
+  <audio-input v-model="avatarAudio" @getAudioLink="updateLink">
     <div slot="activator">
-      <div v-ripple v-if="!avatar" class="upload pa-3">
+      <div v-ripple v-if="!avatarAudio" class="upload pa-3">
         <div class="inner">
           <v-icon dark right x-large> mdi-headphones </v-icon>
         </div>
@@ -21,9 +21,9 @@
 import AudioInput from "./AudioInput.vue";
 export default {
   name: "app",
+  props:["avatarAudio"],
   data() {
     return {
-      avatar: null,
       saving: false,
       saved: false,
       AudioLink: "",
@@ -33,7 +33,7 @@ export default {
     AudioInput: AudioInput,
   },
   watch: {
-    avatar: {
+    avatarAudio: {
       handler: function () {
         this.saved = false;
       },

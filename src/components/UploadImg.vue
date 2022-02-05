@@ -1,13 +1,13 @@
 <template>
-  <image-input v-model="avatar" @getLink="updateLink">
+  <image-input v-model="avatarImg" @getLink="updateLink">
     <div slot="activator">
-      <div v-ripple v-if="!avatar" class="upload pa-3">
+      <div v-ripple v-if="!avatarImg" class="upload pa-3">
         <div class="inner">
           <v-icon dark right x-large> mdi-image-plus </v-icon>
         </div>
       </div>
       <v-avatar size="100px" v-ripple v-else class="upload pa-3">
-        <img :src="avatar.imageURL" alt="avatar" />
+        <img :src="avatarImg.imageURL" alt="avatarImg" />
       </v-avatar>
     </div>
   </image-input>
@@ -17,7 +17,7 @@
 import ImageInput from "./ImageInput.vue";
 export default {
   name: "app",
-  props:["avatar"],
+  props:["avatarImg"],
   data() {
     return {
       saving: false,
@@ -28,7 +28,7 @@ export default {
     ImageInput: ImageInput,
   },
   watch: {
-    avatar: {
+    avatarImg: {
       handler: function () {
         this.saved = false;
       },

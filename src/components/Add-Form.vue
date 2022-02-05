@@ -17,8 +17,8 @@
           <div class="media">
             UPLOAD FILES:
             <div class="uploadBox">
-              <UploadImage @getImageLink="updateImageLink" :avatar="avatar"/>
-              <UploadAudio @getAudioLink="updateAudioLink"/>
+              <UploadImage @getImageLink="updateImageLink" :avatarImg="avatarImg" />
+              <UploadAudio @getAudioLink="updateAudioLink" :avatarAudio="avatarAudio"/>
             </div>
           </div>
           QUSETION TYPE:
@@ -145,7 +145,8 @@ export default {
     ImgLink: "",
     AudioLink: "",
     score: 0,
-    avatar: null,
+    avatarImg: null,
+    avatarAudio: null,
     saving: false,
     saved: false,
     showBtn: true,
@@ -176,6 +177,7 @@ export default {
         (this.choice3 = ""),
         (this.choice4 = "");
       this.showBtn = false;
+
     },
     addQues() {
       if (this.Ques !== "") {
@@ -193,7 +195,10 @@ export default {
         this.options = [];
         this.Questype = "";
         this.showBtn = true;
-        this.avatar = null;
+        this.avatarImg = null;
+        this.avatarAudio = null;
+        this.ImgLink = "";
+        this.AudioLink = "";
       }
     },
     saveRound() {
@@ -232,7 +237,7 @@ export default {
       deep: true,
     },
   },
-  
+
 };
 </script>
 
