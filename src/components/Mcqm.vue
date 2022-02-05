@@ -84,6 +84,12 @@
     >
       <v-icon class="mr-2">mdi-content-save</v-icon>Save
     </v-btn>
+    <v-snackbar v-model="snackbar">
+      {{ text }}
+      <template v-slot:action="{ attrs }">
+        <v-btn color="blue lighten-3" text v-bind="attrs" @click="snackbar = false">Close</v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -96,6 +102,8 @@ export default {
     return {
       option: [],
       answer: [],
+      snackbar: false,
+      text: 'Your Answer has been saved',
     };
   },
   components: {
@@ -120,6 +128,7 @@ export default {
       );
       common.updateAnswer(current_answer).then(() => {
         console.log(current_answer)
+        this.snackbar = true;
       });
     },
   },

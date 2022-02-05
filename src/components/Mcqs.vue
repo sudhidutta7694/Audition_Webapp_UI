@@ -75,6 +75,12 @@
     >
       <v-icon class="mr-2">mdi-content-save</v-icon>Save
     </v-btn>
+    <v-snackbar v-model="snackbar">
+      {{ text }}
+      <template v-slot:action="{ attrs }">
+        <v-btn color="blue lighten-3" text v-bind="attrs" @click="snackbar = false">Close</v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -87,6 +93,9 @@ export default {
     return {
       option: [],
       answer: "",
+      ansArray: [],
+      snackbar: false,
+      text: 'Your Answer has been saved',
     };
   },
   components: {
@@ -99,7 +108,7 @@ export default {
       var answers = JSON.parse(localStorage.getItem("answers"));
       answers.forEach((answer) => {
         if (answer.qid === this.question._id) {
-          this.answer = answer.answer;
+          this.answer = answer.answer[0];
         }
       });
     }
@@ -111,6 +120,7 @@ export default {
       );
       common.updateAnswer(current_answer).then(() => {
         console.log(current_answer)
+        this.snackbar = true;
       });
     },
   },
@@ -118,12 +128,13 @@ export default {
     answer: {
       handler() {
         console.log(this.answer);
+        this.ansArray[0] = this.answer;
         if (
           localStorage.getItem("answers") === null &&
           (this.admin === null || this.admin === undefined)
         ) {
           var newanswer = {
-            answer: this.answer,
+            answer: this.ansArray,
             qid: this.question.quesId,
             qtype: this.question.quesType,
             roundInfo: this.question.roundmodelRoundNo,
@@ -144,7 +155,7 @@ export default {
           });
           if (foundanswer === false) {
             var newans = {
-              answer: this.answer,
+              answer: this.ansArray,
               qid: this.question.quesId,
               qtype: this.question.quesType,
               roundInfo: this.question.roundmodelRoundNo,
