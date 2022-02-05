@@ -85,7 +85,7 @@
         :loading="loading"
         :disabled="loading"
         color="#4288CA"
-        @click="pushAnswer"
+        @click="saveAnswer"
       >
         <v-icon class="mr-2">mdi-content-save</v-icon>Save
       </v-btn>
@@ -150,7 +150,7 @@ export default {
             answer: this.answer,
             qid: this.question.quesId,
             qtype: this.question.quesType,
-            roundInfo: this.question.roundmodelRoundNo,
+            roundNo: this.question.roundmodelRoundNo,
             ansLink: null,
             userUuid: this.uuid,
           };
@@ -171,7 +171,7 @@ export default {
               answer: this.answer,
               qid: this.question.quesId,
               qtype: this.question.quesType,
-              roundInfo: this.question.roundmodelRoundNo,
+              roundNo: this.question.roundmodelRoundNo,
               ansLink: null,
               userUuid: this.uuid,
             };

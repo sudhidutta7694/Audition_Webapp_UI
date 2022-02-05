@@ -69,13 +69,15 @@ export default {
       localStorage.removeItem("answers")
       this.$router.push("/dash");
     },
-    saveAnswer() {
-      var current_answer = localStorage.getItem("answers")
+    saveRound() {
+      var current_answer = JSON.parse(localStorage.getItem("answers"))
       let ans = {
         answers: current_answer
       }
+      // let ans = current_answer
       common.submitRound(ans).then(() => {
         console.log(ans)
+        console.log(typeof (ans))
       });
     },
   }

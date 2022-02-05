@@ -81,7 +81,7 @@
           color="#4288CA"
           @click="prevQuestion"
         >
-          <v-icon class="mr-2">mdi-arrow-right-top</v-icon>Previous Question
+          <v-icon class="mr-2">mdi-arrow-left-top</v-icon>Previous Question
         </v-btn>
         <v-btn
           v-if="tab !== questions.length - 1"
@@ -201,13 +201,11 @@ export default {
       this.tab = this.tab - 1;
     },
     saveRound() {
-      var current_answer = localStorage.getItem("answers")
-      // let ans = {
-      //   answers: current_answer
-      // }
-      let ans = current_answer
-      console.log(ans)
-      console.log(typeof (ans))
+      var current_answer = JSON.parse(localStorage.getItem("answers"))
+      let ans = {
+        answers: current_answer
+      }
+      // let ans = current_answer
       common.submitRound(ans).then(() => {
         console.log(ans)
         console.log(typeof (ans))
