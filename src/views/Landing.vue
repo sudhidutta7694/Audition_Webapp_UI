@@ -40,7 +40,7 @@
                     <div
                         v-if="audition.status === 'res' && audition.round === 0"
                         class="mx-auto"
-                    >Round {{ audition.round }} is not live yet.</div>
+                    >Audition is not live yet.</div>
                     <v-btn
                         v-if="member || su"
                         class="mx-auto mt-3"
