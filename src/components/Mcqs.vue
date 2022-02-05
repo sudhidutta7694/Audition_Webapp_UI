@@ -44,7 +44,7 @@
           <h4 v-if="!mobileView" style="width: 100%;">Options:</h4>
           <label
             class="option_item mx-10"
-            v-for="(option, i) in question.options.split(',')"
+            v-for="(option, i) in question.options"
             :key="i"
             :class="{ 'ma-3': !mobileView, 'mx-auto': mobileView }"
           >
