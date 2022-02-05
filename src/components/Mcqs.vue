@@ -155,7 +155,7 @@ export default {
           var foundanswer = false;
           answers.forEach(answer => {
             if (answer.qid === this.question.quesId) {
-              answer.answer = this.answer;
+              answer.answer = this.ansArray;
               foundanswer = true;
             }
           });
