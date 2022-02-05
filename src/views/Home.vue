@@ -1,5 +1,6 @@
 <template>
   <div class="bgp">
+    <div class="fil" style="z-index:1;"></div>
     <v-app-bar
       extended
       extension-height="30"
@@ -9,6 +10,7 @@
       color="transparent"
       elevation="0"
       :width="{ '60px': mobileView }"
+      style="z-index:2;"
     >
       <v-app-bar-nav-icon
         class="nav_icon"
@@ -49,6 +51,7 @@
       temporary
       absolute
       height="200px"
+      style="z-index:2;"
     >
       <router-link to="faq" class="nav_item">
         <v-list-item link>
@@ -67,15 +70,16 @@
       </router-link>
     </v-navigation-drawer>
 
-    <div class="d-flex bd" :class="{ 'flex-column mb-4': mobileView }">
+    <div class="d-flex bd" :class="{ 'flex-column mb-4': mobileView }" style="z-index:2;">
       <div
         class="d-flex flex-column justify-center heading"
         :class="{ 'ml-16': !mobileView, 'align-center mx-auto': mobileView }"
+        style="z-index:2;"
       >
         <p>AUDITION</p>
         <p>PORTAL</p>
       </div>
-      <div class="d-flex align-center justify-center">
+      <div class="d-flex align-center justify-center" style="z-index:2;">
         <Login />
       </div>
     </div>
@@ -107,6 +111,11 @@ export default {
   },
   beforeCreate() {
     var token = this.$route.query.token;
+    console.log("-------")
+    console.log(token)
+    console.log(this.$route.query.token)
+    console.log(this.$route.query)
+    console.log(this.$route)
     if (token != null) {
       token = "Bearer " + token;
       localStorage.setItem("token", token);
@@ -139,6 +148,7 @@ export default {
   font-size: 60px;
   letter-spacing: 0.6em;
   padding-left: 4vw;
+  color: white;
 }
 .bd {
   width: 100%;
@@ -147,13 +157,21 @@ export default {
 }
 .bgp {
   width: 100vw;
-  height: 90vh;
+  height: 100vh;
   overflow-x: hidden;
-  background: url(https://giphy.com/embed/3NSBjjb7wL6Jq) no-repeat center center;
+  background: url("../assets/tunnel.gif");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .nav_icon {
   width: 60px;
   height: 60px;
+}
+.fil {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
 }
 @media screen and (max-width: 960px) {
   .heading {

@@ -15,7 +15,7 @@
                 </div>
                 <v-data-table
                     :headers="headers"
-                    :items="result.username"
+                    :items="result"
                     :items-per-page="itemsPerPage"
                     class="pa-5 pt-0"
                 ></v-data-table>
@@ -40,7 +40,7 @@ export default {
                 {
                     text: 'Name',
                     align: 'start',
-                    value: 'name',
+                    value: 'username',
                 },
                 { text: 'Feedback', value: 'feedback' },
             ],
@@ -76,6 +76,7 @@ export default {
             console.log("-----------")
             console.log(res.data)
         })
+
     }
 }
 </script>

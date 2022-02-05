@@ -94,6 +94,7 @@ export default {
 
   methods: {
     saveAnswer() {
+      console.log("saving")
       if (
         localStorage.getItem("answers") === null &&
         (this.admin === null || this.admin === undefined)
@@ -159,8 +160,9 @@ export default {
       common.upload(formData).then((res) => {
         console.log(res.data.link)
         this.fileLink = res.data.link;
+        this.saveAnswer();
       })
-      this.saveAnswer();
+
     },
     pushAnswer() {
       var current_answer = localStorage.getItem("answers")

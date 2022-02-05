@@ -24,7 +24,6 @@
           class="mx-auto txt-in"
           label="E-MAIL ID"
           outlined
-          filled
         ></v-text-field>
         <v-text-field
           v-model="passwd"
@@ -33,21 +32,19 @@
           label="PASSWORD"
           type="password"
           outlined
-          filled
         ></v-text-field>
         <div class="d-flex flex-column justify-center align-self-center background signinbtn">
           <v-btn @click="SignIn">Sign-In</v-btn>
         </div>
       </v-form>
       <v-form class="form" v-else>
-        <v-text-field v-model="name" class="mx-auto txt-in" label="NAME" outlined filled></v-text-field>
+        <v-text-field v-model="name" class="mx-auto txt-in" label="NAME" outlined></v-text-field>
         <v-text-field
           v-model="emailId"
           :rules="emailRules"
           class="mx-auto txt-in"
           label="E-MAIL ID"
           outlined
-          filled
         ></v-text-field>
         <v-text-field
           v-model="phoneNo"
@@ -55,7 +52,6 @@
           class="mx-auto txt-in"
           label="PHONE NUMBER"
           outlined
-          filled
         ></v-text-field>
         <v-text-field
           v-model="passwd"
@@ -64,7 +60,6 @@
           type="password"
           :rules="passwordRules"
           outlined
-          filled
         ></v-text-field>
         <div class="d-flex flex-column justify-center align-self-center background signinbtn">
           <v-btn @click="SignUp">Sign-Up</v-btn>
