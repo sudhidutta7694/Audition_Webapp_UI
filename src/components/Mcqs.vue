@@ -66,15 +66,21 @@
         </div>
       </v-container>
     </v-container>
-    <v-btn
-      class="ma-2 black--text"
-      :loading="loading"
-      :disabled="loading"
-      color="#4288CA"
-      @click="saveAnswer"
+    <div
+      class="d-flex justify-end mx-auto"
+      style="width: 90%"
+      :class="{ 'justify-center': !vertical }"
     >
-      <v-icon class="mr-2">mdi-content-save</v-icon>Save
-    </v-btn>
+      <v-btn
+        class="ma-2 black--text"
+        :loading="loading"
+        :disabled="loading"
+        color="#4288CA"
+        @click="pushAnswer"
+      >
+        <v-icon class="mr-2">mdi-content-save</v-icon>Save
+      </v-btn>
+    </div>
     <v-snackbar v-model="snackbar">
       {{ text }}
       <template v-slot:action="{ attrs }">
