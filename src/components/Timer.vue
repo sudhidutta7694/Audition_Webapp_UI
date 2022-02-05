@@ -74,7 +74,6 @@ export default {
       let ans = {
         answers: current_answer
       }
-      // let ans = current_answer
       common.submitRound(ans).then(() => {
         console.log(ans)
         console.log(typeof (ans))
