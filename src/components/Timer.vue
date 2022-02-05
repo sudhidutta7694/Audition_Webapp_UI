@@ -71,9 +71,11 @@ export default {
     },
     saveAnswer() {
       var current_answer = localStorage.getItem("answers")
-
-      common.submitRound(current_answer).then(() => {
-        console.log(current_answer)
+      let ans = {
+        anwers: current_answer
+      }
+      common.submitRound(ans).then(() => {
+        console.log(ans)
       });
     },
   }
