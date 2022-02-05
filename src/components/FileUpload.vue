@@ -50,15 +50,27 @@
         />
       </div>
     </v-container>
-    <v-btn
-      class="ma-2 black--text"
-      :loading="loading"
-      :disabled="loading"
-      color="#4288CA"
-      @click="pushAnswer"
+    <div
+      class="d-flex justify-end mx-auto"
+      style="width: 90%"
+      :class="{ 'justify-center': !vertical }"
     >
-      <v-icon class="mr-2">mdi-content-save</v-icon>Save
-    </v-btn>
+      <v-btn
+        class="ma-2 black--text"
+        :loading="loading"
+        :disabled="loading"
+        color="#4288CA"
+        @click="pushAnswer"
+      >
+        <v-icon class="mr-2">mdi-content-save</v-icon>Save
+      </v-btn>
+    </div>
+    <v-snackbar v-model="snackbar">
+      {{ text }}
+      <template v-slot:action="{ attrs }">
+        <v-btn color="blue lighten-3" text v-bind="attrs" @click="snackbar = false">Close</v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -69,12 +81,14 @@ export default {
   props: ["question", "admin", "studentanswer", "mobileView"],
   data: () => ({
     test: [],
-    answer: "",
+    answer: [],
     file: "",
     fileLink: "",
     errorDialog: Boolean,
     errorText: "",
     maxSize: 1024,
+    snackbar: false,
+    text: 'Your Answer has been saved',
   }),
   components: {
     VuetifyAudio: () => import('vuetify-audio'),
@@ -168,6 +182,7 @@ export default {
       var current_answer = localStorage.getItem("answers")
       common.updateAnswer(current_answer).then(() => {
         console.log(current_answer)
+        this.snackbar = true;
       });
     }
   },
