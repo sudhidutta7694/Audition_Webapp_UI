@@ -74,6 +74,17 @@
           <v-icon class="mr-2">mdi-content-save</v-icon>Save Round
         </v-btn>
         <v-btn
+          v-if="tab !== 0"
+          class="ma-2 black--text"
+          :loading="loading"
+          :disabled="loading"
+          color="#4288CA"
+          @click="prevQuestion"
+        >
+          <v-icon class="mr-2">mdi-arrow-right-top</v-icon>Previous Question
+        </v-btn>
+        <v-btn
+          v-if="tab !== questions.length - 1"
           class="ma-2 black--text"
           :loading="loading"
           :disabled="loading"
@@ -185,6 +196,9 @@ export default {
   methods: {
     nextQuestion() {
       this.tab = this.tab + 1;
+    },
+    prevQuestion() {
+      this.tab = this.tab - 1;
     },
     saveRound() {
       var current_answer = localStorage.getItem("answers")
