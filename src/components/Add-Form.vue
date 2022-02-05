@@ -165,12 +165,7 @@ export default {
   }),
   methods: {
     saveOptions() {
-      this.options.push({
-        choice1: this.choice1,
-        choice2: this.choice2,
-        choice3: this.choice3,
-        choice4: this.choice4,
-      });
+      this.options = [this.choice1,this.choice2,this.choice3,this.choice4]
       console.log(this.options);
       (this.choice1 = ""),
         (this.choice2 = ""),

@@ -9,7 +9,7 @@
           </div>
         </v-list-item-content>
       </v-list-item>
-      <v-dialog v-model="dialogAdd" max-width="800px">
+     <v-dialog v-model="dialogAdd" max-width="800px">
         <v-card
           class="pa-5"
           style="border: 2px solid grey; border-radius: 20px"
@@ -19,8 +19,7 @@
               QUESTION:
               <input
                 outlined
-                color="#BEFFC1"
-                class="ma-2"
+                class="ma-2 white--text"
                 name="input-7-4"
                 v-model="quesText"
                 style="width: 40%; border: 1px solid grey"
@@ -66,8 +65,7 @@
                         label="Choice 2"
                       ></v-text-field>
                     </v-col>
-                  </v-row>
-                  <v-row>
+
                     <v-col cols="12" sm="6">
                       <v-text-field
                         v-model="choice3"
@@ -101,14 +99,14 @@
                 dark
                 color="#4288CA"
                 :disabled="quesText === '' || quesType === ''"
-                @click="saveQues()"
+                @click="saveQues"
               >
                 ADD
               </v-btn>
             </v-container>
           </v-card-text>
         </v-card>
-      </v-dialog>
+      </v-dialog> 
       <v-dialog v-model="dialogEdit" max-width="800px">
         <v-card
           class="pa-5"
@@ -129,7 +127,7 @@
                     v-model="editQues.quesType"
                     dense
                     outlined
-                    label="quesType"
+                    label="QuesType"
                     color="#7B849F"
                     class="mb-10 dropdown"
                   ></v-select>
@@ -142,33 +140,57 @@
               <v-row>
                 <v-container
                   v-if="
-                    editQues.quesType == 'SINGLE CHOICE' ||
-                    editQues.quesType == 'MULTIPLE CHOICE'
+                    editQues.quesType === 'SINGLE CHOICE' ||
+                    editQues.quesType === 'MULTIPLE CHOICE'
                   "
                 >
-                  <!-- <h3>OPTIONS</h3>
-                  <v-row
-                    v-for="(option, index) in editQues.options.split(',')"
-                    :key="index"
-                    class="ma-5"
-                  >
-                      <v-text-field
-                        style="width:1px"
-                        v-model="choice"
-                        :label="option"
-                        solo
-                      ></v-text-field>
-                  </v-row> -->
-                  <!-- <div class="d-flex float-right mr-12 pa-2">
+                  <h3>OPTIONS</h3>
+                  <v-row class="ma-5">
+                    <v-text-field
+                      style="width: 1px"
+                      v-model="editQues.options[0]"
+                      :label="editQues.options[0]"
+                      solo
+                    ></v-text-field>
+                    <v-text-field
+                      style="width: 1px"
+                      v-model="editQues.options[1]"
+                      :label="editQues.options[1]"
+                      solo
+                    ></v-text-field>
+                    <v-text-field
+                      style="width: 1px"
+                      v-model="editQues.options[2]"
+                      :label="editQues.options[2]"
+                      solo
+                    ></v-text-field>
+                    <v-text-field
+                      style="width: 1px"
+                      v-model="editQues.options[3]"
+                      :label="editQues.options[3]"
+                      solo
+                    ></v-text-field>
+                  </v-row>
+                  <div class="d-flex float-right mr-12 pa-2">
                     <v-btn
                       class="ma-2 black--text"
                       color="#BEFFC1"
                       @click="saveOptions"
                       v-if="showBtn"
+                      :disabled="ImageLink === ''"
                     >
                       Save Options
                     </v-btn>
-                  </div> -->
+                    <v-btn
+                      class="ma-2 black--text"
+                      color="#BEFFC1"
+                      @click="saveOptions"
+                      v-if="showBtn"
+                      :disabled="ImageLink === ''"
+                    >
+                      Save Options
+                    </v-btn>
+                  </div>
                 </v-container>
               </v-row>
             </v-container>
@@ -177,7 +199,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-            <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+            <v-btn color="blue darken-1" text @click="save" :disabled="showBtn"> Save </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -274,10 +296,11 @@
                       question.quesType == 'MULTIPLE CHOICE'
                     "
                   >
-                    <v-radio-group>
+                    <v-radio-group
+                      v-for="option in question.options"
+                      :key="option"
+                    >
                       <v-radio
-                        v-for="option in question.options.split(',')"
-                        :key="option"
                         :label="option"
                         :value="option"
                         color="#00FFBF"
@@ -303,13 +326,7 @@
             <v-btn class="ma-5" outlined color="red" @click="removeRound(item)"
               >DELETE ROUND</v-btn
             >
-            <v-btn
-              class="ma-5"
-              fab
-              dark
-              color="#4288CA"
-              @click="addQues(item)"
-            >
+            <v-btn class="ma-5" fab dark color="#4288CA" @click="addQues(item)">
               <v-icon dark> mdi-plus </v-icon>
             </v-btn>
           </div>
@@ -354,6 +371,7 @@ export default {
       choice3: "",
       choice4: "",
       options: [],
+      disable:true,
     };
   },
   beforeCreate() {
@@ -392,7 +410,7 @@ export default {
       console.log(item);
       this.dialogEdit = true;
       this.editQues = item;
-      // var opt = this.editQues.options; 
+      // var opt = this.editQues.options;
     },
 
     deleteItem(item) {
@@ -436,8 +454,9 @@ export default {
         quesId: this.editQues.quesId,
         quesText: this.editQues.quesText,
         quesType: this.editQues.quesType,
-        ImageLink: this.editQues.ImageLink,
-        AudioLink: this.editQues.AudioLink,
+        ImageLink: this.ImageLink,
+        AudioLink: this.AudioLink,
+        options: this.options,
       };
       console.log(a);
       console.log(this.editQues.quesId);
@@ -446,11 +465,11 @@ export default {
     },
     updateImageLink(link) {
       console.log(link.link);
-      this.editQues.ImageLink = link.link;
+      this.ImageLink = link.link;
     },
     updateAudioLink(link) {
       console.log(link.link);
-      this.editQues.AudioLink = link.link;
+       this.AudioLink = link.link;
     },
     addImageLink(link) {
       console.log(link.link);
@@ -465,12 +484,7 @@ export default {
       this.round = item;
     },
     saveOptions() {
-      this.options.push({
-        choice1: this.choice1,
-        choice2: this.choice2,
-        choice3: this.choice3,
-        choice4: this.choice4,
-      });
+      this.options = [this.editQues.options[0], this.editQues.options[1], this.editQues.options[2], this.editQues.options[3]];
       console.log(this.options);
       this.showBtn = false;
     },
@@ -481,7 +495,7 @@ export default {
         quesType: this.quesType,
         ImageLink: this.ImageLink,
         AudioLink: this.AudioLink,
-        // options: this.options,
+        options: this.options,
       };
       this.dialogAdd = false;
       common.addQues(a);
@@ -493,7 +507,6 @@ export default {
       };
       common.deleteRound(a);
     },
-    
   },
 };
 </script>
