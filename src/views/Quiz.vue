@@ -202,11 +202,15 @@ export default {
     },
     saveRound() {
       var current_answer = localStorage.getItem("answers")
-      let ans = {
-        answers: current_answer
-      }
+      // let ans = {
+      //   answers: current_answer
+      // }
+      let ans = current_answer
+      console.log(ans)
+      console.log(typeof (ans))
       common.submitRound(ans).then(() => {
         console.log(ans)
+        console.log(typeof (ans))
       });
     },
   },
