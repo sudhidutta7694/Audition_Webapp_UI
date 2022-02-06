@@ -42,7 +42,7 @@ export default {
                     align: 'start',
                     value: 'username',
                 },
-                { text: 'Feedback', value: 'feedback' },
+                // { text: 'Feedback', value: 'feedback' },
             ],
             desserts: [
                 {
@@ -73,8 +73,6 @@ export default {
             this.result = res.data
             console.log("----------")
             console.log(this.result)
-            console.log("-----------")
-            console.log(res.data)
         })
 
     }
