@@ -25,7 +25,9 @@
           <v-list-item-avatar>
             <v-img src="../assets/glug.png"></v-img>
           </v-list-item-avatar>
-          <v-list-item-title class="header" style="color:white"><strong>{{adminUser.toUpperCase()}}</strong> </v-list-item-title>
+          <v-list-item-title class="header" style="color:white">
+            <strong>{{ adminUser.toUpperCase() }}</strong>
+          </v-list-item-title>
         </v-list-item>
       </v-list>
       <v-list nav dense>
@@ -134,7 +136,7 @@ export default {
   data() {
     return {
       drawer: !this.mobileView,
-      adminUser:"",
+      adminUser: "",
     }
   },
   methods: {
@@ -198,7 +200,7 @@ export default {
   }
 
   .nav {
-    z-index: 2;
+    z-index: 5;
   }
 }
 </style>
