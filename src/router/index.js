@@ -74,12 +74,12 @@ const routes = [
   },
    {
     path: '/rules',
-    name: 'Rules',
+    name: 'rules',
     component: rules,
   },
     {
     path: '/faq',
-    name: 'FAQ',
+    name: 'faq',
     component: faq,
   }
   

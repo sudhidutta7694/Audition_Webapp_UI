@@ -53,17 +53,17 @@
       height="200px"
       style="z-index:2;"
     >
-      <router-link to="faq" class="nav_item">
+      <router-link to="/faq" class="nav_item">
         <v-list-item link>
           <v-list-item-title>FAQ</v-list-item-title>
         </v-list-item>
       </router-link>
-      <router-link to="rules" class="nav_item">
+      <router-link to="/rules" class="nav_item">
         <v-list-item link>
           <v-list-item-title>RULES</v-list-item-title>
         </v-list-item>
       </router-link>
-      <router-link to="contacts" class="nav_item">
+      <router-link to="/contacts" class="nav_item">
         <v-list-item link>
           <v-list-item-title>CONTACT US</v-list-item-title>
         </v-list-item>
