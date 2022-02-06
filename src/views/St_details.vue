@@ -71,8 +71,8 @@
               </h2>
             </v-card>
             <v-card
-              class="overview"
-              max-width="95%"
+              class="overview pa-5"
+              max-width="98%"
               outlined
               color="#1A1D1F"
               v-if="answers.length != 0"
@@ -98,21 +98,31 @@
                       class="ma-5"
                     >
                       <h2>{{ index + 1 }}. {{ question.quesText }}</h2>
+                      <v-img  class="ma-5" v-if="question.ImageLink" height="100" width="100" :src="question.ImageLink"></v-img>
+                      <vuetify-audio
+                        :file="question.AudioLink"
+                        class="ma-5 elevation-0"
+                        :ended="audioFinish"
+                        v-if="question.AudioLink"
+                        downloadable
+                      ></vuetify-audio>
                       <div style="display: flex">
-                        <h5 style="color: grey">ANSWER:</h5>
+                        <h5 style="color: grey" class="ma-2">ANSWER:</h5>
+                        <div v-for="answer in question.answer" :key="answer">
+                          <h4
+                            class="ml-5 mt-2"
+                            style="color: blue"
+                            v-if="question.answer"
+                          >
+                            {{ answer }}
+                          </h4>
+                        </div>
                         <h4
-                          class="ml-5"
-                          style="color: blue"
-                          v-if="question.answer"
-                        >
-                          {{ question.answer }}
-                        </h4>
-                        <h4
-                          class="ml-5"
+                          class="ml-5 mt-2"
                           style="color: blue"
                           v-if="question.ansLink"
                         >
-                          {{ question.ansLink }}
+                          <a :href="question.ansLink">{{ question.ansLink }}</a>
                         </h4>
                       </div>
                     </div>
@@ -173,6 +183,7 @@
       </v-row>
       <v-row> </v-row>
     </div>
+    <v-snackbar v-model="wildcardSnackbar" color="success" elevation="12" app>{{details.username.toUpperCase() }} PUSHED TO NECT ROUND</v-snackbar>
     <v-snackbar v-model="statusSnackbar" color="success" elevation="12" app>{{
       statusUpdate
     }}</v-snackbar>
@@ -261,6 +272,7 @@ export default {
       time: "",
       adminUser: "",
       feedbacks: [],
+      wildcardSnackbar:false,
       headers: [
         {
           text: "ROUND",
@@ -342,8 +354,10 @@ export default {
                     quesType: question.qtype,
                     answer: question.answer,
                     _id: question.qid,
-                    quesLink: foundques.quesLink,
+                    ansLink: question.ansLink,
                     quesText: foundques.quesText,
+                    ImageLink: foundques.ImageLink,
+                    AudioLink: foundques.AudioLink,
                     options: foundques.options,
                   };
                   roundentry.questions.push(a);
@@ -412,8 +426,8 @@ export default {
     wildcard() {
       console.log("clicked");
       common.wildcard(this.details.uuid).then(() => {
-        // this.$router.push("/admin");
-        console.log("done");
+        this.$router.push("/dashboard");
+        this.wildcardSnackbar = true;
       });
     },
   },

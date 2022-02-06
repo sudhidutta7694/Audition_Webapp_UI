@@ -134,7 +134,7 @@
                 </v-col>
               </v-row>
               <div class="uploadBox">
-                <UploadImage @getImageLink="updateImageLink" />
+                <UploadImage @getImageLink="updateImageLink"/>
                 <UploadAudio @getAudioLink="updateAudioLink" />
               </div>
               <v-row>
@@ -147,32 +147,36 @@
                   <h3>OPTIONS</h3>
                   <v-row class="ma-5">
                     <v-text-field
+                      class="ma-2"
                       style="width: 1px"
                       v-model="editQues.options[0]"
                       :label="editQues.options[0]"
                       solo
                     ></v-text-field>
                     <v-text-field
+                      class="ma-2"
                       style="width: 1px"
                       v-model="editQues.options[1]"
                       :label="editQues.options[1]"
                       solo
                     ></v-text-field>
                     <v-text-field
+                      class="ma-2"
                       style="width: 1px"
                       v-model="editQues.options[2]"
                       :label="editQues.options[2]"
                       solo
                     ></v-text-field>
                     <v-text-field
+                      class="ma-2"
                       style="width: 1px"
                       v-model="editQues.options[3]"
                       :label="editQues.options[3]"
                       solo
                     ></v-text-field>
                   </v-row>
-                  <div class="d-flex float-right mr-12 pa-2">
-                    <v-btn
+                  <!-- <div class="d-flex float-right mr-12 pa-2"> -->
+                    <!-- <v-btn
                       class="ma-2 black--text"
                       color="#BEFFC1"
                       @click="saveOptions"
@@ -180,8 +184,8 @@
                       :disabled="ImageLink === ''"
                     >
                       Save Options
-                    </v-btn>
-                    <v-btn
+                    </v-btn> -->
+                    <!-- <v-btn
                       class="ma-2 black--text"
                       color="#BEFFC1"
                       @click="saveOptions"
@@ -189,8 +193,8 @@
                       :disabled="ImageLink === ''"
                     >
                       Save Options
-                    </v-btn>
-                  </div>
+                    </v-btn> -->
+                  <!-- </div> -->
                 </v-container>
               </v-row>
             </v-container>
@@ -199,7 +203,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-            <v-btn color="blue darken-1" text @click="save" :disabled="showBtn"> Save </v-btn>
+            <v-btn color="blue darken-1" text @click="save" :disabled="disable"> Save </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -333,6 +337,14 @@
         </v-tab-item>
       </v-tabs-items>
     </v-card>
+            <v-snackbar v-model="removedSnack"
+      >THE ROUND HAS BEEN DELETED SUCCESSFULLY
+      <template v-slot:action="{ attrs }">
+        <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -371,7 +383,8 @@ export default {
       choice3: "",
       choice4: "",
       options: [],
-      disable:true,
+      disable:false,
+      removedSnack:false
     };
   },
   beforeCreate() {
@@ -450,13 +463,16 @@ export default {
       } else {
         this.Questions.push(this.editQues);
       }
+      if(this.editQues.quesType == 'SINGLE CHOICE' || this.editQues.quesType == 'MULTIPLE CHOICE'){
+        this.options = [this.editQues.options[0], this.editQues.options[1], this.editQues.options[2], this.editQues.options[3]];
+      }
       var a = {
         quesId: this.editQues.quesId,
         quesText: this.editQues.quesText,
         quesType: this.editQues.quesType,
-        ImageLink: this.ImageLink,
-        AudioLink: this.AudioLink,
-        options: this.options,
+        ImageLink: this.editQues.ImageLink,
+        AudioLink: this.editQues.AudioLink,
+        options:this.options
       };
       console.log(a);
       console.log(this.editQues.quesId);
@@ -465,11 +481,11 @@ export default {
     },
     updateImageLink(link) {
       console.log(link.link);
-      this.ImageLink = link.link;
+      this.editQues.ImageLink = link.link;
     },
     updateAudioLink(link) {
       console.log(link.link);
-       this.AudioLink = link.link;
+       this.editQues.AudioLink = link.link;
     },
     addImageLink(link) {
       console.log(link.link);
@@ -484,7 +500,7 @@ export default {
       this.round = item;
     },
     saveOptions() {
-      this.options = [this.editQues.options[0], this.editQues.options[1], this.editQues.options[2], this.editQues.options[3]];
+      
       console.log(this.options);
       this.showBtn = false;
     },
@@ -505,7 +521,9 @@ export default {
       var a = {
         roundNo: item.roundNo,
       };
-      common.deleteRound(a);
+      common.deleteRound(a).then(() => {
+        this.removedSnack = true;
+      });
     },
   },
 };
