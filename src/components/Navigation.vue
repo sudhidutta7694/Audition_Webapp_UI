@@ -198,5 +198,9 @@ export default {
     width: 40px;
     height: 40px;
   }
+
+  .nav {
+    z-index: 10;
+  }
 }
 </style>
