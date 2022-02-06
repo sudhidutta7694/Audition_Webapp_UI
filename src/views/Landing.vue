@@ -135,7 +135,6 @@ export default {
 
 <style>
 .main {
-    height: 100%;
     width: 100%;
     margin: 30px;
     overflow: hidden;

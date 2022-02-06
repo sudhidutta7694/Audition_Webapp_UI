@@ -102,6 +102,7 @@ export default {
     ansArray: [],
     snackbar: false,
     text: 'Your Answer is saved',
+    loading: false,
   }),
   components: {
     VuetifyAudio: () => import("vuetify-audio"),
@@ -112,7 +113,9 @@ export default {
     if (localStorage.getItem("answers") != null) {
       var answers = JSON.parse(localStorage.getItem("answers"));
       answers.forEach((answer) => {
-        if (answer.qid === this.question._id) {
+        if (answer.qid === this.question.quesId) {
+          console.log("---------")
+          console.log(typeof (answer))
           this.answer = answer.answer[0];
         }
       });
@@ -120,12 +123,14 @@ export default {
   },
   methods: {
     saveAnswer() {
+      this.loading = true;
       var current_answer = JSON.parse(localStorage.getItem("answers")).find(
         answer => answer.qid === this.question.quesId
       );
       common.updateAnswer(current_answer).then(() => {
         console.log(current_answer)
         this.snackbar = true;
+        this.loading = false;
       });
     },
   },

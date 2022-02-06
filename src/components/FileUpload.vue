@@ -71,6 +71,12 @@
         <v-btn color="blue lighten-3" text v-bind="attrs" @click="snackbar = false">Close</v-btn>
       </template>
     </v-snackbar>
+    <v-snackbar v-model="upSnack">
+      Your File has been uploaded
+      <template v-slot:action="{ attrs }">
+        <v-btn color="blue lighten-3" text v-bind="attrs" @click="upSnack = false">Close</v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -89,6 +95,8 @@ export default {
     maxSize: 1024,
     snackbar: false,
     text: 'Your Answer has been saved',
+    loading: false,
+    upSnack: false,
   }),
   components: {
     VuetifyAudio: () => import('vuetify-audio'),
@@ -99,7 +107,7 @@ export default {
     if (localStorage.getItem("answers") != null) {
       var answers = JSON.parse(localStorage.getItem("answers"));
       answers.forEach(answer => {
-        if (answer.qid === this.question._id) {
+        if (answer.qid === this.question.quesId) {
           this.answer = answer.answer;
         }
       });
@@ -169,22 +177,28 @@ export default {
       }
     },
     upload() {
+      this.loading = true;
       let formData = new FormData()
       formData.append("file", this.file, this.file.name);
       common.upload(formData).then((res) => {
         console.log(res.data.link)
         this.fileLink = res.data.link;
         this.saveAnswer();
+        this.loading = false;
+        this.upSnack = true;
       })
 
     },
     pushAnswer() {
+      this.loading = true;
       var current_answer = JSON.parse(localStorage.getItem("answers")).find(
         answer => answer.qid === this.question.quesId
       );
+
       common.updateAnswer(current_answer).then(() => {
         console.log(current_answer)
         this.snackbar = true;
+        this.loading = false;
       });
     }
   },

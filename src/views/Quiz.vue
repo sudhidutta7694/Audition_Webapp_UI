@@ -73,27 +73,30 @@
         >
           <v-icon class="mr-2">mdi-content-save</v-icon>Save Round
         </v-btn>
-        <v-btn
-          v-if="tab !== 0"
-          class="ma-2 black--text"
-          :loading="loading"
-          :disabled="loading"
-          color="#4288CA"
-          @click="prevQuestion"
-        >
+        <v-btn v-if="tab !== 0" class="ma-2 black--text" color="#4288CA" @click="prevQuestion">
           <v-icon class="mr-2">mdi-arrow-left-top</v-icon>Previous Question
         </v-btn>
         <v-btn
           v-if="tab !== questions.length - 1"
           class="ma-2 black--text"
-          :loading="loading"
-          :disabled="loading"
           color="#4288CA"
           @click="nextQuestion"
         >
           <v-icon class="mr-2">mdi-arrow-right-top</v-icon>Next Question
         </v-btn>
       </div>
+      <v-dialog v-model="dialog" width="500">
+        <v-card>
+          <v-card-text>Your Answers are saved.</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <router-link to="/dash" style="text-decoration: none;">
+              <v-btn color="primary" text @click="dialog = false">Return to Dashboard</v-btn>
+            </router-link>
+            <v-btn color="primary" text @click="dialog = false">Return to Attempt</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-container>
   </div>
 </template>
@@ -182,6 +185,8 @@ export default {
     drawer: false,
     uuid: VueJwtDecode.decode(localStorage.getItem("token").substring(6)).uuid,
     role: "",
+    dialog: false,
+    loading: false,
   }),
   computed: {
     vertical() {
@@ -201,6 +206,7 @@ export default {
       this.tab = this.tab - 1;
     },
     saveRound() {
+      this.loading = true;
       var current_answer = JSON.parse(localStorage.getItem("answers"))
       let ans = {
         answers: current_answer
@@ -209,6 +215,8 @@ export default {
       common.submitRound(ans).then(() => {
         console.log(ans)
         console.log(typeof (ans))
+        this.dialog = true;
+        this.loading = false;
       });
     },
   },
@@ -236,6 +244,9 @@ export default {
       common.getAnswers().then(res => {
         console.log(res.data);
         if (localStorage.getItem("answers") === null) {
+          localStorage.setItem("answers", JSON.stringify(res.data.answers));
+        } else {
+          localStorage.removeItem("answers");
           localStorage.setItem("answers", JSON.stringify(res.data.answers));
         }
       });
