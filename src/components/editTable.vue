@@ -345,6 +345,14 @@
         </v-btn>
       </template>
     </v-snackbar>
+            <v-snackbar v-model="addSnack"
+      >THE QUESTION HAS BEEN ADDED SUCCESSFULLY
+      <template v-slot:action="{ attrs }">
+        <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -384,7 +392,8 @@ export default {
       choice4: "",
       options: [],
       disable:false,
-      removedSnack:false
+      removedSnack:false,
+      addSnack:false,
     };
   },
   beforeCreate() {
@@ -500,7 +509,7 @@ export default {
       this.round = item;
     },
     saveOptions() {
-      
+      this.options = [this.choice1, this.choice2, this.choice3, this.choice4];
       console.log(this.options);
       this.showBtn = false;
     },
@@ -514,7 +523,9 @@ export default {
         options: this.options,
       };
       this.dialogAdd = false;
+      this.addSnack = true;
       common.addQues(a);
+
     },
     removeRound(item) {
       console.log("clicked");
