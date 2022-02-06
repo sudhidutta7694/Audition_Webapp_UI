@@ -13,12 +13,28 @@
                         </v-list-item-content>
                     </v-list-item>
                 </div>
-                <v-data-table
+                <!-- <v-data-table
                     :headers="headers"
                     :items="result"
                     :items-per-page="itemsPerPage"
                     class="pa-5 pt-0"
-                ></v-data-table>
+                ></v-data-table>-->
+                <v-simple-table dark>
+                    <template v-slot:default>
+                        <thead>
+                            <tr>
+                                <th class="text-left">Name</th>
+                                <th class="text-left">Feedback</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in result" :key="item.username">
+                                <td>{{ item.username }}</td>
+                                <td>{{ item.feedback }}</td>
+                            </tr>
+                        </tbody>
+                    </template>
+                </v-simple-table>
             </v-card>
         </v-container>
     </div>
