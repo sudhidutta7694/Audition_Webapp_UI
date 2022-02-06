@@ -66,14 +66,17 @@ export default {
   methods: {
     timeUp() {
       this.saveAnswer();
-
+      localStorage.removeItem("answers")
       this.$router.push("/dash");
     },
-    saveAnswer() {
-      var current_answer = localStorage.getItem("answers")
-
-      common.submitRound(current_answer).then(() => {
-        console.log(current_answer)
+    saveRound() {
+      var current_answer = JSON.parse(localStorage.getItem("answers"))
+      let ans = {
+        answers: current_answer
+      }
+      common.submitRound(ans).then(() => {
+        console.log(ans)
+        console.log(typeof (ans))
       });
     },
   }

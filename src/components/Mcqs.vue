@@ -44,7 +44,7 @@
           <h4 v-if="!mobileView" style="width: 100%;">Options:</h4>
           <label
             class="option_item mx-10"
-            v-for="(option, i) in question.options.split(',')"
+            v-for="(option, i) in question.options"
             :key="i"
             :class="{ 'ma-3': !mobileView, 'mx-auto': mobileView }"
           >
@@ -76,7 +76,7 @@
         :loading="loading"
         :disabled="loading"
         color="#4288CA"
-        @click="pushAnswer"
+        @click="saveAnswer"
       >
         <v-icon class="mr-2">mdi-content-save</v-icon>Save
       </v-btn>
@@ -143,7 +143,7 @@ export default {
             answer: this.ansArray,
             qid: this.question.quesId,
             qtype: this.question.quesType,
-            roundInfo: this.question.roundmodelRoundNo,
+            roundNo: this.question.roundmodelRoundNo,
             ansLink: null,
             userUuid: this.uuid,
           };
@@ -155,7 +155,7 @@ export default {
           var foundanswer = false;
           answers.forEach(answer => {
             if (answer.qid === this.question.quesId) {
-              answer.answer = this.answer;
+              answer.answer = this.ansArray;
               foundanswer = true;
             }
           });
@@ -164,7 +164,7 @@ export default {
               answer: this.ansArray,
               qid: this.question.quesId,
               qtype: this.question.quesType,
-              roundInfo: this.question.roundmodelRoundNo,
+              roundNo: this.question.roundmodelRoundNo,
               ansLink: null,
               userUuid: this.uuid,
             };

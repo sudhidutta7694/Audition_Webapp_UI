@@ -117,7 +117,7 @@ export default {
           answer: this.answer,
           qid: this.question.quesId,
           qtype: this.question.quesType,
-          roundInfo: this.question.roundmodelRoundNo,
+          roundNo: this.question.roundmodelRoundNo,
           ansLink: this.fileLink,
           userUuid: this.uuid,
         };
@@ -138,7 +138,7 @@ export default {
             answer: this.answer,
             qid: this.question.quesId,
             qtype: this.question.quesType,
-            roundInfo: this.question.roundmodelRoundNo,
+            roundNo: this.question.roundmodelRoundNo,
             ansLink: this.fileLink,
             userUuid: this.uuid,
           };
@@ -179,7 +179,9 @@ export default {
 
     },
     pushAnswer() {
-      var current_answer = localStorage.getItem("answers")
+      var current_answer = JSON.parse(localStorage.getItem("answers")).find(
+        answer => answer.qid === this.question.quesId
+      );
       common.updateAnswer(current_answer).then(() => {
         console.log(current_answer)
         this.snackbar = true;
