@@ -23,8 +23,8 @@
                     <template v-slot:default>
                         <thead>
                             <tr>
-                                <th class="text-left">Name</th>
-                                <th class="text-left">Feedback</th>
+                                <th class="text-center">Name</th>
+                                <th class="text-center">Feedback</th>
                             </tr>
                         </thead>
                         <tbody>
