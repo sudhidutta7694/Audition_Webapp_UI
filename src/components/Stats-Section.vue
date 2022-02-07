@@ -28,14 +28,14 @@
                 <v-icon style="height: 25px" class="pa-4 mt-3">{{
                   card.icon
                 }}</v-icon>
-                <v-progress-circular
+                <!-- <v-progress-circular
                   :rotate="card.rotate"
                   :size="50"
                   :width="5"
                   :value="value"
                   :color="card.progresscolor"
-                  >{{ value }}</v-progress-circular
-                >
+                  >{{ progress(card.title) }}</v-progress-circular
+                > -->
               </div>
               <v-card-title
                 v-text="card.title"
@@ -120,16 +120,24 @@ export default {
         alert("No data");
       }
     });
+    
+    
     console.log("----");
     console.log(this.tot);
 
-    this.interval = setInterval(() => {
-      if (this.value === 50) {
-        return (this.value = 0);
-      }
-      this.value += 10;
-    }, 1000);
+    
   },
+  methods:{
+    // progress() {
+    //    this.interval = setInterval(() => {
+    //   if (this.value === 50) {
+    //         return (this.value = 0);
+    //   }
+    //   this.value += 1;
+    // }, 1000);
+    //   return this.value;
+    // },
+  }
 };
 </script>
 

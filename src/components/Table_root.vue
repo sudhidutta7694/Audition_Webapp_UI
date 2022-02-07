@@ -32,19 +32,6 @@
           <div class="text-overline mb-4">
             <div class="pointer"></div>
 
-            <template v-if="dashboard">
-              <v-tabs
-                v-model="tab"
-                align-with-title
-                background-color="transparent"
-              >
-                <v-tabs-slider color="yellow"></v-tabs-slider>
-
-                <v-tab v-for="stu in record" :key="stu" class="ml-0">
-                  ROUND {{ stu.roundNo }}
-                </v-tab>
-              </v-tabs>
-            </template>
             <template v-if="!dashboard">
               <v-tabs
                 v-model="tab"
@@ -62,52 +49,106 @@
         </v-list-item-content>
       </v-list-item>
     </div>
-    <v-tabs-items
-      v-model="tab"
-      style="width: 1500px; background-color: #1a1d1f"
-      class="pa-5"
+    <v-data-table
+      v-if="tab == 0 "
+      :headers="headers"
+      :items="students"
+      sort-by="calories"
+      class="elevation-8 pa-5"
+      :page.sync="page"
+      :items-per-page="itemsPerPage"
+      hide-default-footer
+      @page-count="pageCount = $event"
+      style="width: 95%; background-color: #1a1d1f"
     >
-      <v-tab-item v-for="stu in record" :key="stu" style="width: 100%">
-        <v-data-table
-          :headers="headers"
-          :items="stu.records"
-          class="elevation-8 pa-5"
-          :page.sync="page"
-          :items-per-page="itemsPerPage"
-          hide-default-footer
-          @page-count="pageCount = $event"
-          style="width: 100%"
-        >
-          <template v-slot:[`item.actions`]="{ item }">
-            <v-row>
-              <v-col>
-                <v-icon v-if="dashboard" @click="popup(item)"
-                  >mdi-open-in-new</v-icon
-                >
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                <v-icon
-                  small
-                  v-if="!dashboard"
-                  class="mr-2"
-                  @click="editItem(item)"
-                >
-                  mdi-pencil
-                </v-icon>
-              </v-col>
-            </v-row>
-          </template>
-        </v-data-table>
-        <v-pagination
-          v-model="page"
-          :length="pageCount"
-          color="#B5E4CA"
-          class="ma-5"
-        ></v-pagination>
-      </v-tab-item>
-    </v-tabs-items>
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-row>
+          <v-col>
+            <v-icon v-if="dashboard" @click="popup(item)"
+              >mdi-open-in-new</v-icon
+            >
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-icon
+              small
+              v-if="!dashboard"
+              class="mr-2"
+              @click="editItem(item)"
+            >
+              mdi-pencil
+            </v-icon>
+          </v-col>
+        </v-row>
+      </template>
+    </v-data-table>
+
+    <v-data-table
+      v-if="tab == 1"
+      :headers="headers"
+      :items="members"
+      sort-by="calories"
+      class="elevation-8 pa-5"
+      :page.sync="page"
+      :items-per-page="itemsPerPage"
+      hide-default-footer
+      @page-count="pageCount = $event"
+      style="width: 95%; background-color: #1a1d1f"
+    >
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-row>
+          <v-col>
+            <v-icon v-if="dashboard" @click="popup(item)"
+              >mdi-open-in-new</v-icon
+            >
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-icon
+              small
+              v-if="!dashboard"
+              class="mr-2"
+              @click="editItem(item)"
+            >
+              mdi-pencil
+            </v-icon>
+          </v-col>
+        </v-row>
+      </template>
+    </v-data-table>
+    <v-data-table
+      v-if="tab == 2"
+      :headers="headers"
+      :items="superusers"
+      sort-by="calories"
+      class="elevation-8 pa-5"
+      :page.sync="page"
+      :items-per-page="itemsPerPage"
+      hide-default-footer
+      @page-count="pageCount = $event"
+      style="width: 95%; background-color: #1a1d1f"
+    >
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-row class="pa-10">
+          <v-col v-if="dashboard">
+            <v-icon @click="popup(item)">mdi-open-in-new</v-icon>
+          </v-col>
+          <v-col v-else>
+            <v-icon small class="mr-2" @click="editItem(item)">
+              mdi-pencil
+            </v-icon>
+          </v-col>
+        </v-row>
+      </template>
+    </v-data-table> 
+    <v-pagination
+      v-model="page"
+      :length="pageCount"
+      color="#B5E4CA"
+      class="ma-5"
+    ></v-pagination>
   </div>
 </template>
 
