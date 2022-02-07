@@ -72,11 +72,13 @@
       <v-divider class="mt-3 mx-4"></v-divider>
     </div>
     <div class="d-flex justify-center align-center mx-auto alt">
-      <v-btn @click="googleLogin" class="google ic" icon>
-        <img class="ic" src="../assets/google.svg" />
+      <v-btn fab @click="googleLogin" class="ic google">
+        <!-- <img class="ic" src="../assets/google.svg" /> -->
+        <v-icon size="80px">$vuetify.icons.google</v-icon>
       </v-btn>
-      <v-btn @click="githubLogin" class="github ic" icon>
-        <img class="ic" src="../assets/github.svg" />
+      <v-btn fab @click="githubLogin" class="ic github">
+        <!-- <img class="ic" src="../assets/github.svg" /> -->
+        <v-icon size="80px">mdi-github</v-icon>
       </v-btn>
     </div>
   </div>

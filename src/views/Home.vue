@@ -29,14 +29,7 @@
         </a>
       </div>
     </v-app-bar>
-    <v-btn
-      v-if="mobileView"
-      fab
-      color="blue darken-3"
-      absolute
-      class="ma-3"
-      @click="drawer = !drawer"
-    >
+    <v-btn v-if="mobileView" fab color="blue darken-3" fixed class="ma-3" @click="drawer = !drawer">
       <v-icon>mdi-menu</v-icon>
     </v-btn>
     <v-navigation-drawer
