@@ -11,7 +11,7 @@ export default {
 </script>
 <style scoped>
 .footer {
-    position: absolute;
+    position: relative;
     bottom: 0px;
     width: 100%;
     border-top: 2px solid rgb(0, 160, 253);

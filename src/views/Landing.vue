@@ -3,12 +3,22 @@
         <Navigation :role="role" />
         <div class="d-flex flex-column align-center justify-center main">
             <v-card
+                min-height="30%"
                 class="d-flex flex-column align-center justify-center main-card"
-                height="30%"
                 elevation="3"
             >
-                <div class="d-flex flex-column align-center">
-                    <div class="text-center text-lg-h4">Current Round: {{ audition.round }}</div>
+                <div
+                    v-if="student.studentround !== audition.round && role === 's'"
+                    class="text-center"
+                >
+                    <h1>THANK YOU FOR YOUR PARTICIPATION</h1>
+                    <h4>WE HOPE TO SEE YOU IN FURTHER GLUG EVENTS</h4>
+                </div>
+                <div v-else class="d-flex flex-column align-center ma-4">
+                    <div
+                        v-if="audition.round !== 0"
+                        class="text-center text-lg-h4"
+                    >Current Round: {{ audition.round }}</div>
                     <v-btn
                         v-if="audition.status === 'res' && audition.round !== 0"
                         class="mx-auto mt-3"
@@ -90,6 +100,7 @@ export default {
     },
     beforeCreate() {
         common.getStudent().then((res) => {
+            console.log(res.data)
             this.student = res.data;
             this.student.studenttime = Number(this.student.studenttime)
         });
@@ -118,6 +129,10 @@ export default {
             }
             this.role = tok.role;
             this.username = tok.username;
+        }
+
+        if (this.student.studentround != this.audition.round) {
+            this.valid = false;
         }
     },
     computed: {

@@ -54,6 +54,17 @@
                     <v-icon class="mr-1">mdi-content-save</v-icon>Save Profile
                 </v-btn>
             </v-card>
+            <v-dialog v-model="dialog" width="500">
+                <v-card>
+                    <v-card-text>Please Update your profile.</v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <router-link to="/profile" style="text-decoration: none;">
+                            <v-btn color="primary" text @click="dialog = false">Go to Profile</v-btn>
+                        </router-link>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
         </div>
     </div>
 </template>
@@ -81,7 +92,7 @@ export default {
                 v => /^-?(\d+\.?\d*)$|(\d*\.?\d+)$/.test(v) || "Phone no must be valid",
                 v =>
                     (v && v.length <= 10 && v.length >= 10) ||
-                    "Enter a valid (91+) 10 digit Phone no"
+                    "Enter a valid 10 digit Phone no"
             ],
             rollRules: [
                 v => !!v || "Roll No is required",
@@ -91,6 +102,7 @@ export default {
                     "Enter a valid Roll no"
             ],
             edit: false,
+            dialog: false,
         }
     },
     beforeCreate() {
@@ -120,6 +132,7 @@ export default {
                 this.profile.profilebool = true;
             });
             this.edit = false;
+
         }
     },
     computed: {
@@ -136,9 +149,6 @@ export default {
 </script>
 
 <style>
-.box {
-    height: 100vh;
-}
 .pro_icon {
     width: 120px;
     height: 120px;

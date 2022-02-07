@@ -16,28 +16,17 @@
         <v-app-bar-nav-icon class="nav_icon mx-1" href="https://nitdgplug.org/" target="_blank">
           <v-img src="../assets/glug.png" aspect-ratio="1"></v-img>
         </v-app-bar-nav-icon>
-        <v-toolbar-title class="d-flex flex-column title ml-4 green--text">
+        <v-toolbar-title class="d-flex flex-column title ml-4">
           <p class="mb-0 title_text">GNU/LINUX USERS' GROUP</p>
           <p class="mb-0 title_text">NIT DURGAPUR</p>
         </v-toolbar-title>
       </div>
-
-      <div class="links d-flex align-center">
-        <router-link to="faq" class="nav_item">
-          <v-list-item link>
-            <v-list-item-title>FAQ</v-list-item-title>
-          </v-list-item>
-        </router-link>
-        <router-link to="rules" class="nav_item">
-          <v-list-item link>
-            <v-list-item-title>RULES</v-list-item-title>
-          </v-list-item>
-        </router-link>
-        <router-link href="https://nitdgplug.org/" target="_blank" class="nav_item">
+      <div class="menu">
+        <a href="https://linktr.ee/glug_nitdgp_social" target="_blank" class="nav_item">
           <v-list-item link>
             <v-list-item-title>CONTACT US</v-list-item-title>
           </v-list-item>
-        </router-link>
+        </a>
       </div>
     </v-app-bar>
     <v-btn
@@ -60,7 +49,7 @@
       height="200px"
       style="z-index:10;"
     >
-      <router-link :to="{ name: 'faq' }" class="nav_item">
+      <!-- <router-link :to="{ name: 'faq' }" class="nav_item">
         <v-list-item link>
           <v-list-item-title>FAQ</v-list-item-title>
         </v-list-item>
@@ -69,12 +58,12 @@
         <v-list-item link>
           <v-list-item-title>RULES</v-list-item-title>
         </v-list-item>
-      </router-link>
-      <router-link href="https://nitdgplug.org/" target="_blank" class="nav_item">
+      </router-link>-->
+      <a href="https://linktr.ee/glug_nitdgp_social" class="nav_item">
         <v-list-item link>
           <v-list-item-title>CONTACT US</v-list-item-title>
         </v-list-item>
-      </router-link>
+      </a>
     </v-navigation-drawer>
 
     <div
@@ -122,11 +111,8 @@ export default {
   },
   beforeCreate() {
     var token = this.$route.query.token;
-    console.log("-------")
-    console.log(token)
-    console.log(this.$route.query.token)
+    console.log("this.route.query")
     console.log(this.$route.query)
-    console.log(this.$route)
     if (token != null) {
       token = "Bearer " + token;
       localStorage.setItem("token", token);

@@ -10,7 +10,8 @@
                 class="text-overline font-weight-regular mb-4"
                 :class="{ 'text-lg-h6': vertical, 'text-caption': !vertical }"
               >
-                <div class="pointer"></div>ROUND : 1
+                <div class="pointer"></div>
+                ROUND : {{ round }}
               </div>
             </v-list-item-content>
           </v-list-item>
@@ -29,7 +30,12 @@
           color="white"
         >
           <v-tabs-slider color="green"></v-tabs-slider>
-          <v-tab class="utab" v-for="(question, i) in questions" :key="i">Q. {{ i + 1 }}</v-tab>
+          <v-tab
+            class="utab"
+            v-for="(question, i) in questions"
+            :key="i"
+            @click="saveAnswer(question.quesId)"
+          >Q. {{ i + 1 }}</v-tab>
 
           <v-tab-item v-for="(question, i) in questions" :key="i">
             <Textques
@@ -62,7 +68,7 @@
       <div
         class="d-flex justify-end mx-auto"
         style="width: 80%"
-        :class="{ 'justify-center': !vertical }"
+        :class="{ 'flex-column justify-center': !vertical }"
       >
         <v-btn
           class="ma-2 black--text"
@@ -187,6 +193,7 @@ export default {
     role: "",
     dialog: false,
     loading: false,
+    student: null,
   }),
   computed: {
     vertical() {
@@ -219,6 +226,20 @@ export default {
         this.loading = false;
       });
     },
+    saveAnswer(qid) {
+      if (localStorage.getItem("answers") != null) {
+        var answers = JSON.parse(localStorage.getItem("answers"));
+        answers.forEach((answer) => {
+          if (answer.qid === qid) {
+            // console.log("---------")
+            // console.log(typeof (answer))
+            common.updateAnswer(answer).then(() => {
+              console.log(answer)
+            });
+          }
+        });
+      }
+    }
   },
   beforeCreate() {
     console.log(localStorage.getItem("token"));
@@ -229,9 +250,9 @@ export default {
       common.getstudentRound().then(res => {
         /* console.log(res.data.time)
         console.log(new Date(res.data.time).toLocaleTimeString('en-US')) */
-        let t = res.data.time - 2000 - new Date().getTime();
+        let t = res.data.time - 2000;
         if (t > 0) {
-          this.time = res.data.time / 1000;
+          this.time = t / 1000;
           this.questions = res.data.data[0].question_set_models;
           console.log(this.questions)
           this.round = res.data.data[0].roundNo;
@@ -250,6 +271,15 @@ export default {
           localStorage.setItem("answers", JSON.stringify(res.data.answers));
         }
       });
+
+      common.getStudent().then(res => {
+        console.log(res.data);
+        this.student = res.data;
+      });
+
+      if (this.student.studentround != this.audition.round) {
+        this.$router.push("/dash")
+      }
     }
   },
   created() {
@@ -260,6 +290,7 @@ export default {
       var tok = VueJwtDecode.decode(localStorage.getItem("token").substring(6));
       this.role = tok.role;
     }
+
   },
 };
 </script>

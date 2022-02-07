@@ -40,14 +40,17 @@
           v-model="file"
           show-size
           dense
+          small-chips
           counter
-          chips
           color="success"
           prepend-icon="mdi-file"
           label="Pick an File"
           outlined
           @change="upload"
         />
+        <v-btn v-if="fileLink" :href="fileLink" class="ma-2 black--text" color="#4288CA">
+          <v-icon class="mr-2">mdi-folder-check</v-icon>View Uploaded file
+        </v-btn>
       </div>
     </v-container>
     <div
@@ -109,6 +112,7 @@ export default {
       answers.forEach(answer => {
         if (answer.qid === this.question.quesId) {
           this.answer = answer.answer;
+          this.fileLink = answer.ansLink;
         }
       });
     }
@@ -298,6 +302,12 @@ export default {
 
   #text {
     max-width: 90%;
+  }
+}
+
+@media screen and (max-width: 964px) {
+  .input_field {
+    width: 90%;
   }
 }
 </style>
