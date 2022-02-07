@@ -72,11 +72,27 @@
       <v-divider class="mt-3 mx-4"></v-divider>
     </div>
     <div class="d-flex justify-center align-center mx-auto alt">
-      <v-btn fab @click="googleLogin" class="ic google">
+      <v-btn
+        fab
+        elevation="0"
+        plain
+        width="90px"
+        height="90px"
+        @click="googleLogin"
+        class="ic google"
+      >
         <!-- <img class="ic" src="../assets/google.svg" /> -->
         <v-icon size="80px">$vuetify.icons.google</v-icon>
       </v-btn>
-      <v-btn fab @click="githubLogin" class="ic github">
+      <v-btn
+        fab
+        elevation="0"
+        plain
+        width="90px"
+        height="90px"
+        @click="githubLogin"
+        class="ic github"
+      >
         <!-- <img class="ic" src="../assets/github.svg" /> -->
         <v-icon size="80px">mdi-github</v-icon>
       </v-btn>
@@ -218,10 +234,6 @@ export default {
   width: 89%;
   height: 105px;
 }
-.ic {
-  width: 80px;
-  height: 80px;
-}
 .v-btn {
   align-self: center;
 }
@@ -260,10 +272,10 @@ export default {
   transition: transform 300ms linear;
 }
 .google {
-  margin-right: 100px;
+  margin-right: 50px;
 }
 .github {
-  margin-left: 100px;
+  margin-left: 50px;
 }
 @media screen and (max-width: 960px) {
   .auth_box {
@@ -291,10 +303,6 @@ export default {
   }
   .signUp:before {
     border-radius: 30px;
-  }
-  .ic {
-    width: 80px;
-    height: 80px;
   }
   .alt {
     height: 100px;
