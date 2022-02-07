@@ -138,12 +138,13 @@ export default {
       } else if (this.audition.status === "def") {
         common.pushResult().then((res) => {
           console.log(res);
+          console.log(res.data.status);
           if (res.data.status === true) {
             this.btntext = "PUSH ROUND";
             this.audition.status = "res";
             this.text = "Results published";
           } else {
-            alert("SOME STUDENTS ARE STILL UNEVALUATED");
+            this.text = "Some students are still unevaluated";
           }
         });
       }
