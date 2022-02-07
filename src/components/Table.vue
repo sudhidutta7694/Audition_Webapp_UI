@@ -179,14 +179,14 @@ export default {
     },
     record() {
       let rounds = [];
-      for (let i = 0; i <= this.currentround; i++) {
+      for (let i = 1; i <= this.currentround; i++) {
         var roundentry = {
-          roundNo: i + 1,
+          roundNo: i ,
           records: [],
         };
         // console.log(this.students);
         this.students.forEach((e) => {
-          if (e.round === i + 1) {
+          if (e.round === i ) {
             roundentry.records.push(e);
           }
         });

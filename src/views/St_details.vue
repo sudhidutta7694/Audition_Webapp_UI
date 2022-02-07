@@ -140,6 +140,7 @@
               outlined
               color="#1A1D1F"
             >
+            <div v-if="currentround === details.round">
               SELECTION STATUS:
               <v-select
                 :items="Status"
@@ -152,6 +153,7 @@
                 class="mt-5 mb-5 dropdown"
                 style="width: 30%; border: 0.2px solid #7b849f; height: 40px"
               ></v-select>
+            </div>
               SUBMIT FEEDBACK:
               <v-textarea
                 outlined
@@ -167,7 +169,7 @@
                 class="black--text"
                 @click="submitFeedback"
               >
-                SAVE
+                SUBMIT FEEDBACK
               </v-btn>
               <h4 class="mt-5">FEEDBACKS:</h4>
               <v-data-table
@@ -183,20 +185,32 @@
       </v-row>
       <v-row> </v-row>
     </div>
-    <v-snackbar v-model="wildcardSnackbar" color="success" elevation="12" app>{{details.username.toUpperCase() }} PUSHED TO NECT ROUND</v-snackbar>
-    <v-snackbar v-model="statusSnackbar" color="success" elevation="12" app>{{
+    <v-snackbar v-model="wildcardSnackbar">
+      {{details.username.toUpperCase() }} PUSHED TO NEXT ROUND
+      <template v-slot:action="{ attrs }">
+        <v-btn color="blue lighten-3" text v-bind="attrs" @click="wildcardSnackbar = false">Close</v-btn>
+      </template>
+    </v-snackbar>
+    <v-snackbar v-model="statusSnackbar">
+      {{
       statusUpdate
-    }}</v-snackbar>
-    <v-snackbar v-model="feedsnack" color="success" elevation="12" app
-      >FEEDBACK SUBMITTED</v-snackbar
-    >
-    <v-snackbar
-      v-model="extendtimeSnackbar"
-      class="text-center"
-      color="success"
-      :timeout="2000"
-      >Time Extended for the student by 10 minutes</v-snackbar
-    >
+    }}
+      <template v-slot:action="{ attrs }">
+        <v-btn color="blue lighten-3" text v-bind="attrs" @click="statusSnackbar = false">Close</v-btn>
+      </template>
+    </v-snackbar>
+    <v-snackbar v-model="feedsnack">
+      FEEDBACK SUBMITTED
+      <template v-slot:action="{ attrs }">
+        <v-btn color="blue lighten-3" text v-bind="attrs" @click="feedsnack = false">Close</v-btn>
+      </template>
+    </v-snackbar>
+    <v-snackbar v-model="extendtimeSnackbar">
+      Time Extended for the student by 10 minutes
+      <template v-slot:action="{ attrs }">
+        <v-btn color="blue lighten-3" text v-bind="attrs" @click="extendtimeSnackbar = false">Close</v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 <style scoped>
@@ -395,6 +409,7 @@ export default {
         feedback: this.feedback,
       };
       common.updateFeedback(a).then(() => {
+        this.$router.go(this.$router.currentRoute)
         this.feedsnack = true;
         this.feedback = "";
         // this.panel = [];
@@ -426,7 +441,6 @@ export default {
     wildcard() {
       console.log("clicked");
       common.wildcard(this.details.uuid).then(() => {
-        this.$router.push("/dashboard");
         this.wildcardSnackbar = true;
       });
     },
