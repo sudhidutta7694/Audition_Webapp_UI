@@ -1,6 +1,6 @@
 <template>
     <div class="round">
-      Current Round : {{currentround+1}}
+      Current Round : {{currentround}}
       </div>
 </template>
 

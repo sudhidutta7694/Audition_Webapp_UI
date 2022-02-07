@@ -55,7 +55,7 @@
 <script>
 import NavigationDrawer from "../components/Navigation.vue";
 // import Sparkline from "../components/sparkline.vue";
-import Table from "../components/Table.vue";
+import Table from "../components/Table_root.vue";
 import VueJwtDecode from "vue-jwt-decode";
 import common from "@/services/common.js";
 export default {

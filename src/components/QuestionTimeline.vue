@@ -40,10 +40,12 @@
                 <div class="text-h6 pa-5">{{ question.quesText }}</div>
               </v-card-title>
               <v-img
+               v-if="question.ImageLink"
                 height="250"
                 :src="question.ImageLink"
               ></v-img>
               <vuetify-audio
+              v-if="question.AudioLink"
                 :file="question.AudioLink"
                 class="ma-5 elevation-0"
                 :ended="audioFinish"
@@ -76,7 +78,7 @@
                 >
                   <v-radio-group>
                     <v-radio
-                      v-for="n in question.options[0]"
+                      v-for="n in question.options"
                       :key="n"
                       :label="n"
                       :value="n"
