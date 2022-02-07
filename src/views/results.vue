@@ -1,8 +1,8 @@
 <template>
     <div>
         <Navigation :role="role" />
-        <v-container class="d-flex align-center justify-center" style="width: 80%">
-            <v-card class="elevation-8">
+        <v-container class="d-flex align-center justify-center">
+            <v-card class="elevation-8" :width="(mobileView == true) ? 'auto' : '60%'">
                 <div>
                     <v-list-item three-line>
                         <v-list-item-content>
@@ -13,13 +13,7 @@
                         </v-list-item-content>
                     </v-list-item>
                 </div>
-                <!-- <v-data-table
-                    :headers="headers"
-                    :items="result"
-                    :items-per-page="itemsPerPage"
-                    class="pa-5 pt-0"
-                ></v-data-table>-->
-                <v-simple-table dark>
+                <v-simple-table dark class="pa-2">
                     <template v-slot:default>
                         <thead>
                             <tr>
@@ -40,6 +34,9 @@
                                             <v-list-item-title
                                                 v-if="fed.feedback !== ''"
                                             >{{ fed.username }}: {{ fed.feedback }}</v-list-item-title>
+                                        </v-list-item>
+                                        <v-list-item v-if="item.feedback === null">
+                                            <v-list-item-title>N/A</v-list-item-title>
                                         </v-list-item>
                                     </v-list-group>
                                 </td>
@@ -72,17 +69,6 @@ export default {
                 },
                 // { text: 'Feedback', value: 'feedback' },
             ],
-            desserts: [
-                {
-                    name: 'Akhilesh Yadav',
-                    feedback: 'Bruh',
-
-                },
-                {
-                    name: 'Rudra Jalan',
-                    feedback: 'Kya bhai?'
-                },
-            ],
             result: null,
             role: "",
         }
@@ -103,7 +89,17 @@ export default {
             console.log(this.result)
         })
 
-    }
+    },
+    computed: {
+        mobileView() {
+            var s = this.$vuetify.breakpoint.name;
+            if (s == "xs" || s == "sm") {
+                return true;
+            } else {
+                return false;
+            }
+        },
+    },
 }
 </script>
 

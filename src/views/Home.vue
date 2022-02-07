@@ -33,7 +33,7 @@
             <v-list-item-title>RULES</v-list-item-title>
           </v-list-item>
         </router-link>
-        <router-link to="contacts" class="nav_item">
+        <router-link href="https://nitdgplug.org/" target="_blank" class="nav_item">
           <v-list-item link>
             <v-list-item-title>CONTACT US</v-list-item-title>
           </v-list-item>
@@ -70,7 +70,7 @@
           <v-list-item-title>RULES</v-list-item-title>
         </v-list-item>
       </router-link>
-      <router-link to="https://nitdgplug.org/" class="nav_item">
+      <router-link href="https://nitdgplug.org/" target="_blank" class="nav_item">
         <v-list-item link>
           <v-list-item-title>CONTACT US</v-list-item-title>
         </v-list-item>
@@ -177,6 +177,7 @@ export default {
   background: url("../assets/tunnel.gif");
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
 }
 .nav_icon {
   width: 60px;
