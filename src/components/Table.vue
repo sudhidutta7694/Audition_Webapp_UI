@@ -181,12 +181,12 @@ export default {
       let rounds = [];
       for (let i = 0; i <= this.currentround; i++) {
         var roundentry = {
-          roundNo: i + 1,
+          roundNo: i+1 ,
           records: [],
         };
         // console.log(this.students);
         this.students.forEach((e) => {
-          if (e.round === i + 1) {
+          if (e.round === i+1 ) {
             roundentry.records.push(e);
           }
         });

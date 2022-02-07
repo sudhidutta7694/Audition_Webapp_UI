@@ -340,7 +340,7 @@
             <v-snackbar v-model="removedSnack"
       >THE ROUND HAS BEEN DELETED SUCCESSFULLY
       <template v-slot:action="{ attrs }">
-        <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
+        <v-btn color="pink" text v-bind="attrs" @click="removedSnack = false">
           Close
         </v-btn>
       </template>
@@ -348,7 +348,7 @@
             <v-snackbar v-model="addSnack"
       >THE QUESTION HAS BEEN ADDED SUCCESSFULLY
       <template v-slot:action="{ attrs }">
-        <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
+        <v-btn color="pink" text v-bind="attrs" @click="addSnack = false">
           Close
         </v-btn>
       </template>
@@ -449,22 +449,17 @@ export default {
       };
       common.deleteQues(a);
       this.closeDelete();
+      
     },
 
     close() {
       this.dialogEdit = false;
-      this.$nextTick(() => {
-        this.editQues = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
+      // this.$router.go(this.$router.currentRoute)
     },
 
     closeDelete() {
       this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editQues = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
+      // this.$router.go(this.$router.currentRoute)
     },
     save() {
       if (this.editedIndex > -1) {
@@ -525,7 +520,6 @@ export default {
       this.dialogAdd = false;
       this.addSnack = true;
       common.addQues(a);
-
     },
     removeRound(item) {
       console.log("clicked");
@@ -534,6 +528,7 @@ export default {
       };
       common.deleteRound(a).then(() => {
         this.removedSnack = true;
+        this.$router.go(this.$router.currentRoute)
       });
     },
   },

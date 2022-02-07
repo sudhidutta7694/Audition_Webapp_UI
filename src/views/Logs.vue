@@ -13,7 +13,7 @@
       </v-card>
       <v-card class="overview mt-5 pa-5" max-width="95%" outlined color="#1A1D1F">
         <v-card-text class="py-0">
-          <v-timeline align-top dense v-for="(msg,index) in messages" :key="index">
+          <v-timeline align-top dense v-for="(msg,index) in messages.slice().reverse()" :key="index">
             <v-timeline-item :color="color[index%2]" small>
               <v-row class="pt-1">
                   

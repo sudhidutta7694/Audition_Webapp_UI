@@ -17,20 +17,33 @@
         </v-btn>
       </div>
       <Table :headers="rootHeaders" :dashboard="false" />
-      <v-snackbar
-        v-model="eventSnackbar"
-        class="text-center black--text snackbar"
-        color="red"
-        :timeout="2000"
-        >{{ text }}</v-snackbar
-      >
-      <v-snackbar
-        v-model="extendtimeSnackbar"
-        class="text-center"
-        color="red"
-        :timeout="2000"
-        >Time Extended for all students by 10 minutes</v-snackbar
-      >
+
+      <v-snackbar v-model="eventSnackbar"
+        >{{ text }}
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            color="pink"
+            text
+            v-bind="attrs"
+            @click="eventSnackbar = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+      <v-snackbar v-model="extendtimeSnackbar"
+        >Time Extended for all students by 10 minutes
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            color="pink"
+            text
+            v-bind="attrs"
+            @click="extendtimeSnackbar = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
     </div>
   </div>
 </template>
@@ -125,12 +138,13 @@ export default {
       } else if (this.audition.status === "def") {
         common.pushResult().then((res) => {
           console.log(res);
+          console.log(res.data.status);
           if (res.data.status === true) {
             this.btntext = "PUSH ROUND";
             this.audition.status = "res";
             this.text = "Results published";
           } else {
-            alert("SOME STUDENTS ARE STILL UNEVALUATED");
+            this.text = "Some students are still unevaluated";
           }
         });
       }
