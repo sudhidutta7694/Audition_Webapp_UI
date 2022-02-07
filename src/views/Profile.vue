@@ -2,7 +2,7 @@
     <div>
         <Navigation :role="role" />
         <div class="d-flex justify-center align-center box">
-            <v-card width="30%" class="d-flex flex-column align-center">
+            <v-card width="350px" class="d-flex flex-column align-center">
                 <v-icon class="pro_icon" size="60">mdi-account-circle-outline</v-icon>
                 <div class="text-center mx-auto text-lg-h6 mb-5">PROFILE</div>
                 <div class="mx-auto">
@@ -121,7 +121,17 @@ export default {
             });
             this.edit = false;
         }
-    }
+    },
+    computed: {
+        mobileView() {
+            var s = this.$vuetify.breakpoint.name;
+            if (s == "xs" || s == "sm" || s == 'md') {
+                return true;
+            } else {
+                return false;
+            }
+        },
+    },
 }
 </script>
 

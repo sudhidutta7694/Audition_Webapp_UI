@@ -2,47 +2,54 @@
   <div class="bgp">
     <div class="fil" style="z-index:1;"></div>
     <v-app-bar
+      v-if="!mobileView"
       extended
       extension-height="30"
       absolute
-      scroll-target="#scrolling-techniques-6"
       class="pa-2 d-flex align-center"
       color="transparent"
       elevation="0"
-      :width="{ '60px': mobileView }"
-      style="z-index:2;"
+      :width="{ '60px': mobileView, '100%': !mobileView }"
+      style="z-index:2; background-color:transparent;"
     >
-      <v-app-bar-nav-icon
-        class="nav_icon"
-        :class="{ 'mx-1': !mobileView }"
-        @click="drawer = !drawer"
-      >
-        <v-img src="../assets/glug.png" aspect-ratio="1"></v-img>
-      </v-app-bar-nav-icon>
-      <v-toolbar-title v-if="!mobileView" class="d-flex flex-column title ml-n2 green--text">
-        <p class="mb-0 title_text">GNU/LINUX USERS' GROUP</p>
-        <p class="mb-0 title_text">NIT DURGAPUR</p>
-      </v-toolbar-title>
+      <div class="d-flex alidgn-center">
+        <v-app-bar-nav-icon class="nav_icon mx-1" href="https://nitdgplug.org/" target="_blank">
+          <v-img src="../assets/glug.png" aspect-ratio="1"></v-img>
+        </v-app-bar-nav-icon>
+        <v-toolbar-title class="d-flex flex-column title ml-4 green--text">
+          <p class="mb-0 title_text">GNU/LINUX USERS' GROUP</p>
+          <p class="mb-0 title_text">NIT DURGAPUR</p>
+        </v-toolbar-title>
+      </div>
 
-      <div v-if="!mobileView" style="width: 55vw"></div>
-
-      <router-link v-if="!mobileView" to="faq" class="nav_item">
-        <v-list-item link>
-          <v-list-item-title>FAQ</v-list-item-title>
-        </v-list-item>
-      </router-link>
-      <router-link v-if="!mobileView" to="rules" class="nav_item">
-        <v-list-item link>
-          <v-list-item-title>RULES</v-list-item-title>
-        </v-list-item>
-      </router-link>
-      <router-link v-if="!mobileView" to="contacts" class="nav_item">
-        <v-list-item link>
-          <v-list-item-title>CONTACT US</v-list-item-title>
-        </v-list-item>
-      </router-link>
+      <div class="links d-flex align-center">
+        <router-link to="faq" class="nav_item">
+          <v-list-item link>
+            <v-list-item-title>FAQ</v-list-item-title>
+          </v-list-item>
+        </router-link>
+        <router-link to="rules" class="nav_item">
+          <v-list-item link>
+            <v-list-item-title>RULES</v-list-item-title>
+          </v-list-item>
+        </router-link>
+        <router-link to="contacts" class="nav_item">
+          <v-list-item link>
+            <v-list-item-title>CONTACT US</v-list-item-title>
+          </v-list-item>
+        </router-link>
+      </div>
     </v-app-bar>
-
+    <v-btn
+      v-if="mobileView"
+      fab
+      color="blue darken-3"
+      absolute
+      class="ma-3"
+      @click="drawer = !drawer"
+    >
+      <v-icon>mdi-menu</v-icon>
+    </v-btn>
     <v-navigation-drawer
       v-if="mobileView"
       v-model="drawer"
@@ -51,26 +58,30 @@
       temporary
       absolute
       height="200px"
-      style="z-index:2;"
+      style="z-index:10;"
     >
-      <router-link to="faq" class="nav_item">
+      <router-link :to="{ name: 'faq' }" class="nav_item">
         <v-list-item link>
           <v-list-item-title>FAQ</v-list-item-title>
         </v-list-item>
       </router-link>
-      <router-link to="rules" class="nav_item">
+      <router-link :to="{ name: 'rules' }" class="nav_item">
         <v-list-item link>
           <v-list-item-title>RULES</v-list-item-title>
         </v-list-item>
       </router-link>
-      <router-link to="contacts" class="nav_item">
+      <router-link to="https://nitdgplug.org/" class="nav_item">
         <v-list-item link>
           <v-list-item-title>CONTACT US</v-list-item-title>
         </v-list-item>
       </router-link>
     </v-navigation-drawer>
 
-    <div class="d-flex bd" :class="{ 'flex-column mb-4': mobileView }" style="z-index:2;">
+    <div
+      class="d-flex align-center bd"
+      :class="{ 'flex-column mb-4': mobileView }"
+      style="z-index:2;"
+    >
       <div
         class="d-flex flex-column justify-center heading"
         :class="{ 'ml-16': !mobileView, 'align-center mx-auto': mobileView }"
@@ -102,7 +113,7 @@ export default {
   computed: {
     mobileView() {
       var s = this.$vuetify.breakpoint.name;
-      if (s == "xs" || s == "sm") {
+      if (s == "xs" || s == "sm" || s == 'md') {
         return true;
       } else {
         return false;
@@ -132,6 +143,10 @@ export default {
 </script>
 
 <style>
+.v-toolbar__content {
+  justify-content: space-between;
+  width: 100%;
+}
 .title_text {
   font-family: Rubik;
   letter-spacing: 0.4em;
@@ -152,13 +167,13 @@ export default {
 }
 .bd {
   width: 100%;
-  height: 90%;
-  margin-top: 100px;
+  height: 100%;
 }
 .bgp {
-  width: 100vw;
-  height: 100vh;
-  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  /* overflow-x: hidden; */
+  /* overflow-y: auto; */
   background: url("../assets/tunnel.gif");
   background-repeat: no-repeat;
   background-size: cover;
@@ -173,7 +188,7 @@ export default {
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.3);
 }
-@media screen and (max-width: 960px) {
+@media screen and (max-width: 1264px) {
   .heading {
     height: auto;
     width: 100%;
@@ -183,9 +198,8 @@ export default {
     padding: 0;
   }
   .bgp {
-    height: 100vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    overflow-y: auto;
+    overflow-x: hidden !important;
   }
   .title_text {
     font-size: 13px;
@@ -193,6 +207,9 @@ export default {
   .nav_icon {
     width: 40px;
     height: 40px;
+  }
+  .bd {
+    padding-top: 80px;
   }
 }
 </style>

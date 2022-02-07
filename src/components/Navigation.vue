@@ -1,14 +1,15 @@
 <template>
   <div class="nav">
-    <v-img
+    <v-btn
       v-if="mobileView"
-      class="nav_icon"
-      :class="{ 'mx-1': !mobileView, 'ml-3 mt-3': mobileView }"
+      fab
+      color="blue darken-3"
+      absolute
+      class="ma-3"
       @click="drawer = !drawer"
-      src="../assets/glug.png"
-      aspect-ratio="1"
-      style="position: fixed;"
-    ></v-img>
+    >
+      <v-icon>mdi-menu</v-icon>
+    </v-btn>
     <v-navigation-drawer
       :permanent="!mobileView"
       :temporary="mobileView"
@@ -17,7 +18,6 @@
       :expand-on-hover="!mobileView"
       color="#1A1D1F"
       class="drawer"
-      height="100%"
       width="180px"
     >
       <v-list>
@@ -25,7 +25,9 @@
           <v-list-item-avatar>
             <v-img src="../assets/glug.png"></v-img>
           </v-list-item-avatar>
-          <v-list-item-title class="header" style="color:white"><strong>{{adminUser.toUpperCase()}}</strong> </v-list-item-title>
+          <v-list-item-title class="header" style="color:white">
+            <strong>{{ adminUser.toUpperCase() }}</strong>
+          </v-list-item-title>
         </v-list-item>
       </v-list>
       <v-list nav dense>
@@ -102,7 +104,7 @@
             <v-list-item-title class="font-weight-light sidebar">Profile</v-list-item-title>
           </v-list-item>
         </router-link>
-        <router-link v-if="role === 's'" :to="{ name: 'Rules' }" class="navbar-items">
+        <router-link v-if="role === 's'" :to="{ name: 'rules' }" class="navbar-items">
           <v-list-item link>
             <v-list-item-icon>
               <v-icon color="#7B849F">mdi-book-edit-outline</v-icon>
@@ -134,7 +136,7 @@ export default {
   data() {
     return {
       drawer: !this.mobileView,
-      adminUser:"",
+      adminUser: "",
     }
   },
   methods: {
@@ -166,11 +168,12 @@ export default {
 
 <style >
 .nav {
-  height: 100%;
   position: fixed;
+  z-index: 10;
 }
 .drawer {
   border-radius: 0px 10px 10px 0px;
+  z-index: 10;
 }
 .header {
   color: white;
@@ -198,7 +201,7 @@ export default {
   }
 
   .nav {
-    z-index: 2;
+    z-index: 10;
   }
 }
 </style>

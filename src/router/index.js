@@ -11,6 +11,8 @@ import Logs from '../views/Logs.vue'
 import St_details from '../views/St_details.vue'
 import Profile from '../views/Profile.vue'
 import results from '../views/results.vue'
+import rules from '../views/rules.vue'
+import faq from '../views/faq.vue'
 
 Vue.use(VueRouter)
 
@@ -69,11 +71,22 @@ const routes = [
     path: '/results',
     name: 'Results',
     component: results,
+  },
+   {
+    path: '/rules',
+    name: 'rules',
+    component: rules,
+  },
+    {
+    path: '/faq',
+    name: 'faq',
+    component: faq,
   }
   
 ]
 
 const router = new VueRouter({
+  mode:'history',
   routes
 })
 

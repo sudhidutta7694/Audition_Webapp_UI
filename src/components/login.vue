@@ -242,9 +242,7 @@ export default {
 
 .auth_box {
   background: #1a1d1f;
-  max-height: 80vh;
-  min-height: 60vh;
-  width: 60vh;
+  width: 500px;
   border: 1px solid white;
   border-radius: 42px;
 }

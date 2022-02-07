@@ -13,12 +13,40 @@
                         </v-list-item-content>
                     </v-list-item>
                 </div>
-                <v-data-table
+                <!-- <v-data-table
                     :headers="headers"
                     :items="result"
                     :items-per-page="itemsPerPage"
                     class="pa-5 pt-0"
-                ></v-data-table>
+                ></v-data-table>-->
+                <v-simple-table dark>
+                    <template v-slot:default>
+                        <thead>
+                            <tr>
+                                <th class="text-center">Name</th>
+                                <th class="text-center">Feedback</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in result" :key="item.username">
+                                <td>{{ item.username }}</td>
+                                <td>
+                                    <v-list-group :value="false">
+                                        <template v-slot:activator>
+                                            <v-list-item-title>Feedbacks</v-list-item-title>
+                                        </template>
+
+                                        <v-list-item v-for="(fed, i) in item.feedback" :key="i">
+                                            <v-list-item-title
+                                                v-if="fed.feedback !== ''"
+                                            >{{ fed.username }}: {{ fed.feedback }}</v-list-item-title>
+                                        </v-list-item>
+                                    </v-list-group>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </template>
+                </v-simple-table>
             </v-card>
         </v-container>
     </div>
@@ -42,7 +70,7 @@ export default {
                     align: 'start',
                     value: 'username',
                 },
-                { text: 'Feedback', value: 'feedback' },
+                // { text: 'Feedback', value: 'feedback' },
             ],
             desserts: [
                 {
@@ -73,8 +101,6 @@ export default {
             this.result = res.data
             console.log("----------")
             console.log(this.result)
-            console.log("-----------")
-            console.log(res.data)
         })
 
     }

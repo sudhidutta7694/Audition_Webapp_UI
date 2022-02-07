@@ -110,6 +110,7 @@ export default {
       answer: [],
       snackbar: false,
       text: 'Your Answer has been saved',
+      loading: false,
     };
   },
   components: {
@@ -121,7 +122,7 @@ export default {
     if (localStorage.getItem("answers") != null) {
       var answers = JSON.parse(localStorage.getItem("answers"));
       answers.forEach((answer) => {
-        if (answer.qid === this.question._id) {
+        if (answer.qid === this.question.quesId) {
           this.answer = answer.answer;
         }
       });
@@ -129,12 +130,14 @@ export default {
   },
   methods: {
     saveAnswer() {
+      this.loading = true;
       var current_answer = JSON.parse(localStorage.getItem("answers")).find(
         answer => answer.qid === this.question.quesId
       );
       common.updateAnswer(current_answer).then(() => {
         console.log(current_answer)
         this.snackbar = true;
+        this.loading = false;
       });
     },
   },
