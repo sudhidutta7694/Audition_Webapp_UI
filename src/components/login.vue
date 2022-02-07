@@ -183,7 +183,7 @@ export default {
 
 <style>
 .btns {
-  height: 8vh;
+  height: 77.84px;
   transition: transform 300ms linear;
 }
 .signIn {
@@ -284,10 +284,10 @@ export default {
     min-height: 50vh;
     max-height: 115vh;
     border-radius: 30px;
-    overflow-y: wrap;
+    overflow-y: auto;
   }
   .btns {
-    height: 8vh;
+    height: 77.84px;
   }
   .btn {
     font-size: 13px;

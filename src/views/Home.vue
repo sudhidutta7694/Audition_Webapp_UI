@@ -72,7 +72,7 @@
         <p>AUDITION</p>
         <p>PORTAL</p>
       </div>
-      <div class="d-flex align-center justify-center" style="z-index:2;">
+      <div class="d-flex align-center justify-center" style="z-index:2; height:max-content">
         <Login />
       </div>
     </div>
