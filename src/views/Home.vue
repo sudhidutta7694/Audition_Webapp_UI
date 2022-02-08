@@ -76,6 +76,7 @@
         <Login />
       </div>
     </div>
+    <v-snackbar v-model="emailSnack" color="error" elevation="12" app>Mail is already in use</v-snackbar>
   </div>
 </template>
 
@@ -90,6 +91,7 @@ export default {
     return {
       collapse: true,
       drawer: false,
+      emailSnack: false,
     };
   },
   computed: {
@@ -105,11 +107,18 @@ export default {
   beforeCreate() {
     var token = this.$route.query.token;
     console.log("this.route.query")
-    console.log(this.$route.query)
+    console.log(this.$route)
     if (token != null) {
       token = "Bearer " + token;
       localStorage.setItem("token", token);
       this.$router.push("/dash");
+    }
+  },
+  created() {
+    var error = this.$route.query.error;
+    console.log(error);
+    if (error != null) {
+      this.emailSnack = true;
     }
   },
   mounted() {

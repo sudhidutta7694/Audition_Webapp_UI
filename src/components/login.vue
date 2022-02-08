@@ -34,7 +34,7 @@
           outlined
         ></v-text-field>
         <div class="d-flex flex-column justify-center align-self-center background signinbtn">
-          <v-btn @click="SignIn">Sign-In</v-btn>
+          <v-btn :loading="loading" :disabled="loading" @click="SignIn">Sign-In</v-btn>
         </div>
       </v-form>
       <v-form class="form" v-else>
@@ -62,7 +62,7 @@
           outlined
         ></v-text-field>
         <div class="d-flex flex-column justify-center align-self-center background signinbtn">
-          <v-btn @click="SignUp">Sign-Up</v-btn>
+          <v-btn :loading="loading" :disabled="loading" @click="SignUp">Sign-Up</v-btn>
         </div>
       </v-form>
     </div>
@@ -97,6 +97,7 @@
         <v-icon size="80px">mdi-github</v-icon>
       </v-btn>
     </div>
+    <v-snackbar v-model="error" color="error" elevation="12" app>{{ errorMessage }}</v-snackbar>
   </div>
 </template>
 
@@ -123,6 +124,7 @@ export default {
         (v) => !!v || "Required.",
         (v) => v.length >= 8 || "Min 8 characters",
       ],
+      error: false,
       errorMessage: "",
       phoneRules: [
         v => !!v || "Phone No is required",
@@ -135,7 +137,7 @@ export default {
   },
   methods: {
     SignIn() {
-      this.loading = !this.loading;
+      this.loading = true;
       var user = {
         email: this.emailId,
         password: this.passwd,
