@@ -47,7 +47,10 @@
                         v-if="audition.status === 'def'"
                     >Round is Over, Please wait for results.</div>
 
-                    <div v-if="audition.status === 'res' && audition.round === 0" class="mx-auto">
+                    <div
+                        v-if="audition.status === 'res' && audition.round === 0"
+                        class="mx-auto d-flex flex-column justify-center align-center"
+                    >
                         <h4>Audition goes live in:</h4>
                         <Timer v-if="role === 's'" class="ma-2" :home="true" :time="audTime" />
                     </div>
