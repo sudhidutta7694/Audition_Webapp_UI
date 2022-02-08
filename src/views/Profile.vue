@@ -149,6 +149,9 @@ export default {
 </script>
 
 <style>
+.box {
+    height: 100%;
+}
 .pro_icon {
     width: 120px;
     height: 120px;
