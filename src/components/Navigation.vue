@@ -104,14 +104,6 @@
             <v-list-item-title class="font-weight-light sidebar">Profile</v-list-item-title>
           </v-list-item>
         </router-link>
-        <router-link v-if="role === 's'" :to="{ name: 'rules' }" class="navbar-items">
-          <v-list-item link>
-            <v-list-item-icon>
-              <v-icon color="#7B849F">mdi-book-edit-outline</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title class="font-weight-light sidebar">Rules</v-list-item-title>
-          </v-list-item>
-        </router-link>
       </v-list>
       <template v-slot:append>
         <div class="pa-2">
