@@ -8,7 +8,7 @@
                 elevation="3"
             >
                 <div
-                    v-if="student.studentround !== audition.round && role === 's'"
+                    v-if="student.studentround !== audition.round && role === 's' && audition.round !== 0"
                     class="text-center"
                 >
                     <h1>THANK YOU FOR YOUR PARTICIPATION</h1>
