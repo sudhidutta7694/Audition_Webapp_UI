@@ -2,7 +2,7 @@
     <div>
         <Navigation :role="role" />
         <div class="d-flex justify-center align-center box">
-            <v-card width="350px" class="d-flex flex-column align-center">
+            <v-card width="350px" class="d-flex flex-column align-center justofy-center mt-5">
                 <v-icon class="pro_icon" size="60">mdi-account-circle-outline</v-icon>
                 <div class="text-center mx-auto text-lg-h6 mb-5">PROFILE</div>
                 <div class="mx-auto">
@@ -56,11 +56,11 @@
             </v-card>
             <v-dialog v-model="dialog" width="500">
                 <v-card>
-                    <v-card-text>Please Update your profile.</v-card-text>
+                    <v-card-text>Your Profile is updated</v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <router-link to="/profile" style="text-decoration: none;">
-                            <v-btn color="primary" text @click="dialog = false">Go to Profile</v-btn>
+                        <router-link to="/dash" style="text-decoration: none;">
+                            <v-btn color="primary" text @click="dialog = false">Return TO Dashboard</v-btn>
                         </router-link>
                     </v-card-actions>
                 </v-card>
@@ -128,7 +128,7 @@ export default {
     methods: {
         setProfile() {
             common.setProfile({ roll: this.roll, phone: this.phoneNo }).then(() => {
-                this.dialog = false;
+                this.dialog = true;
                 this.profile.profilebool = true;
             });
             this.edit = false;

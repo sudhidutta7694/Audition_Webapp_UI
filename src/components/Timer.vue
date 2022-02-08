@@ -1,13 +1,13 @@
 <template>
   <v-container class="d-flex justify-end">
-    <!-- <div class="block" v-if="days > 0">
+    <div class="block" v-if="days > 0">
       <p class="digit">{{ days | two_digits }}</p>
       <p class="text">Days</p>
     </div>
     <div class="block" v-if="hours > 0">
       <p class="digit">{{ hours | two_digits }}</p>
       <p class="text">Hours</p>
-    </div>-->
+    </div>
     <div class="block" v-if="!stop">
       <p class="digit">{{ minutes | two_digits }}</p>
       <p class="text">Minutes</p>
@@ -28,7 +28,7 @@ export default {
       this.now = Math.trunc((new Date()).getTime() / 1000);
     }, 1000);
   },
-  props: ["time", "mobileView", "question"],
+  props: ["time", "question", "home"],
   data() {
     return {
       timePassed: 0,
@@ -44,12 +44,12 @@ export default {
     minutes: function () {
       return Math.trunc(this.timeLeft / 60) % 60;
     },
-    // hours() {
-    //   return Math.trunc((this.date - this.now) / 60 / 60) % 24;
-    // },
-    // days() {
-    //   return Math.trunc((this.date - this.now) / 60 / 60 / 24);
-    // },
+    hours() {
+      return Math.trunc(this.timeLeft / 60 / 60) % 24;
+    },
+    days() {
+      return Math.trunc(this.timeLeft / 60 / 60 / 24);
+    },
     timeLeft: function () {
       return this.time - this.now;
     }
@@ -65,9 +65,13 @@ export default {
   },
   methods: {
     timeUp() {
-      this.saveRound();
-      localStorage.removeItem("answers")
-      this.$router.push("/dash");
+      if (this.home === false) {
+        this.saveRound();
+        localStorage.removeItem("answers")
+        this.$router.push("/dash");
+      } else {
+        this.$router.go();
+      }
     },
     saveRound() {
       var current_answer = JSON.parse(localStorage.getItem("answers"))

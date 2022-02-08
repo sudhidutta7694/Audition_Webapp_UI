@@ -47,10 +47,10 @@
                         v-if="audition.status === 'def'"
                     >Round is Over, Please wait for results.</div>
 
-                    <div
-                        v-if="audition.status === 'res' && audition.round === 0"
-                        class="mx-auto"
-                    >Audition is not live yet.</div>
+                    <div v-if="audition.status === 'res' && audition.round === 0" class="mx-auto">
+                        <h4>Audition goes live in:</h4>
+                        <Timer v-if="role === 's'" class="ma-2" :home="true" :time="audTime" />
+                    </div>
                     <v-btn
                         v-if="member || su"
                         class="mx-auto mt-3"
@@ -78,10 +78,12 @@
 import Navigation from "../components/Navigation.vue";
 import VueJwtDecode from "vue-jwt-decode";
 import common from "../services/common.js";
+import Timer from "../components/Timer.vue"
 export default {
     name: "landing",
     components: {
         Navigation,
+        Timer,
     },
     data() {
         return {
@@ -96,6 +98,7 @@ export default {
             role: "",
             valid: Boolean,
             dialog: false,
+            audTime: 1644499800000 / 1000,
         };
     },
     beforeCreate() {

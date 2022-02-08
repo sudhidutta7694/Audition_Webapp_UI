@@ -15,12 +15,7 @@
               </div>
             </v-list-item-content>
           </v-list-item>
-          <Timer
-            :class="{ 'mr-4': vertical }"
-            :time="time"
-            :mobileView="!vertical"
-            :question="questions"
-          />
+          <Timer :class="{ 'mr-4': vertical }" :time="time" :question="questions" :home="false" />
         </div>
         <v-tabs
           v-model="tab"

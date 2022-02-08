@@ -96,7 +96,7 @@
             <v-list-item-title class="font-weight-light sidebar">Dashboard</v-list-item-title>
           </v-list-item>
         </router-link>
-        <router-link v-if="role === 's'" :to="{ name: 'Profile' }" class="navbar-items">
+        <router-link :to="{ name: 'Profile' }" class="navbar-items">
           <v-list-item link>
             <v-list-item-icon>
               <v-icon color="#7B849F">mdi-account-box</v-icon>
