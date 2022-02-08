@@ -1,5 +1,5 @@
 <template>
-    <div class="bg">
+    <div style="height:100%">
         <Navigation :role="role" />
         <div class="d-flex justify-center align-center box">
             <v-card width="350px" class="d-flex flex-column align-center justofy-center mt-5">
@@ -149,7 +149,7 @@ export default {
 </script>
 
 <style>
-.bg {
+.bp {
     background-color: #111315;
     height: 100%;
 }
