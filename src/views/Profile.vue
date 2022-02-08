@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="bg">
         <Navigation :role="role" />
         <div class="d-flex justify-center align-center box">
             <v-card width="350px" class="d-flex flex-column align-center justofy-center mt-5">
@@ -149,6 +149,11 @@ export default {
 </script>
 
 <style>
+.bg {
+    background-color: #111315;
+    display: flex;
+    height: 100%;
+}
 .box {
     height: 100%;
 }
