@@ -151,7 +151,6 @@ export default {
 <style>
 .bg {
     background-color: #111315;
-    display: flex;
     height: 100%;
 }
 .box {
