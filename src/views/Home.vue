@@ -21,7 +21,17 @@
           <p class="mb-0 title_text">NIT DURGAPUR</p>
         </v-toolbar-title>
       </div>
-      <div class="menu">
+      <div class="d-flex">
+        <router-link :to="{ name: 'faq' }" class="nav_item">
+          <v-list-item link>
+            <v-list-item-title>FAQ</v-list-item-title>
+          </v-list-item>
+        </router-link>
+        <router-link :to="{ name: 'rules' }" class="nav_item">
+          <v-list-item link>
+            <v-list-item-title>RULES</v-list-item-title>
+          </v-list-item>
+        </router-link>
         <a href="https://linktr.ee/glug_nitdgp_social" target="_blank" class="nav_item">
           <v-list-item link>
             <v-list-item-title>CONTACT US</v-list-item-title>
@@ -42,7 +52,7 @@
       height="200px"
       style="z-index:10;"
     >
-      <!-- <router-link :to="{ name: 'faq' }" class="nav_item">
+      <router-link :to="{ name: 'faq' }" class="nav_item">
         <v-list-item link>
           <v-list-item-title>FAQ</v-list-item-title>
         </v-list-item>
@@ -51,7 +61,7 @@
         <v-list-item link>
           <v-list-item-title>RULES</v-list-item-title>
         </v-list-item>
-      </router-link>-->
+      </router-link>
       <a href="https://linktr.ee/glug_nitdgp_social" class="nav_item">
         <v-list-item link>
           <v-list-item-title>CONTACT US</v-list-item-title>
@@ -175,7 +185,7 @@ export default {
   position: absolute;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 @media screen and (max-width: 1264px) {
   .heading {
