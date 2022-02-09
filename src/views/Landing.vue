@@ -52,7 +52,7 @@
                         class="mx-auto d-flex flex-column justify-center align-center"
                     >
                         <h4>Audition goes live in:</h4>
-                        <Timer v-if="role === 's'" class="ma-2" :home="true" :time="audTime" />
+                        <Timer class="ma-2" :home="true" :time="audTime" />
                     </div>
                     <v-btn
                         v-if="member || su"
