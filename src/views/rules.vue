@@ -40,7 +40,7 @@ export default {
     data() {
         return {
             rules: [
-                "You can attempt the round anytime within the 3 day duration but you need to submit your responses within 1 hour once the timer starts.",
+                "You can attempt the round anytime within the 3 day duration but you need to submit your responses within 1 hour and 30 minutes once the timer starts.",
                 "Attempt the questions as honestly as possible.",
                 "The questions can be text, image, or audio based.",
                 "Remember to save your answer before moving on to the next question.",
