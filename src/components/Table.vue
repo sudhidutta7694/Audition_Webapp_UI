@@ -46,7 +46,8 @@
               </v-tabs>
             </template>
             <template v-if="!dashboard">
-              <v-tabs
+              <div>
+                <v-tabs
                 v-model="tab"
                 align-with-title
                 background-color="transparent"
@@ -64,6 +65,7 @@
                 single-line
                 hide-details
               ></v-text-field>
+              </div>
             </template>
           </div>
         </v-list-item-content>
