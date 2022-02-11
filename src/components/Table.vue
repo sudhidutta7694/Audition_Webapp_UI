@@ -58,26 +58,19 @@
                   item
                 }}</v-tab>
               </v-tabs>
-              <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify mx-6 my-3"
-                label="Search"
-                single-line
-                hide-details
-              ></v-text-field>
               </div>
             </template>
           </div>
         </v-list-item-content>
       </v-list-item>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify mx-6 my-3"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
     </div>
+    <v-text-field
+      v-model="search"
+      append-icon="mdi-magnify mx-6 my-3"
+      label="Search"
+      single-line
+      hide-details
+    ></v-text-field>
     <v-tabs-items
       v-model="tab"
       style="width: 1500px; background-color: #1a1d1f"
