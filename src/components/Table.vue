@@ -21,8 +21,8 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-          <v-btn color="blue darken-1" text @click="changeRole()"> Save </v-btn>
+          <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+          <v-btn color="blue darken-1" text @click="changeRole()">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -40,9 +40,9 @@
               >
                 <v-tabs-slider color="yellow"></v-tabs-slider>
 
-                <v-tab v-for="stu in record" :key="stu" class="ml-0">
-                  ROUND {{ stu.roundNo }}
-                </v-tab>
+                <v-tab v-for="stu in record" :key="stu" class="ml-0"
+                  >ROUND {{ stu.roundNo }}</v-tab
+                >
               </v-tabs>
             </template>
             <template v-if="!dashboard">
@@ -53,9 +53,9 @@
               >
                 <v-tabs-slider color="yellow"></v-tabs-slider>
 
-                <v-tab v-for="item in Role_ui" :key="item" class="ml-0">
-                  {{ item }}
-                </v-tab>
+                <v-tab v-for="item in Role_ui" :key="item" class="ml-0">{{
+                  item
+                }}</v-tab>
               </v-tabs>
             </template>
           </div>
@@ -77,6 +77,7 @@
           hide-default-footer
           @page-count="pageCount = $event"
           style="width: 100%"
+          :search="search"
         >
           <template v-slot:[`item.actions`]="{ item }">
             <v-row>
@@ -93,9 +94,8 @@
                   v-if="!dashboard"
                   class="mr-2"
                   @click="editItem(item)"
+                  >mdi-pencil</v-icon
                 >
-                  mdi-pencil
-                </v-icon>
               </v-col>
             </v-row>
           </template>
@@ -121,13 +121,14 @@ export default {
   props: ["headers", "dashboard", "un"],
   data: () => ({
     currentround: "",
+    search: "",
     tab: null,
     all: [],
     dialog: false,
     dialogDelete: false,
     page: 1,
     pageCount: 0,
-    itemsPerPage: 10,
+    itemsPerPage: 40,
     store: [],
     superusers: [],
     members: [],
@@ -181,12 +182,12 @@ export default {
       let rounds = [];
       for (let i = 0; i <= this.currentround; i++) {
         var roundentry = {
-          roundNo: i+1 ,
+          roundNo: i + 1,
           records: [],
         };
         // console.log(this.students);
         this.students.forEach((e) => {
-          if (e.round === i+1 ) {
+          if (e.round === i + 1) {
             roundentry.records.push(e);
           }
         });
