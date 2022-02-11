@@ -69,6 +69,7 @@
       append-icon="mdi-magnify mx-6 my-3"
       label="Search"
       single-line
+      outlined
       hide-details
     ></v-text-field>
     <v-tabs-items
