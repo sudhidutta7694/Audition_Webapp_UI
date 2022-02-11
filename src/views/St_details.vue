@@ -95,9 +95,9 @@
                     <div
                       v-for="(question, index) in round.questions"
                       :key="index"
-                      class="ma-5 font-weight-bold"
+                      class="ma-5"
                     >
-                      <h3>{{ index + 1 }}. {{ question.quesText }}</h3>
+                      <h3 class="font-weight-bold">{{ index + 1 }}. {{ question.quesText }}</h3>
                       <v-img  class="ma-5" v-if="question.ImageLink" height="100" width="100" :src="question.ImageLink"></v-img>
                       <vuetify-audio
                         :file="question.AudioLink"
@@ -107,7 +107,7 @@
                         downloadable
                       ></vuetify-audio>
                       <div style="display: flex">
-                        <h5 style="color: grey" class="ma-2">ANSWER:</h5>
+                        <h4 style="color: grey" class="ma-2">ANSWER:</h4>
                         <div v-for="answer in question.answer" :key="answer">
                           <h3
                             class="ml-5 mt-2"
