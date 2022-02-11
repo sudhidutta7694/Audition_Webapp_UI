@@ -4,44 +4,26 @@
     <div class="main">
       <!-- <Sparkline /> -->
       <div class="top">
-        <v-btn color="#BEFFC1" class="ma-2 black--text" @click="btnHandler()">
-          {{ btntext }}
-        </v-btn>
+        <v-btn color="#BEFFC1" class="ma-2 black--text" @click="btnHandler()">{{ btntext }}</v-btn>
         <v-btn
           light
           class="ma-2 black--text"
           v-if="audition.status === 'ong'"
           v-on:click="extendtime"
-        >
-          Extend Time (By 10 min)
-        </v-btn>
+        >Extend Time (By 10 min)</v-btn>
       </div>
       <Table :headers="rootHeaders" :dashboard="false" />
 
-      <v-snackbar v-model="eventSnackbar"
-        >{{ text }}
+      <v-snackbar v-model="eventSnackbar">
+        {{ text }}
         <template v-slot:action="{ attrs }">
-          <v-btn
-            color="pink"
-            text
-            v-bind="attrs"
-            @click="eventSnackbar = false"
-          >
-            Close
-          </v-btn>
+          <v-btn color="pink" text v-bind="attrs" @click="eventSnackbar = false">Close</v-btn>
         </template>
       </v-snackbar>
-      <v-snackbar v-model="extendtimeSnackbar"
-        >Time Extended for all students by 10 minutes
+      <v-snackbar v-model="extendtimeSnackbar">
+        Time Extended for all students by 10 minutes
         <template v-slot:action="{ attrs }">
-          <v-btn
-            color="pink"
-            text
-            v-bind="attrs"
-            @click="extendtimeSnackbar = false"
-          >
-            Close
-          </v-btn>
+          <v-btn color="pink" text v-bind="attrs" @click="extendtimeSnackbar = false">Close</v-btn>
         </template>
       </v-snackbar>
     </div>
@@ -93,7 +75,7 @@ export default {
         sortable: false,
         value: "username",
       },
-      { text: "Phone No", value: "ph.no" },
+      { text: "Phone No", value: "phone" },
       { text: "Email", value: "email" },
       { text: "Role", value: "role" },
       { text: "Set Role", value: "actions", sortable: false },
