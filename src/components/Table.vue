@@ -59,15 +59,15 @@
               </v-tabs>
             </template>
           </div>
-          <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            label="Search"
-            single-line
-            hide-details
-          ></v-text-field>
         </v-list-item-content>
       </v-list-item>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
     </div>
     <v-tabs-items
       v-model="tab"
