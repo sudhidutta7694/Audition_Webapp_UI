@@ -57,13 +57,20 @@
                   item
                 }}</v-tab>
               </v-tabs>
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify mx-6 my-3"
+                label="Search"
+                single-line
+                hide-details
+              ></v-text-field>
             </template>
           </div>
         </v-list-item-content>
       </v-list-item>
       <v-text-field
         v-model="search"
-        append-icon="mdi-magnify"
+        append-icon="mdi-magnify mx-6 my-3"
         label="Search"
         single-line
         hide-details
