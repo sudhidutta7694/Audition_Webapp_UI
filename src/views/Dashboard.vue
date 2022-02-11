@@ -54,7 +54,7 @@ export default {
         sortable: false,
         value: "username",
       },
-      { text: "Phone No", value: "ph.no" },
+      { text: "Phone No", value: "phone" },
       { text: "Email", value: "email" },
       { text: "Status", value: "status" },
       { text: "Details", value: "actions", sortable: false },
