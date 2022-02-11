@@ -16,38 +16,30 @@
         <v-app-bar-nav-icon class="nav_icon mx-1" href="https://nitdgplug.org/" target="_blank">
           <v-img src="../assets/glug.png" aspect-ratio="1"></v-img>
         </v-app-bar-nav-icon>
-        <v-toolbar-title class="d-flex flex-column title ml-4 green--text">
+        <v-toolbar-title class="d-flex flex-column title ml-4">
           <p class="mb-0 title_text">GNU/LINUX USERS' GROUP</p>
           <p class="mb-0 title_text">NIT DURGAPUR</p>
         </v-toolbar-title>
       </div>
-
-      <div class="links d-flex align-center">
-        <router-link to="faq" class="nav_item">
+      <div class="d-flex">
+        <router-link :to="{ name: 'faq' }" class="nav_item">
           <v-list-item link>
             <v-list-item-title>FAQ</v-list-item-title>
           </v-list-item>
         </router-link>
-        <router-link to="rules" class="nav_item">
+        <router-link :to="{ name: 'rules' }" class="nav_item">
           <v-list-item link>
             <v-list-item-title>RULES</v-list-item-title>
           </v-list-item>
         </router-link>
-        <router-link href="https://nitdgplug.org/" target="_blank" class="nav_item">
+        <a href="https://linktr.ee/glug_nitdgp_social" target="_blank" class="nav_item">
           <v-list-item link>
             <v-list-item-title>CONTACT US</v-list-item-title>
           </v-list-item>
-        </router-link>
+        </a>
       </div>
     </v-app-bar>
-    <v-btn
-      v-if="mobileView"
-      fab
-      color="blue darken-3"
-      absolute
-      class="ma-3"
-      @click="drawer = !drawer"
-    >
+    <v-btn v-if="mobileView" fab color="blue darken-3" fixed class="ma-3" @click="drawer = !drawer">
       <v-icon>mdi-menu</v-icon>
     </v-btn>
     <v-navigation-drawer
@@ -70,11 +62,11 @@
           <v-list-item-title>RULES</v-list-item-title>
         </v-list-item>
       </router-link>
-      <router-link href="https://nitdgplug.org/" target="_blank" class="nav_item">
+      <a href="https://linktr.ee/glug_nitdgp_social" class="nav_item">
         <v-list-item link>
           <v-list-item-title>CONTACT US</v-list-item-title>
         </v-list-item>
-      </router-link>
+      </a>
     </v-navigation-drawer>
 
     <div
@@ -90,10 +82,11 @@
         <p>AUDITION</p>
         <p>PORTAL</p>
       </div>
-      <div class="d-flex align-center justify-center" style="z-index:2;">
+      <div class="d-flex align-center justify-center" style="z-index:2; height:max-content">
         <Login />
       </div>
     </div>
+    <v-snackbar v-model="emailSnack" color="error" elevation="12" app>Mail is already in use</v-snackbar>
   </div>
 </template>
 
@@ -108,6 +101,7 @@ export default {
     return {
       collapse: true,
       drawer: false,
+      emailSnack: false,
     };
   },
   computed: {
@@ -122,15 +116,19 @@ export default {
   },
   beforeCreate() {
     var token = this.$route.query.token;
-    console.log("-------")
-    console.log(token)
-    console.log(this.$route.query.token)
-    console.log(this.$route.query)
+    console.log("this.route.query")
     console.log(this.$route)
     if (token != null) {
       token = "Bearer " + token;
       localStorage.setItem("token", token);
       this.$router.push("/dash");
+    }
+  },
+  created() {
+    var error = this.$route.query.error;
+    console.log(error);
+    if (error != null) {
+      this.emailSnack = true;
     }
   },
   mounted() {
@@ -187,7 +185,7 @@ export default {
   position: absolute;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 @media screen and (max-width: 1264px) {
   .heading {

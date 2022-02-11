@@ -18,28 +18,11 @@
                         <thead>
                             <tr>
                                 <th class="text-center">Name</th>
-                                <th class="text-center">Feedback</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="item in result" :key="item.username">
-                                <td>{{ item.username }}</td>
-                                <td>
-                                    <v-list-group :value="false">
-                                        <template v-slot:activator>
-                                            <v-list-item-title>Feedbacks</v-list-item-title>
-                                        </template>
-
-                                        <v-list-item v-for="(fed, i) in item.feedback" :key="i">
-                                            <v-list-item-title
-                                                v-if="fed.feedback !== ''"
-                                            >{{ fed.username }}: {{ fed.feedback }}</v-list-item-title>
-                                        </v-list-item>
-                                        <v-list-item v-if="item.feedback === null">
-                                            <v-list-item-title>N/A</v-list-item-title>
-                                        </v-list-item>
-                                    </v-list-group>
-                                </td>
+                                <td>{{ item }}</td>
                             </tr>
                         </tbody>
                     </template>
@@ -65,7 +48,6 @@ export default {
                 {
                     text: 'Name',
                     align: 'start',
-                    value: 'username',
                 },
                 // { text: 'Feedback', value: 'feedback' },
             ],

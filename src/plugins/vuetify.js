@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib/framework';
-import glug from '../components/glug.vue'
+import google from '../components/google.vue'
 
 Vue.use(Vuetify);
 
@@ -9,8 +9,8 @@ export default new Vuetify({
     icons: {
         iconfont: 'mdi',
         values: {
-            glug: {
-                component: glug,
+            google: {
+                component: google,
             }
         }
     },

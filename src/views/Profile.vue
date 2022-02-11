@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div style="height:100%">
         <Navigation :role="role" />
         <div class="d-flex justify-center align-center box">
-            <v-card width="350px" class="d-flex flex-column align-center">
+            <v-card width="350px" class="d-flex flex-column align-center justofy-center mt-5">
                 <v-icon class="pro_icon" size="60">mdi-account-circle-outline</v-icon>
                 <div class="text-center mx-auto text-lg-h6 mb-5">PROFILE</div>
                 <div class="mx-auto">
@@ -54,6 +54,17 @@
                     <v-icon class="mr-1">mdi-content-save</v-icon>Save Profile
                 </v-btn>
             </v-card>
+            <v-dialog v-model="dialog" width="500">
+                <v-card>
+                    <v-card-text>Your Profile is updated</v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <router-link to="/dash" style="text-decoration: none;">
+                            <v-btn color="primary" text @click="dialog = false">Return TO Dashboard</v-btn>
+                        </router-link>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
         </div>
     </div>
 </template>
@@ -81,7 +92,7 @@ export default {
                 v => /^-?(\d+\.?\d*)$|(\d*\.?\d+)$/.test(v) || "Phone no must be valid",
                 v =>
                     (v && v.length <= 10 && v.length >= 10) ||
-                    "Enter a valid (91+) 10 digit Phone no"
+                    "Enter a valid 10 digit Phone no"
             ],
             rollRules: [
                 v => !!v || "Roll No is required",
@@ -91,6 +102,7 @@ export default {
                     "Enter a valid Roll no"
             ],
             edit: false,
+            dialog: false,
         }
     },
     beforeCreate() {
@@ -116,10 +128,11 @@ export default {
     methods: {
         setProfile() {
             common.setProfile({ roll: this.roll, phone: this.phoneNo }).then(() => {
-                this.dialog = false;
+                this.dialog = true;
                 this.profile.profilebool = true;
             });
             this.edit = false;
+
         }
     },
     computed: {
@@ -136,8 +149,12 @@ export default {
 </script>
 
 <style>
+.bp {
+    background-color: #111315;
+    height: 100%;
+}
 .box {
-    height: 100vh;
+    height: 100%;
 }
 .pro_icon {
     width: 120px;

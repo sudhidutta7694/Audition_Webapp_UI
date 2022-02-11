@@ -34,7 +34,7 @@
           outlined
         ></v-text-field>
         <div class="d-flex flex-column justify-center align-self-center background signinbtn">
-          <v-btn @click="SignIn">Sign-In</v-btn>
+          <v-btn :loading="loading" :disabled="loading" @click="SignIn">Sign-In</v-btn>
         </div>
       </v-form>
       <v-form class="form" v-else>
@@ -62,7 +62,7 @@
           outlined
         ></v-text-field>
         <div class="d-flex flex-column justify-center align-self-center background signinbtn">
-          <v-btn @click="SignUp">Sign-Up</v-btn>
+          <v-btn :loading="loading" :disabled="loading" @click="SignUp">Sign-Up</v-btn>
         </div>
       </v-form>
     </div>
@@ -72,13 +72,32 @@
       <v-divider class="mt-3 mx-4"></v-divider>
     </div>
     <div class="d-flex justify-center align-center mx-auto alt">
-      <v-btn @click="googleLogin" class="google ic" icon>
-        <img class="ic" src="../assets/google.svg" />
+      <v-btn
+        fab
+        elevation="0"
+        plain
+        width="90px"
+        height="90px"
+        @click="googleLogin"
+        class="ic google"
+      >
+        <!-- <img class="ic" src="../assets/google.svg" /> -->
+        <v-icon size="80px">$vuetify.icons.google</v-icon>
       </v-btn>
-      <v-btn @click="githubLogin" class="github ic" icon>
-        <img class="ic" src="../assets/github.svg" />
+      <v-btn
+        fab
+        elevation="0"
+        plain
+        width="90px"
+        height="90px"
+        @click="githubLogin"
+        class="ic github"
+      >
+        <!-- <img class="ic" src="../assets/github.svg" /> -->
+        <v-icon size="80px">mdi-github</v-icon>
       </v-btn>
     </div>
+    <v-snackbar v-model="error" color="error" elevation="12" app>{{ errorMessage }}</v-snackbar>
   </div>
 </template>
 
@@ -105,6 +124,7 @@ export default {
         (v) => !!v || "Required.",
         (v) => v.length >= 8 || "Min 8 characters",
       ],
+      error: false,
       errorMessage: "",
       phoneRules: [
         v => !!v || "Phone No is required",
@@ -117,7 +137,7 @@ export default {
   },
   methods: {
     SignIn() {
-      this.loading = !this.loading;
+      this.loading = true;
       var user = {
         email: this.emailId,
         password: this.passwd,
@@ -165,7 +185,7 @@ export default {
 
 <style>
 .btns {
-  height: 8vh;
+  height: 77.84px;
   transition: transform 300ms linear;
 }
 .signIn {
@@ -216,10 +236,6 @@ export default {
   width: 89%;
   height: 105px;
 }
-.ic {
-  width: 80px;
-  height: 80px;
-}
 .v-btn {
   align-self: center;
 }
@@ -258,10 +274,10 @@ export default {
   transition: transform 300ms linear;
 }
 .google {
-  margin-right: 100px;
+  margin-right: 50px;
 }
 .github {
-  margin-left: 100px;
+  margin-left: 50px;
 }
 @media screen and (max-width: 960px) {
   .auth_box {
@@ -270,10 +286,10 @@ export default {
     min-height: 50vh;
     max-height: 115vh;
     border-radius: 30px;
-    overflow-y: wrap;
+    overflow-y: auto;
   }
   .btns {
-    height: 8vh;
+    height: 77.84px;
   }
   .btn {
     font-size: 13px;
@@ -289,10 +305,6 @@ export default {
   }
   .signUp:before {
     border-radius: 30px;
-  }
-  .ic {
-    width: 80px;
-    height: 80px;
   }
   .alt {
     height: 100px;

@@ -96,7 +96,7 @@
             <v-list-item-title class="font-weight-light sidebar">Dashboard</v-list-item-title>
           </v-list-item>
         </router-link>
-        <router-link v-if="role === 's'" :to="{ name: 'Profile' }" class="navbar-items">
+        <router-link :to="{ name: 'Profile' }" class="navbar-items">
           <v-list-item link>
             <v-list-item-icon>
               <v-icon color="#7B849F">mdi-account-box</v-icon>
@@ -104,12 +104,20 @@
             <v-list-item-title class="font-weight-light sidebar">Profile</v-list-item-title>
           </v-list-item>
         </router-link>
-        <router-link v-if="role === 's'" :to="{ name: 'rules' }" class="navbar-items">
+        <router-link :to="{ name: 'rules' }" class="navbar-items">
           <v-list-item link>
             <v-list-item-icon>
-              <v-icon color="#7B849F">mdi-book-edit-outline</v-icon>
+              <v-icon color="#7B849F">mdi-book-edit</v-icon>
             </v-list-item-icon>
             <v-list-item-title class="font-weight-light sidebar">Rules</v-list-item-title>
+          </v-list-item>
+        </router-link>
+        <router-link :to="{ name: 'faq' }" class="navbar-items">
+          <v-list-item link>
+            <v-list-item-icon>
+              <v-icon color="#7B849F">mdi-frequently-asked-questions</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="font-weight-light sidebar">FAQ</v-list-item-title>
           </v-list-item>
         </router-link>
       </v-list>

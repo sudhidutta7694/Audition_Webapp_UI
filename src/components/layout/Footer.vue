@@ -11,11 +11,11 @@ export default {
 </script>
 <style scoped>
 .footer {
-    position: absolute;
+    position: relative;
     bottom: 0px;
     width: 100%;
-    border-top: 2px solid rgb(0, 160, 253);
-    background-color: rgba(43, 43, 43, 0.11);
+    border-top: 2px solid rgb(103, 109, 112);
+    background-color: rgba(75, 74, 74, 0.11);
     backdrop-filter: blur(8px);
     height: 45px;
     color: white;

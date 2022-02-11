@@ -3,12 +3,22 @@
         <Navigation :role="role" />
         <div class="d-flex flex-column align-center justify-center main">
             <v-card
+                min-height="30%"
                 class="d-flex flex-column align-center justify-center main-card"
-                height="30%"
                 elevation="3"
             >
-                <div class="d-flex flex-column align-center">
-                    <div class="text-center text-lg-h4">Current Round: {{ audition.round }}</div>
+                <div
+                    v-if="student.studentround !== audition.round && role === 's' && audition.round !== 0"
+                    class="text-center"
+                >
+                    <h1>THANK YOU FOR YOUR PARTICIPATION</h1>
+                    <h4>WE HOPE TO SEE YOU IN FURTHER GLUG EVENTS</h4>
+                </div>
+                <div v-else class="d-flex flex-column align-center ma-4">
+                    <div
+                        v-if="audition.round !== 0"
+                        class="text-center text-lg-h4"
+                    >Current Round: {{ audition.round }}</div>
                     <v-btn
                         v-if="audition.status === 'res' && audition.round !== 0"
                         class="mx-auto mt-3"
@@ -39,8 +49,11 @@
 
                     <div
                         v-if="audition.status === 'res' && audition.round === 0"
-                        class="mx-auto"
-                    >Audition is not live yet.</div>
+                        class="mx-auto d-flex flex-column justify-center align-center"
+                    >
+                        <h4>Audition goes live in:</h4>
+                        <Timer class="ma-2" :home="true" :time="audTime" />
+                    </div>
                     <v-btn
                         v-if="member || su"
                         class="mx-auto mt-3"
@@ -68,10 +81,12 @@
 import Navigation from "../components/Navigation.vue";
 import VueJwtDecode from "vue-jwt-decode";
 import common from "../services/common.js";
+import Timer from "../components/Timer.vue"
 export default {
     name: "landing",
     components: {
         Navigation,
+        Timer,
     },
     data() {
         return {
@@ -86,10 +101,12 @@ export default {
             role: "",
             valid: Boolean,
             dialog: false,
+            audTime: 1644499800000 / 1000,
         };
     },
     beforeCreate() {
         common.getStudent().then((res) => {
+            console.log(res.data)
             this.student = res.data;
             this.student.studenttime = Number(this.student.studenttime)
         });
@@ -118,6 +135,10 @@ export default {
             }
             this.role = tok.role;
             this.username = tok.username;
+        }
+
+        if (this.student.studentround != this.audition.round) {
+            this.valid = false;
         }
     },
     computed: {
