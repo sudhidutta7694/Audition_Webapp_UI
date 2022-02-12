@@ -45,7 +45,8 @@ export default {
                 "The questions can be text, image, or audio based.",
                 "Remember to save your answer before moving on to the next question.",
                 "You are free to answer in a candid manner. We are not looking for a bookish answer",
-                "In case of any confusion/doubts, you are free to contact any of the GLUG members."
+                "In case of any confusion/doubts, you are free to contact any of the GLUG members.",
+                "Round 1 of Audition will close on 13th February, at 7pm. Make sure to finish your attempts before that."
             ]
         }
     },
