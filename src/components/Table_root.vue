@@ -49,9 +49,18 @@
         </v-list-item-content>
       </v-list-item>
     </div>
+    <v-text-field
+      v-model="search"
+      append-icon="mdi-magnify mx-6 my-3"
+      label="Search"
+      single-line
+      outlined
+      hide-details
+    ></v-text-field>
     <v-data-table
       v-if="tab == 0 "
       :headers="headers"
+      :search="search"
       :items="students"
       sort-by="calories"
       class="elevation-8 pa-5"
@@ -87,6 +96,7 @@
     <v-data-table
       v-if="tab == 1"
       :headers="headers"
+      :saerch="search"
       :items="members"
       sort-by="calories"
       class="elevation-8 pa-5"
@@ -122,6 +132,7 @@
       v-if="tab == 2"
       :headers="headers"
       :items="superusers"
+      :search="search"
       sort-by="calories"
       class="elevation-8 pa-5"
       :page.sync="page"
@@ -161,6 +172,7 @@ export default {
   // components: { tableHeader },
   props: ["headers", "dashboard", "un"],
   data: () => ({
+    search:'',
     currentround: "",
     tab: null,
     all: [],
@@ -168,7 +180,7 @@ export default {
     dialogDelete: false,
     page: 1,
     pageCount: 0,
-    itemsPerPage: 10,
+    itemsPerPage: 40,
     store: [],
     superusers: [],
     members: [],
