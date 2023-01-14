@@ -157,7 +157,7 @@ export default {
   width: 55%;
   font-family: Inter;
   font-style: normal;
-  font-weight: normal;
+  font-weight: bold;
   font-size: 60px;
   letter-spacing: 0.6em;
   padding-left: 4vw;
@@ -172,7 +172,8 @@ export default {
   height: 100%;
   /* overflow-x: hidden; */
   /* overflow-y: auto; */
-  background: url("../assets/tunnel.gif");
+  background: url("../assets/cyberTunnel.gif");
+
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -185,7 +186,7 @@ export default {
   position: absolute;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0);
 }
 @media screen and (max-width: 1264px) {
   .heading {

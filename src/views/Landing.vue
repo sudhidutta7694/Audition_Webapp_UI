@@ -101,7 +101,7 @@ export default {
             role: "",
             valid: Boolean,
             dialog: false,
-            audTime: 1644499800000 / 1000,
+            audTime: 1673680042 ,
         };
     },
     beforeCreate() {
@@ -112,6 +112,7 @@ export default {
         });
         common.getAuditionStatus().then((res) => {
             this.audition = (res.data);
+            console.log("audition data:", this.audition)
         });
         common.getProfile().then((res) => {
             this.profile = res.data;

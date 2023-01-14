@@ -186,7 +186,7 @@ export default {
 <style>
 .btns {
   height: 77.84px;
-  transition: transform 300ms linear;
+  transition: 300ms;
 }
 .signIn {
   border-radius: 42px 0px;
@@ -257,10 +257,12 @@ export default {
 }
 
 .auth_box {
-  background: #1a1d1f;
+  background: #1a1d1fac;
   width: 500px;
   border: 1px solid white;
   border-radius: 42px;
+  transition: 0.5s;
+  backdrop-filter: blur(10px);
 }
 .btn {
   width: 50%;

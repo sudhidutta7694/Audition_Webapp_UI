@@ -130,16 +130,22 @@ export default {
   },
   methods: {
     saveAnswer() {
-      this.loading = true;
-      var current_answer = JSON.parse(localStorage.getItem("answers")).find(
-        answer => answer.qid === this.question.quesId
-      );
-      common.updateAnswer(current_answer).then(() => {
-        console.log(current_answer)
-        this.snackbar = true;
-        this.loading = false;
-      });
-    },
+            this.loading = true;
+
+            var current_answer = JSON.parse(
+                localStorage.getItem("answers")
+            ).find((answer) => answer.qid === this.question.quesId);
+
+            if (current_answer != "") {
+                common.updateAnswer(current_answer).then(() => {
+                    console.log(current_answer);
+                    this.snackbar = true;
+                    this.loading = false;
+                });
+            } else {
+              this.loading = false;
+            }
+        },
   },
   watch: {
     answer: {

@@ -315,7 +315,14 @@ export default {
           console.log(res.data);
           this.details = res.data.data[0][0];
           this.responses = res.data.data[0][1].responses;
-          this.feebacks = this.details.feedback;
+          let arr = []
+          if(this.details.feedback!=null){
+            this.details.feedback.forEach(e => {
+                arr.push(JSON.parse(e))
+            })
+            this.feebacks = arr;
+          }
+          console.log(this.details)
           console.log(this.responses);
           for (var i = 1; i <= this.details.round; i++) {
             this.filteroptions.push(`Round ${i}`);
