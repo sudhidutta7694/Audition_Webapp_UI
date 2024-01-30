@@ -172,7 +172,7 @@ export default {
   height: 100%;
   /* overflow-x: hidden; */
   /* overflow-y: auto; */
-  background: url("../assets/cyberTunnel.gif");
+  background: url("../assets/Blackhole.gif");
 
   background-repeat: no-repeat;
   background-size: cover;

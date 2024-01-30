@@ -15,17 +15,18 @@
                 </div>
                 <v-simple-table dark class="pa-2">
                     <template v-slot:default>
-                        <thead>
+                        <thead class="thead-light">
                             <tr>
-                                <th class="text-center">Name</th>
+                                <th class="text-center" style="padding: 15px; font-family: 'Courier New', Courier, monospace; font-size: 18px;">Names</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="item in result" :key="item.username">
-                                <td>{{ item }}</td>
+                            <tr v-for="item in result" :key="item.username" class="text-center">
+                                <td style="padding: 15px; font-family: 'Verdana', sans-serif; font-size: 16px;">{{ item }}</td>
                             </tr>
                         </tbody>
                     </template>
+
                 </v-simple-table>
             </v-card>
         </v-container>
@@ -49,7 +50,7 @@ export default {
                     text: 'Name',
                     align: 'start',
                 },
-                // { text: 'Feedback', value: 'feedback' },
+                { text: 'Feedback', value: 'feedback' },
             ],
             result: null,
             role: "",
