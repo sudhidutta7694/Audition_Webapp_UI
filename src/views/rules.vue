@@ -75,7 +75,7 @@ ol > li::marker {
 }
 
 .wall {
-    background: url("../assets/tunnel.gif");
+    background: url("../assets/triangle.gif");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;

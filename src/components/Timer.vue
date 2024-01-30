@@ -58,7 +58,7 @@ export default {
     timeLeft(value) {
       if (value <= 0) {
         this.stop = true;
-        console.log("ZA WARUDOOOO!!!!")
+        // console.log("ZA WARUDOOOO!!!!")
         this.timeUp()
       }
     }
