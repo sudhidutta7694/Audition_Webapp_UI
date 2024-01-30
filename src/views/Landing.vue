@@ -101,19 +101,18 @@ export default {
             role: "",
             valid: Boolean,
             dialog: false,
-            audTime: 1706725800 ,
+            audTime: 1673680042 ,
         };
     },
     beforeCreate() {
         common.getStudent().then((res) => {
-            //console.log(res.data)
+            console.log(res.data)
             this.student = res.data;
             this.student.studenttime = Number(this.student.studenttime)
-            // console.log(this.student.studenttime)
         });
         common.getAuditionStatus().then((res) => {
             this.audition = (res.data);
-            // console.log("audition data:", this.audition)
+            console.log("audition data:", this.audition)
         });
         common.getProfile().then((res) => {
             this.profile = res.data;
@@ -121,7 +120,7 @@ export default {
             this.roll = this.profile.roll;
             this.valid = this.profile.profilebool;
             this.dialog = !this.valid;
-            //console.log(this.profile);
+            console.log(this.profile);
         });
     },
     created() {
