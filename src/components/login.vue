@@ -133,6 +133,7 @@ export default {
           (v && v.length <= 10 && v.length >= 10) ||
           "Enter a valid (91+) 10 digit Phone no"
       ],
+      loading: false,
     };
   },
   methods: {
